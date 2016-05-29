@@ -1,7 +1,7 @@
 # GoForever
 An implementation of the traditional chinese game Go, required for a SENG course.
 
-# Dependencies
+## Dependencies
 
 [Node> 6.2](https://nodejs.org/en/) 
 
@@ -9,13 +9,15 @@ An implementation of the traditional chinese game Go, required for a SENG course
 
 [Gulp CLI](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)
 
-# Setup
+[Live Reload Chrome Plugin (hot-reload browser side)](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en)
+
+## Setup
 
 Navigate to the project directory
 
 ````npm install````
 
-# Starting the app
+##Starting the app
 
 Navigate to the project directory
 
@@ -23,4 +25,8 @@ Navigate to the project directory
 
 **Note** : Any added or deleted files will require you to run ````npm start```` again
 
+navigate to localhost:3000 
 
+click the livereload browser plugin icon to enable live reload
+
+go at it.

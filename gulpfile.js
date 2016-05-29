@@ -13,7 +13,7 @@ var runSequence = require('run-sequence')
 var spawn = require('child_process').spawn
 var node;
 
-// the file patterns used
+// the file patterns used to refresh files
 var patt = {
     'sass': './src/sass/**/*.scss',
     'backend':'./src/scripts/backend/**/*.js',
@@ -21,7 +21,8 @@ var patt = {
     'static':'./src/static/**/*'
 }
 
-
+// the page to be reloaded to when the backend code changes
+var page = 'index.html'
 
 /**
  * $ gulp server
@@ -35,7 +36,8 @@ gulp.task('reload', function() {
       gulp.log('Error detected, waiting for changes...');
     }
   });
-  livereload()
+  
+  livereload.reload(page)
   console.log('code refreshed')
 })
 
@@ -47,24 +49,29 @@ gulp.task('default',function(callback){
 gulp.task('watch',function() {  
   livereload.listen()
   
-  gulp.watch(patt.backend, ['backend','reload']);
+  gulp.watch(patt.backend, ['backendRefresh']);
   gulp.watch(patt.frontend, ['frontend']);
   gulp.watch(patt.static, ['static']);
 })
 
-gulp.task('copy',['backend','frontend','static'])
+gulp.task('copy',['backend','frontend'])
 
 gulp.task('clean', function () {
 	gulp.src('dest/**/*', {read: false})
 		.pipe(clean());
 });
 
-gulp.task('backend', function(){
+gulp.task('backend', ['static'], function(){
   return gulp.src(patt.backend)
     .pipe(gulp.dest('./dest/scripts/backend'))
 })
 
-gulp.task('frontend', ['sass'], function(){
+gulp.task('backendRefresh',function(){
+  runSequence('backend','reload')
+})
+
+
+gulp.task('frontend', ['sass','static'], function(){
   
   gulp.watch(patt.sass, ['sass'])
   

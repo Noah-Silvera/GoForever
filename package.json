@@ -4,7 +4,8 @@
   "description": "An implementation of the traditional chinese game Go, required for a SENG course.",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "helmet": "^2.1.0"
   },
   "devDependencies": {
     "browser-sync": "^2.12.10",
