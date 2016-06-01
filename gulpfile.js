@@ -14,6 +14,7 @@ var spawn = require('child_process').spawn
 var node;
 
 // the file patterns used to refresh files
+// ensure any files you want to be 'watched' match these patterns
 var patt = {
     'sass': './src/sass/**/*.scss',
     'backend':'./src/scripts/backend/**/*.js',
@@ -24,12 +25,33 @@ var patt = {
 // the page to be reloaded to when the backend code changes
 var page = 'index.html'
 
+
+/**
+*****************************************************
+ *                 OVERVIEW
+*****************************************************
+ * This build system copies code from the src directory to the dest directory. 
+ * In this process, it will do any preprocessing neccesary ( in this case, sass )
+ * 
+ * Certain file patterns, defined above, are set to be 'watched'. When a file matching
+ * one of these patterns is changed, either a.) node and the browser will be refreshed or 
+ * b.) the browser will be refreshed, depending on what has been changed.
+ * 
+ * This refresh process involves re-copying the required code, re-running node if neccesary,
+ * and signalling the livereload browser plugin to inject new code into the webpage
+ * 
+ * Enjoy your rapid dev!
+ */
+
 /**
  * $ gulp server
  * description: launch the server. If there's a server already running, kill it.
  */
 gulp.task('reload', function() {
+  //destroy any running instances of node of this project
   if (node) node.kill()
+  
+  // spawn a new instance of node
   node = spawn('node', ['./dest/scripts/backend/server.js'], {stdio: 'inherit'})
   node.on('close', function (code) {
     if (code === 8) {
@@ -37,42 +59,63 @@ gulp.task('reload', function() {
     }
   });
   
+  // refresh the browser page
   livereload.reload(page)
   console.log('code refreshed')
 })
 
+// clean up if an error goes unhandled.
+process.on('exit', function() {
+    if (node) node.kill()
+})
 
+// Master task - run at startup
+// deletes old code files
+// copies the new code files
+// reloads the node app
+// watches files for changes and live code reload
 gulp.task('default',function(callback){
   runSequence( 'clean','copy','reload','watch',callback )
 })
 
 gulp.task('watch',function() {  
+  //start the browser injection system
   livereload.listen()
   
+  // watch for changes to backend code that require a node reload
   gulp.watch(patt.backend, ['backendRefresh']);
+  
+  // watch for changes to frontend that just require browser reload
   gulp.watch(patt.frontend, ['frontend']);
+  
+  // watch for changes to static files
   gulp.watch(patt.static, ['static']);
 })
 
-gulp.task('copy',['backend','frontend'])
+// copy all the code files to the dest folder ( concurrently )
+gulp.task('copy',['backend','frontend','static'])
 
+//delete all old destination files
 gulp.task('clean', function () {
 	gulp.src('dest/**/*', {read: false})
 		.pipe(clean());
 });
 
-gulp.task('backend', ['static'], function(){
+// copy the new backend files over
+gulp.task('backend', function(){
   return gulp.src(patt.backend)
     .pipe(gulp.dest('./dest/scripts/backend'))
 })
 
+//refresh the backend files
 gulp.task('backendRefresh',function(){
   runSequence('backend','reload')
 })
 
-
-gulp.task('frontend', ['sass','static'], function(){
+// copy the new frontend files and refresh them
+gulp.task('frontend', ['sass'], function(){
   
+  // watch for changes to sass files
   gulp.watch(patt.sass, ['sass'])
   
   return gulp.src(patt.frontend)
@@ -80,19 +123,17 @@ gulp.task('frontend', ['sass','static'], function(){
     .pipe(livereload())
 })
 
+// copy the static files
 gulp.task('static', function(){
   return gulp.src(patt.static)
     .pipe(gulp.dest('./dest/static'))
     .pipe(livereload())
 })
 
+// preprocess and copy the sass files
 gulp.task('sass', function () {
   return gulp.src(patt.sass)
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./dest/css'))
     .pipe(livereload());
 });
-// clean up if an error goes unhandled.
-process.on('exit', function() {
-    if (node) node.kill()
-})

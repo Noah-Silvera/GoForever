@@ -23,10 +23,18 @@ Navigate to the project directory
 
 ````npm start````
 
-**Note** : Any added or deleted files will require you to run ````npm start```` again
+The code will be pre-processed and run by gulp. Any changes (frontend,backend) will be instantly reflected upon save in the browser.
 
-navigate to localhost:3000 
+**Notes** : 
 
-click the livereload browser plugin icon to enable live reload
+* Any added or deleted files will require you to run ````npm start```` again.
 
-go at it.
+* Changing core folder names will require you to change the patterns in the gulpfile for code refresh to work.
+
+
+
+Navigate to localhost:3000 
+
+**Click the livereload browser plugin icon to enable live reload of client code**
+
+Your code should not be instantly reloaded in the browser upon changes.
