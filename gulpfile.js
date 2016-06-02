@@ -17,7 +17,10 @@ var node;
 // ensure any files you want to be 'watched' match these patterns
 var patt = {
     'sass': './src/sass/**/*.scss',
-    'backend':'./src/scripts/backend/**/*.js',
+    'backend': {
+      'base': './scrc/scripts',
+      'patt': 'backend/**/*.js'
+    },
     'frontend':'./src/scripts/frontend/**/*.js',
     'static':'./src/static/**/*'
 }
@@ -75,7 +78,7 @@ process.on('exit', function() {
 // reloads the node app
 // watches files for changes and live code reload
 gulp.task('default',function(callback){
-  runSequence( 'clean','copy','reload','watch',callback )
+  runSequence('copy','reload','watch',callback )
 })
 
 gulp.task('watch',function() {  
@@ -103,8 +106,8 @@ gulp.task('clean', function () {
 
 // copy the new backend files over
 gulp.task('backend', function(){
-  return gulp.src(patt.backend)
-    .pipe(gulp.dest('./dest/scripts/backend'))
+  return gulp.src(patt.backend, { base: 'src/scripts'} )
+    .pipe(gulp.dest('./dest/scripts/'))
 })
 
 //refresh the backend files
@@ -118,8 +121,8 @@ gulp.task('frontend', ['sass'], function(){
   // watch for changes to sass files
   gulp.watch(patt.sass, ['sass'])
   
-  return gulp.src(patt.frontend)
-    .pipe(gulp.dest('./dest/scripts/frontend'))
+  return gulp.src(patt.frontend, { base: 'src/scripts'} )
+    .pipe(gulp.dest('./dest/scripts/'))
     .pipe(livereload())
 })
 

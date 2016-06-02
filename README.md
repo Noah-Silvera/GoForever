@@ -31,6 +31,8 @@ The code will be pre-processed and run by gulp. Any changes (frontend,backend) w
 
 * Changing core folder names will require you to change the patterns in the gulpfile for code refresh to work.
 
+* ```gulp```` clean will clear the ````dest```` directory of old files
+
 
 
 Navigate to localhost:3000 
