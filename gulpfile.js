@@ -13,17 +13,26 @@ var runSequence = require('run-sequence')
 var spawn = require('child_process').spawn
 var node;
 
+/**
+*****************************************************
+ *                 CONFIG
+*****************************************************
+ */
+
 // the file patterns used to refresh files
 // ensure any files you want to be 'watched' match these patterns
+//
+// for elements with a base pre-pended ( like backend and frontend ), the base attribute must be passed to
+// gulp.src to ensure the file structure is copied properly
+// https://github.com/gulpjs/gulp/blob/master/docs/API.md
 var patt = {
     'sass': './src/sass/**/*.scss',
-    'backend': {
-      'base': './scrc/scripts',
-      'patt': 'backend/**/*.js'
-    },
-    'frontend':'./src/scripts/frontend/**/*.js',
+    'scriptsBase' : 'src/scripts/',
     'static':'./src/static/**/*'
 }
+
+patt['backend'] = patt.scriptsBase + '/backend/**/*.js'
+patt['frontend'] = patt.scriptsBase + '/frontend/**/*.js'
 
 // the page to be reloaded to when the backend code changes
 var page = 'index.html'
@@ -45,6 +54,12 @@ var page = 'index.html'
  * 
  * Enjoy your rapid dev!
  */
+
+/*
+*****************************************************
+ *                 RUNTIME TASKS
+*****************************************************
+*/
 
 /**
  * $ gulp server
@@ -81,6 +96,7 @@ gulp.task('default',function(callback){
   runSequence('copy','reload','watch',callback )
 })
 
+// watches files for changes, and performs the appropiate reloads
 gulp.task('watch',function() {  
   //start the browser injection system
   livereload.listen()
@@ -98,15 +114,10 @@ gulp.task('watch',function() {
 // copy all the code files to the dest folder ( concurrently )
 gulp.task('copy',['backend','frontend','static'])
 
-//delete all old destination files
-gulp.task('clean', function () {
-	gulp.src('dest/**/*', {read: false})
-		.pipe(clean());
-});
 
 // copy the new backend files over
 gulp.task('backend', function(){
-  return gulp.src(patt.backend, { base: 'src/scripts'} )
+  return gulp.src(patt.backend, { base: patt.scriptsBase } )
     .pipe(gulp.dest('./dest/scripts/'))
 })
 
@@ -121,7 +132,7 @@ gulp.task('frontend', ['sass'], function(){
   // watch for changes to sass files
   gulp.watch(patt.sass, ['sass'])
   
-  return gulp.src(patt.frontend, { base: 'src/scripts'} )
+  return gulp.src(patt.frontend, { base: patt.scriptsBase } )
     .pipe(gulp.dest('./dest/scripts/'))
     .pipe(livereload())
 })
@@ -139,4 +150,20 @@ gulp.task('sass', function () {
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./dest/css'))
     .pipe(livereload());
+});
+
+
+
+/*
+*****************************************************
+ *                 UTILITY TASKS
+*****************************************************
+*/
+
+
+//delete all old destination files
+// as deleted files in src are not deleted in dest
+gulp.task('clean', function () {
+	gulp.src('dest/**/*', {read: false})
+		.pipe(clean());
 });
