@@ -1,9 +1,17 @@
-var express = require('express')
+
 var path = require('path')
 var fs = require('fs')
+var express = require('express')
+var app = express()
 var helmet = require('helmet')
 
-var app = express()
+
+//perform initial enviroment checks
+require('./utils/es6_test')
+//set up logging with winston
+require('./utils/log_setup')
+
+
 
 // because we build our output to a different directory, must prepend all paths with this root
 var root = 'dest/'

@@ -1,17 +1,19 @@
 # GoForever
 An implementation of the traditional chinese game Go, required for a SENG course.
 
-## Dependencies
+## Enviroment setup
 
-[Node> 6.2](https://nodejs.org/en/) 
+install [Node> 6.2](https://nodejs.org/en/) 
 
-[Chrome > 52.0](https://www.google.com/chrome/browser/canary.html)
+* **Ensure the correct version of node is on your path if you have previously installed node**
 
-[Gulp CLI](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)
+Install [Chrome > 52.0](https://www.google.com/chrome/browser/canary.html)
 
-[Live Reload Chrome Plugin (hot-reload browser side)](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en)
+Install [Gulp CLI](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)
 
-## Setup
+In chrome canary install [Live Reload Chrome Plugin (hot-reload browser side)](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en)
+
+## Code Setup
 
 Navigate to the project directory
 
@@ -19,24 +21,61 @@ Navigate to the project directory
 
 ##Starting the app
 
-Navigate to the project directory
+````npm start```` or ````gulp````
 
-````npm start````
-
-The code will be pre-processed and run by gulp. Any changes (frontend,backend) will be instantly reflected upon save in the browser.
-
-**Notes** : 
-
-* Any added or deleted files will require you to run ````npm start```` again.
-
-* Changing core folder names will require you to change the patterns in the gulpfile for code refresh to work.
-
-* ```gulp```` clean will clear the ````dest```` directory of old files
-
-
+The code will be pre-processed and run by gulp. 
 
 Navigate to localhost:3000 
 
-**Click the livereload browser plugin icon to enable live reload of client code**
+**Click the [livereload browser plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) icon to enable live reload of client code**
 
-Your code should not be instantly reloaded in the browser upon changes.
+Any changes (frontend,backend) will be instantly reflected upon save in the browser.
+
+**Notes** : 
+
+* ````gulp```` clean or ````npm run clean```` will clear the ````dest```` directory of old files
+
+* Changing core folder names will require you to change the patterns in the gulpfile for code refresh to work.
+
+
+## Testing that the build is set up correctly
+
+Start the app
+
+Load the app.
+
+Turn on the live-reload plugin
+
+The page should refresh appropiately in all cases
+
+#### Hot Reload CSS
+
+* Change the color of the ````<p>```` object to blue in ````src/sass/index.scss````
+
+#### Hot Reload client code
+
+* Change the output of ````console.log()```` in ````src/scripts/frontend/index.js````
+
+#### Hot reload server code
+
+* Change the port in ````src/scripts/backend/server.js````
+
+#### Hot push new source
+
+* Add a new file to the source. Make it do something.
+
+
+## Running Mocha Tests
+
+* ````npm test```` will run all tests in the ````frontend```` and ````backend```` folders in the ````tests```` folder
+* ````npm run example_test```` will run the example test suite ````tests\example.js````. See implementation for details
+
+Mocha tests can be debugged in VS code. Their is a debugger set up already to run frontend and backend tests.
+
+## More about the packages installed
+
+* see ````packages.md````
+
+## Debugging
+
+Debugging with [vs code](https://code.visualstudio.com/)'s great debugger is setup. ````launch.json```` will debug the project
