@@ -1,8 +1,8 @@
 {
   "name": "go-forever",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An implementation of the traditional chinese game Go, required for a SENG course.",
-  "main": "server.js",
+  "main": "src/scripts/backend/server.js",
   "dependencies": {
     "async": "^2.0.0-rc.5",
     "chai": "^3.5.0",

@@ -21,7 +21,7 @@ app.use(express.static(path.join(root,'/scripts/frontend').toString()));
 app.use(express.static(path.join(root,'/static').toString()));
 app.use(express.static(path.join(root,'/css').toString()));
 
-          
+             
             
 // load static files for serving      
 var indexHtml = fs.readFileSync(path.join(root,'static/index.html'));

@@ -65,7 +65,7 @@ var page = 'index.html'
  * $ gulp server
  * description: launch the server. If there's a server already running, kill it.
  */
-gulp.task('reload', function() {
+gulp.task('reload', ['clean-logs'], function() {
   //destroy any running instances of node of this project
   if (node) node.kill()
   
@@ -167,3 +167,9 @@ gulp.task('clean', function () {
 	gulp.src('dest/**/*', {read: false})
 		.pipe(clean());
 });
+
+//cleans out the old logs
+gulp.task('clean-logs',function(){
+  gulp.src('logs/**/*', {read: false})
+    .pipe(clean());
+})

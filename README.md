@@ -1,4 +1,5 @@
 # GoForever
+
 An implementation of the traditional chinese game Go, required for a SENG course.
 
 ## Enviroment setup
@@ -11,9 +12,9 @@ Install [Chrome > 52.0](https://www.google.com/chrome/browser/canary.html)
 
 Install [Gulp CLI](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)
 
-In chrome canary install [Live Reload Chrome Plugin (hot-reload browser side)](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en)
+In Chrome Canary (52) install [Live Reload Chrome Plugin (hot-reload browser side)](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en)
 
-## Code Setup
+## npm dependency Setup
 
 Navigate to the project directory
 
@@ -78,4 +79,19 @@ Mocha tests can be debugged in VS code. Their is a debugger set up already to ru
 
 ## Debugging
 
-Debugging with [vs code](https://code.visualstudio.com/)'s great debugger is setup. ````launch.json```` will debug the project
+Debugging with [vs code](https://code.visualstudio.com/)'s great debugger is setup. ````launch.json```` will debug the project\
+
+## Logging
+
+Their are 6 global functions that log to different levels using [winston](https://github.com/winstonjs/winston)
+
+````
+error()
+warn()
+info()
+verbose()
+debug()
+silly()
+````
+
+````console.log()```` has also been overwritten to log with ````info()````
