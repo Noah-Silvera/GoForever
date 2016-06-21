@@ -13,8 +13,7 @@ require('./utils/log_setup')
 
 
 
-// because we build our output to a different directory, must prepend all paths with this root
-var root = 'dest/'
+var root = 'src/'
 
 // set up express static directories
 app.use(express.static(path.join(root,'/scripts/frontend').toString()));

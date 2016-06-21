@@ -70,7 +70,7 @@ gulp.task('reload', ['clean-logs'], function() {
   if (node) node.kill()
   
   // spawn a new instance of node
-  node = spawn('node', ['./dest/scripts/backend/server.js'], {stdio: 'inherit'})
+  node = spawn('node', ['./src/scripts/backend/server.js'], {stdio: 'inherit'})
   node.on('close', function (code) {
     if (code === 8) {
       gulp.log('Error detected, waiting for changes...');
@@ -93,7 +93,7 @@ process.on('exit', function() {
 // reloads the node app
 // watches files for changes and live code reload
 gulp.task('default',function(callback){
-  runSequence('copy','reload','watch',callback )
+  runSequence('init','reload','watch',callback )
 })
 
 // watches files for changes, and performs the appropiate reloads
@@ -106,41 +106,41 @@ gulp.task('watch',function() {
   
   // watch for changes to frontend that just require browser reload
   gulp.watch(patt.frontend, ['frontend']);
+
+  // watch for changes to sass files
+  gulp.watch(patt.sass, ['sass'])
   
   // watch for changes to static files
   gulp.watch(patt.static, ['static']);
 })
 
-// copy all the code files to the dest folder ( concurrently )
-gulp.task('copy',['backend','frontend','static'])
+
+gulp.task('init',['frontend','sass','static'])
 
 
 // copy the new backend files over
-gulp.task('backend', function(){
-  return gulp.src(patt.backend, { base: patt.scriptsBase } )
-    .pipe(gulp.dest('./dest/scripts/'))
-})
+// gulp.task('backend', function(){
+//   return gulp.src(patt.backend, { base: patt.scriptsBase } )
+//     .pipe(gulp.dest('./dest/scripts/'))
+// })
 
 //refresh the backend files
 gulp.task('backendRefresh',function(){
-  runSequence('backend','reload')
+  runSequence('reload')
 })
 
 // copy the new frontend files and refresh them
-gulp.task('frontend', ['sass'], function(){
-  
-  // watch for changes to sass files
-  gulp.watch(patt.sass, ['sass'])
+gulp.task('frontend', function(){
   
   return gulp.src(patt.frontend, { base: patt.scriptsBase } )
-    .pipe(gulp.dest('./dest/scripts/'))
+    // .pipe(gulp.dest('./dest/scripts/'))
     .pipe(livereload())
 })
 
 // copy the static files
 gulp.task('static', function(){
   return gulp.src(patt.static)
-    .pipe(gulp.dest('./dest/static'))
+    // .pipe(gulp.dest('./dest/static'))
     .pipe(livereload())
 })
 
@@ -148,7 +148,7 @@ gulp.task('static', function(){
 gulp.task('sass', function () {
   return gulp.src(patt.sass)
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./dest/css'))
+    .pipe(gulp.dest('./src/css'))
     .pipe(livereload());
 });
 
@@ -163,10 +163,10 @@ gulp.task('sass', function () {
 
 //delete all old destination files
 // as deleted files in src are not deleted in dest
-gulp.task('clean', function () {
-	gulp.src('dest/**/*', {read: false})
-		.pipe(clean());
-});
+// gulp.task('clean', function () {
+// 	gulp.src('dest/**/*', {read: false})
+// 		.pipe(clean());
+// });
 
 //cleans out the old logs
 gulp.task('clean-logs',function(){
