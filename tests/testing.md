@@ -1,15 +1,25 @@
-## Mocking HTTP tests
+
+## Running tests
+
+**Backend:** ````npm test````
+
+**Frontend:** Open ````tests/frontend/mocha.html```` in the browser
+
+* **Pro-Tip:** npm run test-client will run the mocha client tests on **windows only** 
+
+
+## Mocking HTTP requests in your tests
 
 http://bulkan-evcimen.com/testing_with_mocha_sinon
 
-## setting up test suite runs
+## Setting up custom test suite runs
 
 add a new command to ````package.json```` under scripts 
 
 ````
   "scripts": {
     "start": "gulp",
-    "test": "./node_modules/.bin/mocha ./tests/frontend/**/*.js ./tests/backend/**/*.js",
+    "test": "./node_modules/.bin/mocha ./tests/backend/**/*.js",
     "example_test": "./node_modules/.bin/mocha ./tests/example.js",
     "my_custom_test_run": "./node_modules/.bin/mocha ./tests/my_test.js"
   },

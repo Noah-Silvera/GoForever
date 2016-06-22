@@ -1,14 +1,15 @@
 
-requirejs.config({
-    paths: {
-      "jQuery": 'https://code.jquery.com/jquery-3.0.0.min'
-    },
-    shim:{
-        'jQuery': {
-            exports: ['$']
-        }
-    }
-});
+// not neccesary - all libs are downloaded
+// requirejs.config({
+//     paths: {
+//       "jQuery": 'https://code.jquery.com/jquery-3.0.0.min'
+//     },
+//     shim:{
+//         'jQuery': {
+//             exports: ['$']
+//         }
+//     }
+// });
 
 require = requirejs
 

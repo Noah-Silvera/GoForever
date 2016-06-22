@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cow tests</title>
+  <link rel="stylesheet" media="all" href="lib/mocha.css">
+</head>
+<body>
+  <div id="mocha"><p><a href=".">Index</a></p></div>
+  <div id="messages"></div>
+  <div id="fixtures"></div>
+  <script src="lib/sinon.js"></script>
+  <script src="lib/mocha.js"></script>
+  <script src="lib/chai.js"></script>
+  <script>
+    // use chais BDD should assertion style
+    mocha.setup('bdd')
+  </script>
+  <script src="exampleFrontEnd.js"></script>
+  <script>
+    //make the should variable global 
+    var should = chai.should()
+    mocha.run();
+  </script>
+</body>
+</html>
+

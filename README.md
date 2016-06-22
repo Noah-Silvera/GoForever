@@ -34,8 +34,6 @@ Any changes (frontend,backend) will be instantly reflected upon save in the brow
 
 **Notes** : 
 
-* ````gulp```` clean or ````npm run clean```` will clear the ````dest```` directory of old files
-
 * Changing core folder names will require you to change the patterns in the gulpfile for code refresh to work.
 
 

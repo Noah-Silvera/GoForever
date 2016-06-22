@@ -18,5 +18,3 @@ Ex.
         "anotherKey" : "stringVal"
     }
 
-## Documentation
-
