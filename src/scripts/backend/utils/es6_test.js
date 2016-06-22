@@ -1,6 +1,5 @@
 
 // ensure we are on a system that supports ES6
-
 class testClass {
   constructor(){
     this.val = -1
