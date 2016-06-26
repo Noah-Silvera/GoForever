@@ -53,7 +53,7 @@ The page should refresh appropiately in all cases
 
 #### Hot Reload client code
 
-* Change the output of ````console.log()```` in ````src/scripts/frontend/index.js````
+* Change the output of ````console.info()```` in ````src/scripts/frontend/index.js````
 
 #### Hot reload server code
 
@@ -66,8 +66,10 @@ The page should refresh appropiately in all cases
 
 ## Running Mocha Tests
 
-* ````npm test```` will run all tests in the ````frontend```` and ````backend```` folders in the ````tests```` folder
-* ````npm run example_test```` will run the example test suite ````tests\example.js````. See implementation for details
+* ````npm test```` will run all tests in the ````backend```` folder in the ````tests```` folder
+* ````npm run test-client```` will run all frontend tests
+  * More info on tests can be found in the TESTING.md documents in the ````tests```` folder 
+* ````npm run example-test```` will run the example test suite ````tests\example.js````. See implementation for details
 
 Mocha tests can be debugged in VS code. Their is a debugger set up already to run frontend and backend tests.
 
@@ -79,7 +81,7 @@ Mocha tests can be debugged in VS code. Their is a debugger set up already to ru
 
 Debugging with [vs code](https://code.visualstudio.com/)'s great debugger is setup. ````launch.json```` will debug the project\
 
-## Logging
+## Backend Logging
 
 Their are 6 global functions that log to different levels using [winston](https://github.com/winstonjs/winston)
 
@@ -93,3 +95,7 @@ silly()
 ````
 
 ````console.log()```` has also been overwritten to log with ````info()````
+
+## Frontend Logging
+
+Please use ````console.info()````, ````console.error()````, etc 

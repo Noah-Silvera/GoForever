@@ -29,7 +29,7 @@
   "scripts": {
     "start": "gulp",
     "test": "./node_modules/.bin/mocha ./tests/backend/**/*.js",
-    "example_test": "./node_modules/.bin/mocha ./tests/example.js",
+    "example-test": "./node_modules/.bin/mocha ./tests/example.js",
     "test-client": "start tests/frontend/mocha.html"
   },
   "repository": {

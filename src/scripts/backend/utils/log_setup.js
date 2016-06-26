@@ -32,12 +32,12 @@ global.verbose = logger.verbose
 global.debug = logger.debug
 global.silly = logger.silly
 
-// error('testing error loggin')
-// warn('testing warn loggin')
-// info('testing info loggin')
-// verbose('testing debug loggin')
-// debug('testing verbose loggin')
-// silly('testing silly loggin')
+error('testing error loggin')
+warn('testing warn loggin')
+info('testing info loggin')
+verbose('testing debug loggin')
+debug('testing verbose loggin')
+silly('testing silly loggin')
 
 // overide the default console.log to info
 

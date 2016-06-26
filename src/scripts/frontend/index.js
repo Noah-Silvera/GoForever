@@ -24,3 +24,5 @@ require(['utils/es6_test.js'],function(TestClass){
 
 
 })
+
+
