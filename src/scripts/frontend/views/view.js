@@ -1,10 +1,6 @@
 define(function(){
 
     return class View {
-        render(){
-            throw "method not implemented"
-        }
-        
         constructor(){
 
             this._viewState = 0;
