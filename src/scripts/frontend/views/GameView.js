@@ -1,6 +1,6 @@
 class GameView {
     
-    
+    //state requires size board n*n with moves 0, 1, 2 for this to function correctly
     drawBoard(state){
         var canvas = $("#canvas"); 
         
@@ -36,7 +36,6 @@ class GameView {
             }
         }
     }
-    
     
     canvas.append(svg);
     }
