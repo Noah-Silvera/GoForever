@@ -1,4 +1,4 @@
-define(['./View'],function(View){
+define(['./view'],function(View){
 
     class GameView extends View{
         
