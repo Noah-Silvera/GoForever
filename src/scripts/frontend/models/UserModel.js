@@ -1,0 +1,3 @@
+class UsersModel extends Model {
+    
+}

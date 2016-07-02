@@ -1,7 +1,5 @@
-class GameController {
-    constructor(){
-        
-    }
+class GameController extends Controller{
+    
     
     getRandomMove(){
         var postData = {
