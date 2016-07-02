@@ -1,3 +1,0 @@
-class SessionsModel extends Model {
-    
-}

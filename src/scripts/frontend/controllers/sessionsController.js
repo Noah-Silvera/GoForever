@@ -1,24 +1,29 @@
-class SessionsController extends Controller {
+define(['./controller'], function(Controller){
+    class SessionsController extends Controller {
 
-    /**
-     * Create Session
-     */
-    create(){
+        /**
+         * Create Session
+         */
+        create(){
 
-    }
+        }
 
-    /**
-     * Delete Session
-     */
-    delete(){
+        /**
+         * Delete Session
+         */
+        delete(){
 
-    }
+        }
 
-    /**
-     * Edit Session (not sure what this would entail) - probably settings for the session
-     */
-    edit(){
+        /**
+         * Edit Session (not sure what this would entail) - probably settings for the session
+         */
+        edit(){
 
+        }
+        
     }
     
-}
+    var sessionController = new SessionsController()
+    return sessionController
+})
