@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Cow tests</title>
+  <title>Go Forever tests</title>
   <link rel="stylesheet" media="all" href="lib/mocha.css">
 </head>
 <body>
@@ -12,15 +12,37 @@
   <script src="lib/sinon.js"></script>
   <script src="lib/mocha.js"></script>
   <script src="lib/chai.js"></script>
+  <script src="lib/request.js"></script>
+  <!--used to load the actual client scripts to test-->
+  <script src="./../../src/scripts/frontend/lib/require.js"></script>
+
+
+  <!--load the test scripts-->
+  <script src="requestHandler.test.js"></script>
+
   <script>
     // use chais BDD should assertion style
     mocha.setup('bdd')
   </script>
-  <script src="exampleFrontEnd.js"></script>
+  
+  <!--Load all the scripts the test is dependent on-->
+  <!--The scripts must be loaded with requirejs since they are defined as AMD modules-->
+  <!--then run all the tests-->
+  <script> 
+    require([
+          './../../src/scripts/frontend/requestHandler.js',
+          './../../src/scripts/frontend/views/GameView.js'],function(requestHandler,GameView){
+
+      window.requestHandler = requestHandler
+      window.GameView = GameView
+
+      //make the should variable global 
+      window.should = chai.should()
+      mocha.run();
+
+    }) 
+  </script>
   <script>
-    //make the should variable global 
-    var should = chai.should()
-    mocha.run();
   </script>
 </body>
 </html>
