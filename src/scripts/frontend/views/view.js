@@ -1,20 +1,23 @@
-class View {
-    constructor(){
+define(function(){
 
-        this._viewState = 0;
-        this._control = null;
-        this._content = "#content";
-    }
+    return class View {
+        constructor(){
 
-    setControl(c){
-        this._control = c; 
-    }
+            this._viewState = 0;
+            this._control = null;
+            this._content = "#content";
+        }
 
-    selectView(v){
-        this._viewState = v; 
-    }
+        setControl(c){
+            this._control = c; 
+        }
 
-    notify(){
-        this.render(); 
+        selectView(v){
+            this._viewState = v; 
+        }
+
+        notify(){
+            this.render(); 
+        }
     }
-}
+})

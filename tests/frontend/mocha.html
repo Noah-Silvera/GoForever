@@ -9,8 +9,13 @@
   <div id="mocha"><p><a href=".">Index</a></p></div>
   <div id="messages"></div>
   <div id="fixtures"></div>
+  
   <script src="lib/sinon.js"></script>
   <script src="lib/mocha.js"></script>
+  <script>
+    // use chais BDD should assertion style
+    mocha.setup('bdd')
+  </script>
   <script src="lib/chai.js"></script>
   <script src="lib/request.js"></script>
   <!--used to load the actual client scripts to test-->
@@ -20,11 +25,6 @@
   <!--load the test scripts-->
   <script src="requestHandler.test.js"></script>
 
-  <script>
-    // use chais BDD should assertion style
-    mocha.setup('bdd')
-  </script>
-  
   <!--Load all the scripts the test is dependent on-->
   <!--The scripts must be loaded with requirejs since they are defined as AMD modules-->
   <!--then run all the tests-->

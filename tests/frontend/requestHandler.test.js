@@ -20,7 +20,7 @@ describe('Test the clients ability to send server requests related to changing d
 
     it('should handle a requests data by communicating the data back to the caller',function(done){
         
-        // requestHandler.getData('game','123')
+        requestHandler.getData('game','123')
 
         var reqs = []
 
