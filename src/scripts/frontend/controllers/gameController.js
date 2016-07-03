@@ -1,6 +1,5 @@
-define(['controllers/controller','request'], function(Controller,request){
+define(['controllers/controller','request','views/gameView','models/gameModel'], function(Controller,request,GameView,GameModel){
 
-    console.log()
     class GameController extends Controller{
         
         
@@ -41,7 +40,13 @@ define(['controllers/controller','request'], function(Controller,request){
 
         }
     }
-    var gameController = new GameController()
+
+    // this is how the circular dependency between controllers and views are dealt with
+    // the view does not know it's controller context on instantiation
+    // http://requirejs.org/docs/api.html#circular
+    // http://www.bitnative.com/2015/02/03/circular-dependencies-in-requirejs/
+    var gameController = new GameController(GameView,GameModel)
+    gameController._view.setControl(gameController)
     
     return gameController
 })

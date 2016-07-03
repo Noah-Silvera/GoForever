@@ -1,6 +1,6 @@
 define(function(){
 
-    class Model{
+    return class Model{
         constructor(){
             this._data = null;
         }

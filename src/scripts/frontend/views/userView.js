@@ -1,6 +1,6 @@
 define(['./view'],function(View){
 
-    class UsersView extends View {
+    class UserView extends View {
 
         render(){
 
@@ -54,14 +54,16 @@ define(['./view'],function(View){
                     break;
 
                 default:
-                    $("#content").empty();
+                    throw 'invalid state'
 
                     break;
             }
         }
     }
     
-    var userView = new UsersView()
+    // this is part of a tricky workaround with circular dependencies
+    // see the controllers return for details
+    var userView = new UserView(null, null,null)
     
     return userView
 })

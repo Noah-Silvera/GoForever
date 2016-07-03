@@ -1,5 +1,5 @@
 define(['./view'],function(View){
-    class SessionsView extends View {
+    class SessionView extends View {
 
         render(){
             switch(this._viewState){
@@ -24,11 +24,13 @@ define(['./view'],function(View){
 
                     break;
                 default:
-                    break;
+                    throw 'invalid state'
             }
         }
     }
-    var sessionView = new SessionsView()
+    // this is part of a tricky workaround with circular dependencies
+    // see the controllers return for details
+    var sessionView = new SessionView(null, null,null)
     
     return sessionView
 })

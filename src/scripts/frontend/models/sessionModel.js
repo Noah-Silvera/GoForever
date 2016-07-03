@@ -1,10 +1,10 @@
 define(['./model'], function(Model){
 
-    class SessionsModel extends Model {
+    class SessionModel extends Model {
         
     }
     
-    var sessionModel = new SessionsModel()
+    var sessionModel = new SessionModel()
     
     return sessionModel
     

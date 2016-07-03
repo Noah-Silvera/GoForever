@@ -1,23 +1,34 @@
 define(function(){
 
+    
     return class View {
-        constructor(){
+        constructor(viewState,control,content){
 
-            this._viewState = 0;
-            this._control = null;
-            this._content = "#content";
+            if( !viewState) this._viewState = 0;
+            else this._viewState = viewState
+
+            if( !control) this._control = null;
+            else this._control = control
+
+            if( !content) this._content = "#content";
+            else this._content = _viewState
+
         }
 
         setControl(c){
-            this._control = c; 
+            this._control = c 
         }
 
-        selectView(v){
-            this._viewState = v; 
+        selectViewState(v){
+            this._viewState = v.trim(); 
         }
 
         notify(){
             this.render(); 
+        }
+
+        render(){
+            throw 'method not implemented'
         }
     }
     

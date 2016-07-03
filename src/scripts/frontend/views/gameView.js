@@ -1,14 +1,33 @@
+
+//The view ALSO DEPENDS ON gameController.js
+// this cannot be modeled because of circular dependencies and requirejs
+// see gameController.js
 define(['./view'],function(View){
 
+    // this is a workaround to deal with the circular dependencies of views and controllers
+    // it requires that the controller has already been loaded elsewhere first
+
     class GameView extends View{
+
+        constructor(){
+            super(arguments)
+            this.states = ['firstState','secondState','thirdState']
+
+        }
         
         render(){
             switch(this._viewState){
-                case 1:
+                case this.states[0]:
+
+                    break;
+                case this.states[1]:
+
+                    break;
+                case this.states[2]:
 
                     break;
                 default:
-
+                    throw 'invalid state'
                     break;
             }
         }
@@ -55,6 +74,8 @@ define(['./view'],function(View){
         
     }
 
+    // this is part of a tricky workaround with circular dependencies
+    // see the controllers return for details
     var gameView = new GameView()
 
     return gameView

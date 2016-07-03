@@ -1,4 +1,4 @@
- define(['./controller'], function(Controller){
+ define(['controllers/controller','views/UserView','models/UserModel'], function(Controller,UserView,UserModel){
     class UserController extends Controller{
         
         create(){
@@ -16,16 +16,23 @@
              */
 
             if(valid){
-                this.post("/users", data);
+
+                // should update the model here
+                // this.post("/users", data);
             } else {
-                this.selectView(2);
+                this.selectViewState(2);
                 this._view.notify();
             }
         }
         
     }
     
-    var userController = new UserController()
+    // this is how the circular dependency between controllers and views are dealt with
+    // the view does not know it's controller context on instantiation
+    // http://requirejs.org/docs/api.html#circular
+    // http://www.bitnative.com/2015/02/03/circular-dependencies-in-requirejs/
+    var userController = new UserController(UserView,UserModel)
+    userController._view.setControl(userController)
     
     return userController
  })

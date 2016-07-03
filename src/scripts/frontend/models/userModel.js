@@ -1,8 +1,9 @@
-define(['./model'],function(Model){
+define(['models/model'],function(Model){
 
     class UsersModel extends Model {
         
     }
+
     var userModel = new UsersModel()
     
     return userModel
