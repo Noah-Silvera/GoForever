@@ -1,36 +1,9 @@
 describe('Test the clients ability to send server requests related to changing data',function(){
 
-    // successful response from a request to api/user
-    var userRes = {"user":"value"}
-    // successful response from a request to api/match
-    var matchRes = {"match":"value"}
-    // successful response from a request to api/session
-    var sessionRes = {"session":"value"}
-
-    var idErrMes = "invalid id"
-
-    // stub out the HTTP requests so test is not reliant on server
-    before(function(done){
-
-        require(['request'],function(request){
-
-            //I know the requestHandlerModule uses request.get to make it's requests
-            // I stub out this method to intercept those requests with appropiate results
-            sinon
-                .stub(request,'get')
-                // .throws()
-                // a valid user id
-                // .withArgs('localhost:3000/api/user?0')
-                .yields(null, null, userRes)
-            
-            done()
-
-        })
-    })
 
     
     //revert the HTTP request stubbing for subsequent tests
-    after(function(done){
+    afterEach(function(done){
         require(['request'],function(request){
 
             request.get.restore()
@@ -39,44 +12,70 @@ describe('Test the clients ability to send server requests related to changing d
         })
     })
 
-    it('should handle a user data request with a valid id',function(done){
+    it('should retrieve data with the correct url and handle a sucess response',function(done){
+        require(['request'],function(request){
 
+            //I know the requestHandlerModule uses request.get to make it's requests
+            // I stub out this method to intercept those requests with appropiate results
+           var getStub = sinon.stub(request,'get')
+           // sucess case
+            getStub.yields(null,null,{ args : getStub.args })
+           
 
-        //list of promise requests to perform
-        var reqs = []
-            
-        reqs.push( 
             RequestHandler.getData('user','0')
                 //only care if the promise is fufilled
-                .then(function(body){
+                .then(function(res){
+                    should.exist(res)
 
-                    //ensure we actually got a response
-                    should.exist(body)
-                    //ensure it's the correct response 
-                    // ( using the mocked expected response)
-                    body.should.eql(userRes)
+                    //check that the request was called with the correct url
+                    var url = res['args'][0][0]['url']
+                    should.exist(url)
+                    url.should.eql('localhost:3000/api/user?0')
+
                     done()
                 })
-        )
+                .catch(function(err){
+                    // bomb the test
+                    should.not.exist(err)
+                    done()
+                })
+        })
 
-        return Promise.all(reqs)
-            //bail if ANY promise is rejected
-            .should.not.be.rejected
+
 
 
 
     })
 
-    it('should handle the invalid id error case',function(done){
-        'test'.should.equal('implemented')
+    it('should retrieve data with the correct url and handle an error response',function(done){
+        require(['request'],function(request){
+          //I know the requestHandlerModule uses request.get to make it's requests
+            // I stub out this method to intercept those requests with appropiate results
+           var getStub = sinon.stub(request,'get')
+            getStub.yields({ args : getStub.args })
+           
+
+
+            RequestHandler.getData('user','1')
+                .then(function(args){
+
+                    // the promise shouldn't be fufilled
+                    should.not.exist(args)
+                    done()
+                })
+                // the promise should bomb because this is an invalid id
+                .catch(function(res){
+                    should.exist(res)
+
+                    //check that the request was called with the correct url
+                    var url = res['args'][0][0]['url']
+                    should.exist(url)
+                    url.should.eql('localhost:3000/api/user?1')
+
+                    done()
+
+                })
+        })
     })
-
-    it('should handle all other error cases',function(done){
-        'test'.should.equal('implemented')
-    })
-    
-    
-
-
 
 })
