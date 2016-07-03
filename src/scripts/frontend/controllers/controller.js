@@ -2,9 +2,9 @@ define(function(){
     
     return class Controller{
         constructor(v, m){
-            this._view = v;
-            this._model = m;
-            this._view.setControl(this);
+            this.view = v;
+            this.model = m;
+            this.view.setControl(this);
         }
 
         /**
@@ -12,7 +12,7 @@ define(function(){
          * its corresponding view
          */
         setView(v){
-            this._view = v; 
+            this.view = v; 
         }
 
         /**
@@ -20,7 +20,7 @@ define(function(){
          * its corresponding model
          */
         setModel(m){
-            this._model = m; 
+            this.model = m; 
         }
 
         /**
@@ -28,15 +28,15 @@ define(function(){
          * view
          */
         selectViewState(v){
-            this._view.selectViewState(v);
-            this._view.notify();
+            this.view.selectViewState(v);
+            this.view.notify();
         }
 
         /**
          * Retrieves data from the model
          */
         getData(v){
-            this._model.getData();
+            this.model.getData();
         }
     }
 })

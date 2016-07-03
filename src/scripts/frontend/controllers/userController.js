@@ -21,7 +21,7 @@
                 // this.post("/users", data);
             } else {
                 this.selectViewState(2);
-                this._view.notify();
+                this.view.notify();
             }
         }
         
@@ -32,7 +32,7 @@
     // http://requirejs.org/docs/api.html#circular
     // http://www.bitnative.com/2015/02/03/circular-dependencies-in-requirejs/
     var userController = new UserController(UserView,UserModel)
-    userController._view.setControl(userController)
+    userController.view.setControl(userController)
     
     return userController
  })

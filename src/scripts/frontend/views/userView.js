@@ -1,10 +1,13 @@
+//The view ALSO DEPENDS ON gameController.js
+// this cannot be modeled because of circular dependencies and requirejs
+// see gameController.js
 define(['./view'],function(View){
 
     class UserView extends View {
 
         render(){
 
-            switch(this._viewState){
+            switch(this.viewState){
                 // get all
                 case 0:
 
@@ -50,7 +53,7 @@ define(['./view'],function(View){
                     div.append(h1);
                     div.append(p);
                     $("#content").append(div);
-                    $("#content").html(this._control.getData());
+                    $("#content").html(this.control.getData());
                     break;
 
                 default:

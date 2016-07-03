@@ -2,16 +2,16 @@ define(function(){
 
     return class Model{
         constructor(){
-            this._data = null;
+            this.data = null;
         }
 
 
         getData(){
-            return this._data; 
+            return this.data; 
         }
 
         setData(d){
-            this._data = d;
+            this.data = d;
         }
     }
     

@@ -1,8 +1,11 @@
+//The view ALSO DEPENDS ON gameController.js
+// this cannot be modeled because of circular dependencies and requirejs
+// see gameController.js
 define(['./view'],function(View){
     class SessionView extends View {
 
         render(){
-            switch(this._viewState){
+            switch(this.viewState){
                 case 0:
                     var h1 = $("<h1>").html("Sign In");
                     var div1 = $("<div>").addClass("row");

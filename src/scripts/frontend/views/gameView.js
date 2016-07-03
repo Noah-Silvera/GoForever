@@ -4,19 +4,19 @@
 // see gameController.js
 define(['./view'],function(View){
 
-    // this is a workaround to deal with the circular dependencies of views and controllers
-    // it requires that the controller has already been loaded elsewhere first
 
     class GameView extends View{
 
         constructor(){
             super(arguments)
+            //simply a reference definition for the possible states that 
+            // should be passed to the view
             this.states = ['firstState','secondState','thirdState']
 
         }
         
         render(){
-            switch(this._viewState){
+            switch(this.viewState){
                 case this.states[0]:
 
                     break;
@@ -76,7 +76,7 @@ define(['./view'],function(View){
 
     // this is part of a tricky workaround with circular dependencies
     // see the controllers return for details
-    var gameView = new GameView()
+    var gameView = new GameView(null,null,null)
 
     return gameView
 })

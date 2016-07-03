@@ -7,6 +7,7 @@ define(['request'],function(request){
 
         constructor(){
             this.serverUrl = 'localhost:3000'
+            //base part of the user to make ALL requests too
             this.base = 'api'
         }
 
@@ -19,16 +20,14 @@ define(['request'],function(request){
          */
         getData(model, id){
 
-            
-
             return new Promise((function(resolve,reject){
 
-                var options = {}
-
+                // create a request to the appropiate model with an ID param
                 var options = {
                      "url" : this.serverUrl + "/" + this.base + "/" + model + "?" + id 
                 }
 
+                // set the cors headers
                 options = this.cors(options)
 
                 request.get(options,function(err,res,body){
@@ -37,6 +36,7 @@ define(['request'],function(request){
                     resolve(body)
                 })
             }).bind(this))
+            // must keep the this context to access local variables
         }
         /**
          * @param  {String} model string rep of the model to send data to

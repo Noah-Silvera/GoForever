@@ -4,23 +4,23 @@ define(function(){
     return class View {
         constructor(viewState,control,content){
 
-            if( !viewState) this._viewState = 0;
-            else this._viewState = viewState
+            if( !viewState) this.viewState = 0;
+            else this.viewState = viewState
 
-            if( !control) this._control = null;
-            else this._control = control
+            if( !control) this.control = null;
+            else this.control = control
 
-            if( !content) this._content = "#content";
-            else this._content = _viewState
+            if( !content) this.content = "#content";
+            else this.content = viewState
 
         }
 
         setControl(c){
-            this._control = c 
+            this.control = c 
         }
 
         selectViewState(v){
-            this._viewState = v.trim(); 
+            this.viewState = v.trim(); 
         }
 
         notify(){
