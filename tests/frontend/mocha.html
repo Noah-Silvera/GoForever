@@ -15,32 +15,36 @@
   <script>
     // use chais BDD should assertion style
     mocha.setup('bdd')
+
+    // set up server base for loading future scripts
   </script>
   <script src="lib/chai.js"></script>
-  <script src="lib/request.js"></script>
-  <!--used to load the actual client scripts to test-->
+  <script src="lib/chai-as-promised.js"></script>
+  <!--used to load the actual client scripts to test, with the same relative paths as normal coding-->
   <script src="./../../src/scripts/frontend/lib/require.js"></script>
+  <script src="./../../src/scripts/frontend/lib/require_shim.js"></script>
+  <script>
+    requirejs.config({
+      baseUrl : './../../src/scripts/frontend/'
+    })
+  </script>
 
 
   <!--load the test scripts-->
   <script src="requestHandler.test.js"></script>
 
-  <!--Load all the scripts the test is dependent on-->
-  <!--The scripts must be loaded with requirejs since they are defined as AMD modules-->
-  <!--then run all the tests-->
+  <!--run all the tests-->
   <script> 
-    require([
-          './../../src/scripts/frontend/RequestHandler.js',
-          './../../src/scripts/frontend/views/GameView.js'],function(RequestHandler,GameView){
+      require( ['RequestHandler'],function(RequestHandler){
 
-      window.RequestHandler = RequestHandler
-      window.GameView = GameView
+        window.RequestHandler = RequestHandler
 
-      //make the should variable global 
-      window.should = chai.should()
-      mocha.run();
 
-    }) 
+        //make the should variable global 
+        window.should = chai.should()
+        mocha.run();
+      })
+
   </script>
   <script>
   </script>
