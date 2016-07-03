@@ -3,61 +3,62 @@ describe('Test the clients ability to send server requests related to changing d
     var userRes = {"user":"value"}
     var matchRes = {"match":"value"}
 
+    var idErrMes = "invalid id"
+
     before(function(done){
-        sinon
-            .stub(request,'get')
-            .withArgs('api/user')
-            .yields(null, null, JSON.stringify(userRes))
-            .withArgs('api/match')
-            .yields(null, null, JSON.stringify(matchRes))
-        done()
+
+        require(['request'],function(request){
+
+            sinon
+                .stub(request,'get')
+                // .throws()
+                // a valid user id
+                // .withArgs('localhost:3000/api/user?0')
+                .yields(null, null, userRes)
+            
+            done()
+
+        })
     })
 
-    afterEach(function(done){
+    
+    after(function(done){
         request.get.restore()
         done()
     })
 
-    it('should handle a requests data by communicating the data back to the caller',function(done){
-        
-        RequestHandler.getData('game','123')
+    it('should handle a user data request with a valid id',function(done){
+
+
 
         var reqs = []
-
+            
         reqs.push( 
-            new Promise(function(resolve,reject){
-                request.get('api/user',function(err,res,body){
-                    should.not.exist(err)
+            RequestHandler.getData('user','0')
+                .then(function(body){
 
                     should.exist(body)
-                    body.should.eql(JSON.stringify(userRes))
-
-                    resolve()
-
+                    body.should.eql(userRes)
+                    done()
                 })
-            })
         )
 
-        reqs.push(
-            new Promise(function(resolve,reject){
-                request.get('api/match',function(err,res,body){
-                    should.not.exist(err)
+        return Promise.all(reqs)
+            .should.not.be.rejected
 
-                    should.exist(body)
-                    body.should.eql(JSON.stringify(matchRes))
 
-                    resolve()
-
-                })
-            })
-        )
-
-        Promise.all(reqs).then( () => { done() } )
-    })
-
-    it('should handle error cases for requests by communicating the error back to the caller',function(done){
 
     })
+
+    it('should handle the invalid id error case',function(done){
+        'test'.should.equal('implemented')
+    })
+
+    it('should handle all other error cases',function(done){
+        'test'.should.equal('implemented')
+    })
+    
+    
 
 
 
