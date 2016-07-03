@@ -1,19 +1,9 @@
 
-// not neccesary - all libs are downloaded
-// requirejs.config({
-//     paths: {
-//       "jQuery": 'https://code.jquery.com/jquery-3.0.0.min'
-//     },
-//     shim:{
-//         'jQuery': {
-//             exports: ['$']
-//         }
-//     }
-// });
+
 
 require = requirejs
 
-require(['utils/es6_test.js'],function(TestClass){
+require(['utils/es6_test','request'],function(TestClass,request){
    
      // test that es6 is supported and requirejs is working
      var test = new TestClass()

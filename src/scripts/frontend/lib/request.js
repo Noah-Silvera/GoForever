@@ -24,7 +24,7 @@
         module.exports = factory();
     } else {
         // Browser globals (root is window)
-        root.returnExports = factory();
+        root.request = factory();
   }
 }(this, function () {
 // UMD HEADER END
