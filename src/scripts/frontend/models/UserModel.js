@@ -1,3 +1,0 @@
-class UsersModel extends Model {
-    
-}
