@@ -1,10 +1,10 @@
 define(function(){
     
-    class Controller{
+    return class Controller{
         constructor(v, m){
-            this._view = v;
-            this._model = m;
-            this._view.setControl(this);
+            // this._view = v;
+            // this._model = m;
+            // this._view.setControl(this);
         }
 
         /**
