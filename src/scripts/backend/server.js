@@ -1,10 +1,17 @@
 
+
 var path = require('path')
 var fs = require('fs')
 var express = require('express')
 var app = express()
 var helmet = require('helmet')
 
+// a fix to propagate errors thrown in promises
+// https://gist.github.com/benjamingr/0237932cee84712951a2
+process.on('unhandledRejection', function(reason, p){
+    error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+    // application specific logging here
+});
 
 //perform initial enviroment checks
 require('./utils/es6_test')
@@ -41,5 +48,5 @@ app.get('/', function( req, res){
 
 app.listen(3000, function(){
    info('kahgsdjhasd')
-    console.log('listening on localhost:3000')  
+   info('listening on localhost:3000')  
 })  

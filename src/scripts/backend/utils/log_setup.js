@@ -1,25 +1,26 @@
 var winston = require('winston')
-// setup winston loggin 
 
+// setup winston loggin 
 var logger = new (winston.Logger)({
     transports: [
       new (winston.transports.Console)({
-        level:'info'
+        level:'info',
+        colorize: true
+        
       }),
       new (winston.transports.File)({
-         name: 'file.verbose',
-         filename: 'logs/verbose.log',
-         level: 'verbose'
+        name: 'file.verbose',
+        filename: 'logs/verbose.log',
+        level: 'verbose'
+        
       }),
       new (winston.transports.File)({
-         name: 'file.silly',
-         filename: 'logs/silly.log',
-         level: 'verbose'
+        name: 'file.silly',
+        filename: 'logs/silly.log',
+        level: 'verbose'
       })
     ]
   });
-  
-  
   
 // these 5 globals represent the 6 different levels of logging you can perform
 // use the appropiate logging level for your debugging statements.
@@ -39,8 +40,3 @@ verbose('testing debug loggin')
 debug('testing verbose loggin')
 silly('testing silly loggin')
 
-// overide the default console.log to info
-
-console.log = logger.info
-
-// console.log('overode default console.log')

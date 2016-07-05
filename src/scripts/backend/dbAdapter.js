@@ -2,7 +2,9 @@ var MongoClient = require('mongodb').MongoClient;
 
 // set up mongo
 var dbName = 'GoForever'
-var url = 'mongodb://localhost:27017/' + dbName;
+var host = 'mongodb://localhost'
+var port = '27017'
+var url = `${host}:${port}\\${dbName}`
 
 // an object with the collection names as keys 
 // for easy access to available collections
@@ -21,12 +23,22 @@ MongoClient.connect(url)
         for( var name in collections){
             if(collections.hasOwnProperty(name)){
                 // key the dict to the mongo collection
-                collections.name = db.collection(name)
-                info(`connected to ${name} collection`)
+                db.collection(name,function(err,collection){
+                    if(err){
+                        error(`failed to connect to ${name} collection`)
+                        throw err
+                    } else {
+                        info(`connected to ${name} collection`)
+                        collections.name = collection
+                    }
+                })
             }
         }
         
     },function(err){
+
+        error('Failed to connect to MongoClient')
+        error(`Is Mongo running on ${url}`)
         throw err
     });
 
