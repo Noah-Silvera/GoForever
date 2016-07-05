@@ -24,13 +24,16 @@
     "gulp-livereload": "^3.8.1",
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
+    "mochawesome": "^1.3.5",
     "mongodb": "^2.1.18",
-    "run-sequence": "^1.2.1"
+    "run-sequence": "^1.2.1",
+    "sinon": "^1.17.4"
   },
   "scripts": {
     "start": "gulp",
-    "test": "./node_modules/.bin/mocha ./tests/backend/**/*.js",
-    "example-test": "./node_modules/.bin/mocha ./tests/example.js",
+    "test": "./node_modules/.bin/mocha ./tests/backend/setup.js ./tests/backend/**/*.js --reporter mochawesome --ui bdd || true",
+    "posttest": "start mochawesome-reports/mochawesome.html",
+    "example-test": "./node_modules/.bin/mocha ./tests/example.js --reporter mochawesome",
     "test-client": "start tests/frontend/mocha.html"
   },
   "repository": {

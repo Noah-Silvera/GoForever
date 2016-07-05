@@ -2,3 +2,5 @@ node_modules
 *.log
 *.css
 *.pdf
+*-ns
+mochawesome-reports/**/*

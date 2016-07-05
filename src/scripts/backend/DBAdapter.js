@@ -13,7 +13,7 @@ var collections = {
     'users' : null
 }
 
-
+// connect to all the collections specified in the collections object
 MongoClient.connect(url)
     .then(function(db){
         info("Connected to Mongo");
@@ -30,29 +30,38 @@ MongoClient.connect(url)
         throw err
     });
 
-module.exports = {
+class DBAdapter {
     /**
      * Get returns the full document specified by _id from 'collectionName' 
      * @param  {String} collectionName The name of the collection to return. See collection dictionary
      * @param  {String} _id
+     * @return {Object} The document specified by the id. If the document is not found, or multiple document are found,
+     *                  the promise is rejected
      */
-    'get': function get(collectionName, _id){
+    get(collectionName, _id){
         return new Promise(function(resolve, reject){
             reject('method not implemented')
         })
-    },
+    }
     
     /**
      * Create creates a new document from the json object 'object' in the specified collection
      * @param  {String} collectionName
      * @param  {Object} object the JSON object to insert in the collection
+     * @return {String} The unique ID of the created document. Rejection upon errors
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * Rejection occurs upon missing props? schema?
      */
-    'create': function create(collectionName, object){
+    create(collectionName, object){
         return new Promise(function(resolve, reject){
             reject('method not implemented')
         })
-    },
-    
+    }
+
     /**
      * Updates a document specified by _id in the collectionName
      * Any properties present in diffObject overwrite the properties
@@ -60,10 +69,21 @@ module.exports = {
      * @param  {any} collectionName
      * @param  {any} diffObject
      * @param  {any} _id
+     * @return {Object} The document after the update. Rejection occurs upon errors. 
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * Rejection occurs upon missing props? schema?
      */
-    'update': function update(collectionName, _id, diffObject){
+    update(collectionName, _id, diffObject){
         return new Promise(function(resolve,reject){
             reject('method not implemented')
         })
     }
 }
+
+//return a singleton of the class on require
+var dbAdapter = new DBAdapter()
+module.exports = dbAdapter 
