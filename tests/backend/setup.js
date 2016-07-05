@@ -1,5 +1,4 @@
-before(function(){
-
+before(function(done){
     var chai = require('chai')
     var chaiAsPromised = require('chai-as-promised')
 
@@ -8,5 +7,8 @@ before(function(){
     // any global variables to be used in test cases should go here
 
     global.sinon = require('sinon')
+    require('sinon-as-promised')
     global.should = chai.should()
+
+    done()
 })
