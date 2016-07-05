@@ -48,13 +48,14 @@ define(['request'],function(request){
         sendData(model, id){
             return new Promise(function(resolve,reject){
                 reject('method not implemented')
+                
+                if( dataExists(model, id) ){
+                    //patch
+                } else{
+                    //post
+                }
             })
 
-            if( dataExists(model, id) ){
-                //patch
-            } else{
-                //post
-            }
 
 
         }

@@ -11,6 +11,9 @@ require('./utils/es6_test')
 //set up logging with winston
 require('./utils/log_setup')
 
+// set up DB
+
+require('./dbAdapter')
 
 
 var root = 'src/'
