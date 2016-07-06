@@ -57,7 +57,9 @@ class DBAdapter {
         }).bind(this))
 
     }
-
+    /**
+     * Initialize the models to be used in all database transactions
+     */
     setUpModels(){
 
         // https://stackoverflow.com/questions/19762430/make-all-fields-required-in-mongoose
