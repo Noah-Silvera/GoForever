@@ -23,6 +23,8 @@ class DBAdapter {
         this.port = '27017'
         this.url = `${this.host}:${this.port}/${this.dbName}`
 
+        this.setUpModels()
+
         // since the database setup is async, cannot garuntee the database are set up before calling 
         // this is a flag to ensure that
         // this flag should be checked in any functions that call the DB
@@ -49,11 +51,42 @@ class DBAdapter {
             con.once('open', function() {
                 info('connected to Mongo with mongoose')
             	this.db = con
-                resolve(this.db)
+
+
+                },function(err){
+                    console.log(err)
+                })
+
+
+                
             });
 
             
         }).bind(this))
+
+    }
+
+    setUpModels(){
+
+        // https://stackoverflow.com/questions/19762430/make-all-fields-required-in-mongoose
+        function requireAllFields(schema) {
+            for (var i in schema.paths) {
+                var attribute = schema.paths[i]
+                if (attribute.isRequired == undefined) {
+                    attribute.required(true);
+                }
+            }
+            return schema
+        }
+
+
+        // unfinished, just an example
+        // http://mongoosejs.com/docs/guide.html
+        var User = mongoose.model( 'User', requireAllFields(new Schema({
+                name: String,
+                email: String
+            })) 
+        )
 
     }
     
@@ -67,9 +100,13 @@ class DBAdapter {
     get(collectionName, _id){
         return new Promise(function(resolve, reject){
 
+
             if( !this.db ) reject('not ready to connect to collections')
 
             collectionName = collectionName.trim()
+
+            // retrieve the appropiate model
+            var model = db.model(collectionName)
 
             reject('method not implemented')
            
