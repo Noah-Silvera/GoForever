@@ -47,6 +47,7 @@ app.get('/', function( req, res){
 });   
 
 app.listen(3000, function(){
-   info('kahgsdjhasd')
+   info('---------------------------')  
    info('listening on localhost:3000')  
+   info('---------------------------')  
 })  

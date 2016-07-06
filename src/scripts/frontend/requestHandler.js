@@ -26,7 +26,7 @@ define(['request'],function(request){
 
                 // create a request to the appropiate model with an ID param
                 var options = {
-                     "url" : this.serverUrl + "/" + this.base + "/" + model + "?" + id 
+                     "url" : `${this.serverUrl}/${this.base}/${model}?${id}`
                 }
 
                 // set the cors headers
@@ -47,6 +47,7 @@ define(['request'],function(request){
          */
         sendData(model, id){
             return new Promise(function(resolve,reject){
+               
                 reject('method not implemented')
                 
                 if( dataExists(model, id) ){
@@ -57,8 +58,9 @@ define(['request'],function(request){
             })
 
 
-
         }
+
+
         /**
          * @param  {String} model string rep of the model to check if data exists
          * @param  {String} id UIID relating to the model data

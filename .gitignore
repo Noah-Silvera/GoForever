@@ -1,6 +1,6 @@
 node_modules
 *.log
-*.css
+src/css/*.css
 *.pdf
 *-ns
 mochawesome-reports/**/*
