@@ -6,7 +6,6 @@
     <script src="index.js"></script>
 </head>
 <body>
-    <p>as,dasasdsadasdhjgas</p>
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
       <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -14,6 +13,73 @@
       <!-- Include all compiled plugins (below), or include individual files as needed -->
       <script src = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
       
-    <!-- Indicates caution should be taken with this action -->
-    <button type = "button" class = "btn btn-warning">Warning Button</button>
+    <div class="jumbotron text-center">
+        <img src="goGame.png" class="img-circle center-block" alt="Cinque Terre" width="152" height="118">
+        <h1>Go Forever</h1>
+        <p>A web application inplementing an interactive Go game.</p>
+        <p>Created for the Softwase Architecture course SENG 299.</p>
+    </div>
+      
+      <div class="row">
+         <div class="col-sm-6">
+             <div class="well well-sm">Sign Up</div>
+             <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="username">Username:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="password">Password:</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">Register</button>
+                    </div>
+                </div>
+            </form>
+         </div>
+         <div class="col-sm-6">
+             <div class="well well-sm">Sign In</div>
+             
+             <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="username">Username:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="password">Password:</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="submit" class="btn btn-default">I forgot my password/username</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <button type="submit" class="btn btn-success pull-right">Play As Guest</button>
+         </div>
+      </div> 
+      
+      <div class="alert alert-success">
+        <strong>Welcome</strong> sign in, sign up or play as a guest!
+      </div>
+      
 </body>
