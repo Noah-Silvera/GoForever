@@ -3,82 +3,85 @@ describe('Database Interactions',function(){
 
     var dbAdapter;
     var db;
+    var TestModel;
+    var mongoose
 
 
     before(function(done){
 
 
         mongoose = require('mongoose');
-
+        Schema = mongoose.Schema
         // used for finding which DB the adapter connects to
         var connectSpy = sinon.spy(mongoose,'connect')
+        
 
         dbAdapter = require(`${global.scriptsPath}dbAdapter`)
 
-        // wait to connect to the DB
-        setTimeout(function(){
-            db = connectSpy.returnValues[0]
 
-            if( !db ){
-                throw 'could not connect to the db. try waiting longer'
-            } else {
-                done()
-
+        function requireAllSchemaFields(schema) {
+            for (var i in schema.paths) {
+                var attribute = schema.paths[i]
+                if (attribute.isRequired == undefined) {
+                    attribute.required(true);
+                }
             }
-        },500)
-
-    })
-
-    beforeEach(function(done){
-        // clear all documents from the test collections
-
-        // colOne.drop()
-        // colTwo.drop()
-
-        // // re-insert the documents for testing
-
-        // var colOne = db.collection('testCollectionOne')
-        // var colTwo = db.collection('testCollectionTwo')
+            return schema
+        }
 
 
-        // var inserts = Promise.all([ 
-        //     colOne.insertMany(
-        //         [
-        //             {"_id":"0", "data":"value", "uniqueVal":00},
-        //             {"_id":"1", "data":"value", "uniqueVal":11},
-        //             {"_id":"2", "data":"value", "uniqueVal":22},
-        //             {"_id":"3", "data":"value", "uniqueVal":33}
-        //         ]
-        //     ),
-        //     colTwo.insertMany(
-        //         [
-        //             {"_id":"0", "data":"value", "uniqueVal":00},
-        //             {"_id":"1", "data":"value", "uniqueVal":11},
-        //             {"_id":"2", "data":"value", "uniqueVal":22},
-        //             {"_id":"3", "data":"value", "uniqueVal":33}
-        //         ]
-        //     )
+        testSchema = new Schema({
+            'prop1': String,
+            'prop2': Number
+        })
 
-        // ])
-        // .then(function(result){
-        //     verbose(result)
-        // })       
-        // .catch(function(err){
-        //     error('problem with creation of test collections')
-        //     reject(err)
-        // })
+        TestModel = mongoose.model('TestModel',testSchema)
 
-        
+        done()
+
+
+
     })
 
 
     it('should fail retrieval if the document is not found',function(done){
-        'test'.should.equal('implemented')
+        dbAdapter.get('TestModel','ashgfjashdas') .should.be.rejected
+        dbAdapter.get('NonExsistantModel','ashgfjashdas') .should.be.rejected
+        done()
 
     })
     
     it('should return the appropiate document if it exists',function(done){
-        'test'.should.equal('implemented')
+        var thing = new TestModel({'prop1':'some string', 'prop2':21})
+
+        // save this test object to the db
+        thing.save().then(function(result){
+            
+            return dbAdapter.get('TestModel', result._id)
+        }).then(function(result){
+
+            var orig = thing._doc
+
+            // check that the correct object was returned
+            for( prop in result){
+                if( result.hasOwnProperty(prop) ){
+                    if( prop != '_id' ){
+                        // check if the prop is in the original object
+                        should.exist(orig[prop])
+
+                        // ensure that the correct object was inserted
+                        result[prop].should.equal(orig[prop])
+                    }
+                }
+            }
+            
+            done()
+        }).catch(function(err){
+            should.not.exist(err)
+            done()
+        })
+
+
     })
     
 
@@ -87,7 +90,12 @@ describe('Database Interactions',function(){
         'test'.should.equal('implemented')
     })
 
-    it('should fail creation if the object doesn\'t match the schema',function(done){
+    it('should fail creation if the object doesn\'t match the schema.',function(done){
+        // property missing is the only case it will fail
+        // extra properties aren't saved ( might want to display a warning message on this, up to you)
+        // invalid type properties are cast ( this is crazy behaviour, but it's mongoose, can't do anything)
+
+
         'test'.should.equal('implemented')
 
     })
@@ -112,11 +120,12 @@ describe('Database Interactions',function(){
     })
     
 
-    it('should fail retrieval if the collection name is not valid',function(done){
+    it('should fail retrieval if the collection name is not valid. This should happen for all DB functions',function(done){
         'test'.should.equal('implemented')
     })
 
-    it('should fail upon any other errors from the database',function(done){
+    it('should fail upon any other errors from the database. This should happen for all DB functions',function(done){
+        // this can be tested by using sinon to stub out the database methods called, and throw an error instead
         'test'.should.equal('implemented')
     })
 

@@ -51,14 +51,6 @@ class DBAdapter {
             con.once('open', function() {
                 info('connected to Mongo with mongoose')
             	this.db = con
-
-
-                },function(err){
-                    console.log(err)
-                })
-
-
-                
             });
 
             
@@ -69,7 +61,7 @@ class DBAdapter {
     setUpModels(){
 
         // https://stackoverflow.com/questions/19762430/make-all-fields-required-in-mongoose
-        function requireAllFields(schema) {
+        function requireAllSchemaFields(schema) {
             for (var i in schema.paths) {
                 var attribute = schema.paths[i]
                 if (attribute.isRequired == undefined) {
@@ -79,10 +71,9 @@ class DBAdapter {
             return schema
         }
 
-
         // unfinished, just an example
         // http://mongoosejs.com/docs/guide.html
-        var User = mongoose.model( 'User', requireAllFields(new Schema({
+        var User = mongoose.model( 'User', requireAllSchemaFields(new Schema({
                 name: String,
                 email: String
             })) 
