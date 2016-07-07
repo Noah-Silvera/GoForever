@@ -84,7 +84,7 @@ app.route(['/api/:model/:id','/api/:model'])
       })
 
   })
-  .post(function(rew,res){
+  .post(function(req,res){
 
     // create new data
     dbAdapter.create(req.model, req.body)
