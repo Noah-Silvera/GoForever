@@ -1,7 +1,7 @@
 //The view ALSO DEPENDS ON gameController.js
 // this cannot be modeled because of circular dependencies and requirejs
 // see gameController.js
-define(['./view'],function(View){
+define(['./view','lib/jquery'],function(View,$){
 
     class UserView extends View {
 
@@ -9,7 +9,10 @@ define(['./view'],function(View){
 
             switch(this.viewState){
                 // get all
-                case 0:
+                case 'firstState':
+
+                    // event handlers intialized here
+                    // state specific DOM manips dealt with here
 
                     break;
 
@@ -20,6 +23,7 @@ define(['./view'],function(View){
 
                 // create
                 case 2:
+                
             
                     var h1 = $("<h1>").html("Sign Up");
                     var div1 = $("<div>").addClass("row");

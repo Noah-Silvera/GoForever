@@ -4,7 +4,7 @@ define(function(){
     return class View {
         constructor(viewState,control,content){
 
-            if( !viewState) this.viewState = 0;
+            if( !viewState) this.viewState = 'firstState';
             else this.viewState = viewState
 
             if( !control) this.control = null;
