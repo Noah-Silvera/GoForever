@@ -1,6 +1,13 @@
 define(['./model'], function(Model){
 
     class GameModel extends Model{
+
+        constructor(){
+            this.modelName = 'matchs'
+            // dummy ID for now - will have to figure out how this is generated
+            this.id  = 123
+        }
+
         addData(gameData){
             // handle and send data to database
         }
