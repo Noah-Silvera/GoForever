@@ -11,10 +11,9 @@
       
       <!-- Include all compiled plugins (below), or include individual files as needed -->
       <script src = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-      <div id="firststate">
         <div class="jumbotron text-center">
             <img src="goGame.png" class="img-circle center-block" alt="Cinque Terre" width="152" height="118">
-            <h1>Go Forever<`/h1>
+            <h1>Go Forever</h1>
             <p>A web application inplementing an interactive Go game.</p>
             <p>Created for the Softwase Architecture course SENG 299.</p>
         </div>
@@ -92,8 +91,9 @@
         <div class="alert alert-success">
             <strong>Welcome</strong> sign in, sign up or play as a guest!
         </div>
-      </div>
-      <div id="secondstate">
+        
+        
+        <div class="container">
           <nav class="navbar">
               <div class="container-fluid">
                   <a class="navbar-brand" href="#">GoForever</a>
@@ -109,20 +109,37 @@
                 </li>
                 </ul>
           </nav>
-          <div class="container">
+          <button class="btn-success btn-block btn-lg">Start Game<button>
+          <select class="form-control" name="global-statistics-ordering" id="global-statistics-ordering"><select/>
+          <div id="global-statistics">
+          <table class="table">
+                <thead>
+                    <tr>
+                    <th>Username</th>
+                    <th>Games Played</th>
+                    <th>Games Won</th>
+                    <th>Win %</th>
+                    <th>Win Streak</th>
+                    <th>Rank</th>
+                    </tr>
+                </thead>
+                <tbody id="global-statistics-table-body">
+                </tbody>
+          </table>
           </div>
-          
+            
+         </div>
           
       </div>
       <div id="thirdstate">
       </div>
-
+      
       
     <script>
         require(['controllers/userController'],function(UserController){
 
             // load the initial state
-            UserController.selectViewState('firstState')
+            UserController.selectViewState('landingPage')
 
         })
     </script>
