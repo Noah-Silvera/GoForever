@@ -138,7 +138,7 @@ gulp.task('frontend', function(){
 })
 
 // copy the static files
-gulp.task('static', function(){
+gulp.task('static',['reload'], function(){
   return gulp.src(patt.static)
     // .pipe(gulp.dest('./dest/static'))
     .pipe(livereload())
