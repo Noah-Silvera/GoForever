@@ -39,6 +39,7 @@ define(['controllers/controller','request','views/gameView','models/gameModel'],
             })
 
         }
+
     }
 
     // this is how the circular dependency between controllers and views are dealt with

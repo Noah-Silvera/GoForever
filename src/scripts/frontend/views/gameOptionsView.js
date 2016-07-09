@@ -1,4 +1,4 @@
-define(['./view'],function(View){
+define(['./view','jquery'],function(View,$){
     class GameOptionsView extends View {
         constructor(){
             super(arguments)
@@ -10,7 +10,12 @@ define(['./view'],function(View){
         render(){
              switch(this.viewState){
                 case 'default':
+                    $('#start-btn').on('click',function(){
+                        console.info('starting game....')
 
+                        console.info('---NOT IMPLEMENTED--- creating initial game info ')
+                        console.info('---NOT IMPLEMENTED--- loading game page ')
+                    })
                     break;
               default:
                     throw 'invalid state'

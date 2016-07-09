@@ -26,27 +26,26 @@
             }
         }
 
-        playAsGuest(){
+        playGame(options){
+
+            if(options.guest){
+                // do guest specific logic here
+                console.info('current user is a guest')
+            }
             // do auth thingys and database thingys here
-            var options = {
-                url: 'http://localhost:3000/game',
-                port: '3000',
-                headers: {
-                    'Content-Type': 'application/json',
-                } 
-            };
-            
-            return new Promise(function(resolve,reject){
-                request.get(options,function(err,res,body){
-                    console.debug(res)
+            window.location.href = 'http://localhost:3000/gameOptions'
+        }
 
-                    if(err) reject(err)
+        loadSettings(){
+            // do user specific things here
 
-                    resolve(body)
-                })
+            window.location.href = 'http://localhost:3000/userSettings'
+        }
 
+        logout(){
+            // do logging out things here
 
-            })
+            window.location.href = 'http://localhost:3000/'
         }
         
     }

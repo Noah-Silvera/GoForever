@@ -14,21 +14,25 @@ define(['./view','jquery','controllers/userController'],function(View,$,userCont
                     // event handlers intialized here
                     // state specific DOM manips dealt with here
 
-                    $('#play-as-guest').on('click',(function(){
+                    $('.nav#play-as-guest').on('click',(function(){
                        console.info('loading guest game')
-                       userController.playAsGuest()
-                        .then(function(res){
-                            console.info(res)
-                            console.info('successfully loaded guest game')
-                        },function(err){
-                            console.err(err)
-                            console.info('could not load guest game')
-                        })
+                       this.control.playGame({ guest: true })
                     }).bind(this))
 
                     break;
 
                 case 'landingPage':
+
+                    $('.nav#account-settings').on('click',(function(){
+                        console.info('loading settings')
+                        this.control.loadSettings()
+                    }).bind(this))
+
+                    $('.nav#logout').on('click',(function(){
+                        console.info('logging out....')
+                        console.info('--- NOT IMPLEMENTED --- ')
+                        this.control.logout()
+                    }).bind(this))
 
                     break;
 

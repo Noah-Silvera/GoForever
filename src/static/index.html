@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </form>
-                <button type="submit" id="play-as-guest" class="btn btn-success pull-right">Play As Guest</button>
+                <button type="submit" id="play-as-guest" class="btn btn-success pull-right nav">Play As Guest</button>
             </div>
         </div> 
         
@@ -139,7 +139,7 @@
         require(['controllers/userController'],function(UserController){
 
             // load the initial state
-            UserController.selectViewState('landingPage')
+            UserController.selectViewState('indexPage')
 
         })
     </script>
