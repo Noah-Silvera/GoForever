@@ -1,4 +1,4 @@
-define(['request'],function(request){
+define(['lib/request'],function(request){
     
 
 

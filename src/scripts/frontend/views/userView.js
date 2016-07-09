@@ -1,7 +1,7 @@
 //The view ALSO DEPENDS ON gameController.js
 // this cannot be modeled because of circular dependencies and requirejs
 // see gameController.js
-define(['./view','lib/jquery','/controllers/userController'],function(View,$,userController){
+define(['./view','jquery','controllers/userController'],function(View,$,userController){
 
     class UserView extends View {
 
@@ -14,9 +14,17 @@ define(['./view','lib/jquery','/controllers/userController'],function(View,$,use
                     // event handlers intialized here
                     // state specific DOM manips dealt with here
 
-                    $('play-as-guest').submit(function(){
-                       
-                    })
+                    $('#play-as-guest').on('click',(function(){
+                       console.info('loading guest game')
+                       userController.playAsGuest()
+                        .then(function(res){
+                            console.info(res)
+                            console.info('successfully loaded guest game')
+                        },function(err){
+                            console.err(err)
+                            console.info('could not load guest game')
+                        })
+                    }).bind(this))
 
                     break;
 
