@@ -1,0 +1,28 @@
+$font-stack:    Helvetica, sans-serif;
+$primary-color: purple;
+
+
+table.table-centered{
+    margin: 0 auto !important;
+    float: none !important;
+}
+
+a.navbar-brand{
+    font-size: 24px;
+}
+
+div.better-border{
+    margin-left: 15px;
+    margin-right: 15px; 
+    margin-top: 15px;
+}
+
+#start-game{
+    margin-bottom: 16px;
+}
+
+select.form-control-inline{
+    min-width: 175px;
+    min-height: 8px;
+    margin-top: 16px;
+}

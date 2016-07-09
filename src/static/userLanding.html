@@ -8,32 +8,41 @@
      <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       
       <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-      
-      <nav class="navbar">
-              <div class="container-fluid">
-                  <a class="navbar-brand" href="#">GoForever</a>
-              </div>
-              <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account
-                    <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                    <li><a href="#" id = 'logout' class='nav'>Log out</a></li>
-                    <li><a href="#" id = 'account-settings' class='nav'>Account Settings</a></li>
-                    </ul>
-                </li>
-                </ul>
-          </nav>
-          <div class="container">
-              <div class="Page Header">
-                 <h1>Go Forever</h1> 
-              </div>
-          </div>
-          
-      
 
-    <h1> User Landing Page </h1>
+      <div class="better-border">
+        <script src = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">GoForever</a>
+                    </div>
+                        <ul class="nav navbar-nav">
+                        <li class="active"><a href="#"  class='nav'>Home</a></li>
+                        <li><a href="#"  class='nav' id="account-profile">User Profile</a></li>
+                        <li><a href="#"  class='nav' id="logout">Account Settings</a></li> 
+                        <li><a href="#"  class='nav' id="account-settings">Log out</a></li> 
+                    </ul>
+                </div>
+            </nav>
+            <button class="btn-success btn-lg pull-right" id="start-game">Start Game</button>
+            <label for="global-statistics-ordering">Order Ranking:</label>
+            <select class="form-control-inline" name="global-statistics-ordering" id="global-statistics-ordering"><select/>
+            <div id="global-statistics">
+            <table class="table table-centered">
+                <thead>
+                    <tr>
+                    <th>Username</th>
+                    <th>Games Played</th>
+                    <th>Games Won</th>
+                    <th>Win %</th>
+                    <th>Win Streak</th>
+                    <th>Rank</th>
+                    </tr>
+                </thead>
+                <tbody id="global-statistics-table-body">
+                </tbody>
+            </table>
+        </div>
 
     <script>
         require(['controllers/userController'],function(UserController){

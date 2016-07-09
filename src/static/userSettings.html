@@ -5,8 +5,21 @@
     <script src="lib/require_shim.js"></script>
 </head>
 <body>
-
-    <h1> User Settings </h1>
+    <div class="better-border">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">GoForever</a>
+            </div>
+                <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">User Profile</a></li>
+                <li><a href="#">Account Settings</a></li> 
+                <li><a href="#">Log out</a></li> 
+            </ul>
+        </div>
+    </nav>
+    <div>
 
     <script>
         require(['controllers/userController'],function(UserController){
