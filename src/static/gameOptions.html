@@ -3,7 +3,6 @@
     <link href = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel = "stylesheet">
     <script src="lib/require.js"></script>
     <script src="lib/require_shim.js"></script>
-    <script src="views/gameOptionsView.js"></script>
 </head>
 <body>
     <div class="well lg">
@@ -29,5 +28,15 @@
                     <button type="button" id="start-btn" class ="btn btn-success btn-block">Start Game</button>
                 </div>
             </div>
+
+            
+    <script>
+        require(['views/gameOptionsView'],function(gameOptionsView){
+
+            // load the initial state
+            gameOptionsView.selectViewState('default')
+
+        })
+    </script>
     
 </body>

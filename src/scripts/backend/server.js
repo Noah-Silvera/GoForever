@@ -37,15 +37,49 @@ app.use(helmet.noCache())
             
 // load static files for serving      
 var indexHtml = fs.readFileSync(path.join(root,'static/index.html'));
+var gameHtml = fs.readFileSync(path.join(root,'static/game.html'));
+var gameOptionsHtml = fs.readFileSync(path.join(root,'static/gameOptions.html'));
+var userLandingHtml = fs.readFileSync(path.join(root,'static/userLanding.html'));
+var userSettingsHtml = fs.readFileSync(path.join(root,'static/userSettings.html'));
      
  //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
       
-// routing for the app  homepage
+// routing for the landing page 
 app.get('/', function( req, res){
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(indexHtml);
   res.send()
 });   
+
+// routing for the game page
+app.get('/game', function( req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(gameHtml);
+  res.send()
+});  
+
+// routing for the game options page
+app.get('/gameOptions', function( req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(gameOptionsHtml);
+  res.send()
+});  
+
+// routing for the user landing page
+app.get('/userLanding', function( req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(userLandingHtml);
+  res.send()
+});  
+
+
+// routing for the user settings page
+app.get('/userSettings', function( req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(userSettingsHtml);
+  res.send()
+});  
+
 
 // all requests to model data
 // route both requests with and without an id
