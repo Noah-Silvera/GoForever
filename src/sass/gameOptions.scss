@@ -1,0 +1,39 @@
+$font-stack:    Helvetica, sans-serif;
+$primary-color: purple;
+
+#div-with-bg{
+    background-image: url('goGame.png');
+    min-height: 500px;
+    min-width:  500px;
+    margin-top: 0px;
+    padding-top: 120px;
+    padding-left: 175px;
+    padding-right: 175px;
+    padding-bottom: 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+div.form-group{
+    margin-right: 80px;
+    margin-left: 80px;
+    margin-top: 120px;
+    margin-bottom: 120px;
+    background-color: lightgrey;
+    padding: 25px;
+    border-radius: 25px;
+    
+}
+
+label{
+    font: $font-stack;
+    padding: 6px;
+}
+
+#start-btn{
+    margin-top: 16px;
+}
+
+
+
+

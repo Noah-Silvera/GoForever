@@ -1,0 +1,33 @@
+<head>
+    <link rel="stylesheet" href="/gameOptions.css">
+    <link href = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel = "stylesheet">
+    <script src="lib/require.js"></script>
+    <script src="lib/require_shim.js"></script>
+    <script src="views/gameOptionsView.js"></script>
+</head>
+<body>
+    <div class="well lg">
+        <h1>Game options</h1>
+    </div>
+            <div id="div-with-bg">
+                <div class="form-group">
+                    <label for="radio-inline">Board Size:</label>
+                    <div>
+                        <label class="radio-inline"><input type="radio"
+                        name="size-radio">9x9</label>
+                        <label class="radio-inline"><input type="radio"
+                        name="size-radio">13x13</label>
+                        <label class="radio-inline"><input type="radio"
+                        name="size-radio">19x19</label>
+                    </div>
+                    
+                    <label for="board-style">Board Style:</label>
+                    <select class="form-control" id="board-style" name="board-colour-scheme"></select>
+                    <label for="game-handicap">Game Handicap:</label>
+                    <select class="form-control" name="game-handicaps" id="game-handicap"><select/>
+                    
+                    <button type="button" id="start-btn" class ="btn btn-success btn-block">Start Game</button>
+                </div>
+            </div>
+    
+</body>

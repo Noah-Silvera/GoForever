@@ -33,7 +33,7 @@ app.use(express.static(path.join(root,'/css').toString()));
              
             
 // load static files for serving      
-var indexHtml = fs.readFileSync(path.join(root,'static/index.html'));
+var indexHtml = fs.readFileSync(path.join(root,'static/index.html'));///// CHANGE IT BACK TO INDEX
 var index = fs.readFileSync(path.join(root,'scripts/frontend/index.js'));
      
  //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
