@@ -36,14 +36,14 @@ app.use(bodyParser())
 app.use(helmet.noCache()) 
             
 // load static files for serving      
-var userHtml = fs.readFileSync(path.join(root,'static/user.html'));
+var indexHtml = fs.readFileSync(path.join(root,'static/index.html'));
      
  //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
       
 // routing for the app  homepage
 app.get('/', function( req, res){
   res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(userHtml);
+  res.end(indexHtml);
   res.send()
 });   
 
