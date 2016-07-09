@@ -37,7 +37,6 @@ app.use(helmet.noCache())
             
 // load static files for serving      
 var indexHtml = fs.readFileSync(path.join(root,'static/index.html'));
-
      
  //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
       
@@ -58,6 +57,7 @@ app.route(['/api/:model/:id','/api/:model'])
     }
 
     // parse the model
+
     req.model = req.params.model 
 
     info(`request to ${req.model} for object`)
@@ -80,7 +80,8 @@ app.route(['/api/:model/:id','/api/:model'])
       })
       .catch(function(err){
         error(err)
-        res.status(501) // method not implemented
+
+        res.status(501)
         res.send(err)
       })
 
@@ -117,6 +118,7 @@ app.route(['/api/:model/:id','/api/:model'])
         res.send(err)
       })
   })
+
 
 app.listen(3000, function(){
    info('---------------------------')  

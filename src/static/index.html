@@ -3,7 +3,6 @@
     <link href = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel = "stylesheet">
     <script src="lib/require.js"></script>
     <script src="lib/require_shim.js"></script>
-    <script src="index.js"></script>
 </head>
 <body>
     
@@ -15,7 +14,7 @@
       <div id="firststate">
         <div class="jumbotron text-center">
             <img src="goGame.png" class="img-circle center-block" alt="Cinque Terre" width="152" height="118">
-            <h1>Go Forever</h1>
+            <h1>Go Forever<`/h1>
             <p>A web application inplementing an interactive Go game.</p>
             <p>Created for the Softwase Architecture course SENG 299.</p>
         </div>
@@ -117,4 +116,14 @@
       </div>
       <div id="thirdstate">
       </div>
+
+      
+    <script>
+        require(['controllers/userController'],function(UserController){
+
+            // load the initial state
+            UserController.selectViewState('firstState')
+
+        })
+    </script>
 </body>
