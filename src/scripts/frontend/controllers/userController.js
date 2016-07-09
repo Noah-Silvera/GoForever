@@ -1,4 +1,4 @@
- define(['controllers/controller','views/UserView','models/UserModel'], function(Controller,UserView,UserModel){
+ define(['controllers/controller','views/UserView','models/UserModel','lib/request',], function(Controller,UserView,UserModel,req){
     class UserController extends Controller{
         
         create(){
@@ -23,6 +23,32 @@
                 this.selectViewState(2);
                 this.view.notify();
             }
+        }
+
+        playAsGuest(){
+            // do auth thingys and database thingys here
+            // var options = {
+            //     url: 'http://localhost:3000/game',
+            //     port: '30000',
+            //     body: JSON.stringify(postData),
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         // 'Content-Length': Buffer.byteLength(JSON.stringify(postData))
+            //         'Access-Control-Allow-Origin': 'http://roberts.seng.uvic.ca:3000'
+            //     } 
+            // };
+            
+            // return new Promise(function(resolve,reject){
+            //     request.post(options,function(err,res,body){
+            //         console.debug(res)
+
+            //         if(err) reject(err)
+
+            //         resolve(body)
+            //     })
+
+
+            // })
         }
         
     }
