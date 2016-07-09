@@ -1,0 +1,19 @@
+<head>
+    <link rel="stylesheet" href="/userProfile.css">
+    <link href = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel = "stylesheet">
+    <script src="lib/require.js"></script>
+    <script src="lib/require_shim.js"></script>
+</head>
+<body>
+
+    <h1> User Profile </h1>
+
+    <script>
+        require(['controllers/userController'],function(UserController){
+
+            // load the initial state
+            UserController.selectViewState('profilePage')
+
+        })
+    </script>
+</body>
