@@ -48,10 +48,10 @@ class DBAdapter {
                 reject(err) 
                 this.db = false
             });
-            con.once('open', function() {
+            con.once('open', (function() {
                 info('connected to Mongo with mongoose')
             	this.db = con
-            });
+            }).bind(this));
 
             
         }).bind(this))
@@ -91,19 +91,17 @@ class DBAdapter {
      * @return {Object} The document specified by the id. If the document is not found the promise is rejected
      */
     get(collectionName, _id){
-        return new Promise(function(resolve, reject){
+        return new Promise((function(resolve, reject){
 
 
             if( !this.db ) reject('not ready to connect to collections')
 
             collectionName = collectionName.trim()
 
-            // retrieve the appropiate model
-            var model = db.model(collectionName)
 
             reject('method not implemented')
            
-        })
+        }).bind(this))
     }
     
     /**
@@ -115,11 +113,11 @@ class DBAdapter {
      */
     create(collectionName, object){
         
-        return new Promise(function(resolve, reject){
+        return new Promise((function(resolve, reject){
             if( !this.db ) reject('not ready to connect to collections')
 
             reject('method not implemented')
-        })
+        }).bind(this))
     }
 
     /**
@@ -133,11 +131,11 @@ class DBAdapter {
      *                  invalidates the schema
      */
     update(collectionName, _id, diffObject){
-        return new Promise(function(resolve,reject){
+        return new Promise((function(resolve,reject){
             if( !this.db ) reject('not ready to connect to collections')
 
             reject('method not implemented')
-        })
+        }).bind(this))
     }
 }
 

@@ -73,7 +73,7 @@ describe('Database Interactions',function(){
                         result[prop].should.equal(orig[prop])
                     }
                 }
-            }
+            }   
             
             done()
         }).catch(function(err){
@@ -84,11 +84,6 @@ describe('Database Interactions',function(){
 
     })
     
-
-    
-    it('should fail creation if the object type is invalid',function(done){
-        'test'.should.equal('implemented')
-    })
 
     it('should fail creation if the object doesn\'t match the schema.',function(done){
         // property missing is the only case it will fail
@@ -101,11 +96,6 @@ describe('Database Interactions',function(){
     })
 
     it('should insert a document into the appropiate collection and return the _id of the document',function(done){
-        'test'.should.equal('implemented')
-    })
-
-    
-    it('should fail modification if the object type is invalid',function(done){
         'test'.should.equal('implemented')
     })
 
@@ -124,10 +114,6 @@ describe('Database Interactions',function(){
         'test'.should.equal('implemented')
     })
 
-    it('should fail upon any other errors from the database. This should happen for all DB functions',function(done){
-        // this can be tested by using sinon to stub out the database methods called, and throw an error instead
-        'test'.should.equal('implemented')
-    })
 
 })
     

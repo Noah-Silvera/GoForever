@@ -4,3 +4,4 @@ src/css/*.css
 *.pdf
 *-ns
 mochawesome-reports/**/*
+.vscode/settings.json
