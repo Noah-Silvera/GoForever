@@ -40,6 +40,10 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
 
         }
 
+        makeMove(data){
+            console.info(`---- NOT IMPLEMENTED --- making move at ${data.x}, ${data.y}`)
+        }
+
     }
 
     // this is how the circular dependency between controllers and views are dealt with

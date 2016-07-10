@@ -29,7 +29,7 @@ define(function(){
             rect.setAttribute("fill", c);
 
             if( transparent ){
-                rect.setAttribute("fill-opacity", transparent);
+                rect.setAttribute("fill-opacity", 0.0);
             }
 
             return rect; 
@@ -46,6 +46,7 @@ define(function(){
         circ.setAttribute("fill", c);
         circ.setAttribute("stroke", stroke);
         circ.setAttribute("stroke-width", strokeWidth);
+        // circ.setAttribute("fill-opacity", 0.5);
 
         return circ;
 

@@ -41,7 +41,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
         drawBoard(svgElem, state){
             svgElem = $(svgElem)
             
-            var H = svgElem.parent().height()
+            var H = svgElem.parent().width()
             var W = svgElem.parent().width()
 
             svgElem.attr('width',W)
@@ -64,24 +64,40 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             
             for(var i = 1; i < (state.board.length); i++){
             var distance = H/(state.size );
-            for(var j = 1; j < (state.size ); j++){
-                switch (state.board[i][j]){
-                    case 1:
-                        svgElem.append(svgFactory.makeCircle(i*distance, j*distance, distance/2, "black", "Peru", 2));
-                        break;
-                    case 2:
-                        svgElem.append(svgFactory.makeCircle(i*distance, j*distance, distance/2, "lightGray", "Peru", 2));
-                        break;
-                    case 0:
-                        svgElem.append(svgFactory.makeRectangle(i*distance, j*distance, distance/2, distance/2,'black',true ))
-                        break;
-                    default:
-                        
+                for(var j = 1; j < (state.size ); j++){
+                    switch (state.board[i][j]){
+                        case 1:
+                            svgElem.append(svgFactory.makeCircle(i*distance, j*distance, distance/2, "black", "Peru", 2));
+                            break;
+                        case 2:
+                            svgElem.append(svgFactory.makeCircle(i*distance, j*distance, distance/2, "lightGray", "Peru", 2));
+                            break;
+                        case 0:
+                            svgElem.append(
+                                $( svgFactory.makeRectangle(
+                                    i*distance - distance/2,
+                                    j*distance - distance/2,
+                                    distance,
+                                    distance,
+                                    'black',
+                                    true )
+
+                                )
+                                .attr('data-x',i)
+                                .attr('data-y',j)
+                                .on('click',(function(e){
+                                    var data = $(e.target).data()
+                                    this.control.makeMove(data)
+                                }).bind(this))
+                            )
+                                
+                            break;
+                        default:
+                            
+                    }
                 }
             }
-        }
-        
-        svgElem;
+
         }
         
     }

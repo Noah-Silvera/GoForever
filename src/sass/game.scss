@@ -1,0 +1,8 @@
+@import 'global';
+
+$board-size: 50%; 
+
+#board{
+   margin:auto;
+   width: $board-size;
+}
