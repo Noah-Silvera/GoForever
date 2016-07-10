@@ -32,69 +32,51 @@ app.use(express.static(path.join(root,'/scripts/frontend').toString()));
 app.use(express.static(path.join(root,'/static').toString()));
 app.use(express.static(path.join(root,'/css').toString()));
 
-app.use(bodyParser())   
-app.use(helmet.noCache()) 
-            
-// load static files for serving      
-var indexHtml = fs.readFileSync(path.join(root,'static/index.html'));
-var gameHtml = fs.readFileSync(path.join(root,'static/game.html'));
-var gameOptionsHtml = fs.readFileSync(path.join(root,'static/gameOptions.html'));
-var userLandingHtml = fs.readFileSync(path.join(root,'static/userLanding.html'));
-var userSettingsHtml = fs.readFileSync(path.join(root,'static/userSettings.html'));
-var userProfileHtml = fs.readFileSync(path.join(root,'static/userProfile.html'));
-var treeHtml = fs.readFileSync(path.join(root,'static/tree.html'));
-     
  //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
-      
+app.use(bodyParser())   
+app.use(helmet.noCache())  
+
 // routing for the landing page 
 app.get('/', function( req, res){
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(indexHtml);
   res.send()
+});
+
+// the names of the html files to set up routing for
+var staticFileArr = [
+      'game',
+      'gameOptions',
+      'userLanding',
+      'userSettings',
+      'userProfile',
+    ]
+            
+/**
+ * @param  {Array} fileList A list of html files to set up static routing for
+ */
+;(function staticRoutingFactory(fileList){
+
+    fileList.forEach(function(fileName){
+
+      var fileString = fs.readFileSync(path.join(root,`static/${fileName}.html`))
+
+      app.get(`/${fileName}`,function(req,res){
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(fileString);
+        res.send()
+      })
+    })
+
+})( staticFileArr )
+
+
+// routing for the tree  page 
+app.get('/', function( req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(indexHtml);
+  res.send()
 });   
-
-// routing for the game page
-app.get('/game', function( req, res){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(gameHtml);
-  res.send()
-});  
-
-// routing for the game options page
-app.get('/gameOptions', function( req, res){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(gameOptionsHtml);
-  res.send()
-});  
-
-// routing for the user landing page
-app.get('/userLanding', function( req, res){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(userLandingHtml);
-  res.send()
-});  
-
-
-// routing for the user settings page
-app.get('/userSettings', function( req, res){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(userSettingsHtml);
-  res.send()
-});  
-
-// routing for the user profile page
-app.get('/userProfile', function( req, res){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(userProfileHtml);
-  res.send()
-});  
-
-app.get('/tree',function(req,res){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(treeHtml);
-  res.send()
-})
-
 
 // all requests to model data
 // route both requests with and without an id
@@ -168,6 +150,49 @@ app.route(['/api/:model/:id','/api/:model'])
       })
   })
 
+
+
+// routing for the tree  page 
+app.get('/tree', function( req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(buildTreeHtml());
+  res.send()
+});  
+
+
+
+
+function buildTreeHtml(){
+  var html;
+  html =  `<div>
+            <style>
+                div {
+                    margin-left:25px;
+                    margin-top:10px;
+                    margin-bottom:10px;
+                    font-size:15px;
+                }
+
+                #wrapper {
+                    margin:50px;
+                }
+            </style>
+            <div id='wrapper'>
+            <div>
+                <a href="http://localhost:3000/">Login Page</a>
+            </div>`
+  
+  staticFileArr.forEach(function(fileName){
+    html +=   `<div>
+                  <a href="http://localhost:3000/${fileName}">${fileName}</a>
+              </div>`
+  })
+
+    html+=  `</div>
+        </div>`
+
+  return html
+}
 
 app.listen(3000, function(){
    info('---------------------------')  

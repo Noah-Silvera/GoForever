@@ -36,11 +36,20 @@
             window.location.href = 'http://localhost:3000/gameOptions'
         }
 
-        loadSettings(){
+        loadLandingPage(){
+            window.location.href = 'http://localhost:3000/userLanding'
+        }
+
+        loadProfilePage(){
+            window.location.href = 'http://localhost:3000/userProfile'
+        }
+
+        loadSettingsPage(){
             // do user specific things here
 
             window.location.href = 'http://localhost:3000/userSettings'
         }
+
 
         logout(){
             // do logging out things here

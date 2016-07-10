@@ -42,11 +42,11 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
 
         makeMove(data){
             if( data.pass ){
-                console.info('---- NOT IMPLEMENTED --- Passing...')
+                console.error('---- NOT IMPLEMENTED --- Passing...')
                 return;
             }
 
-            console.info(`---- NOT IMPLEMENTED --- making move at ${data.x}, ${data.y}`)
+            console.error(`---- NOT IMPLEMENTED --- making move at ${data.x}, ${data.y}`)
         }
 
     }
