@@ -41,6 +41,7 @@ var gameHtml = fs.readFileSync(path.join(root,'static/game.html'));
 var gameOptionsHtml = fs.readFileSync(path.join(root,'static/gameOptions.html'));
 var userLandingHtml = fs.readFileSync(path.join(root,'static/userLanding.html'));
 var userSettingsHtml = fs.readFileSync(path.join(root,'static/userSettings.html'));
+var userProfileHtml = fs.readFileSync(path.join(root,'static/userProfile.html'));
 var treeHtml = fs.readFileSync(path.join(root,'static/tree.html'));
      
  //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
@@ -78,6 +79,13 @@ app.get('/userLanding', function( req, res){
 app.get('/userSettings', function( req, res){
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(userSettingsHtml);
+  res.send()
+});  
+
+// routing for the user profile page
+app.get('/userProfile', function( req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(userProfileHtml);
   res.send()
 });  
 
