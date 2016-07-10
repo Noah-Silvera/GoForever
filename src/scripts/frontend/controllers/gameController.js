@@ -49,6 +49,15 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
             console.error(`---- NOT IMPLEMENTED --- making move at ${data.x}, ${data.y}`)
         }
 
+        replayPrevMove(){
+            console.error(`---- NOT IMPLEMENTED --- replaying previous move...`)
+        }
+
+        replayNextMove(){
+            console.error(`---- NOT IMPLEMENTED --- replaying next move...`)
+
+        }
+
     }
 
     // this is how the circular dependency between controllers and views are dealt with

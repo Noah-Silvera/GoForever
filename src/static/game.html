@@ -1,5 +1,7 @@
 <head>
     <link rel="stylesheet" href="/game.css">
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.svg.js"></script>
     <link href = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel = "stylesheet">
     <script src="lib/require.js"></script>
     <script src="lib/require_shim.js"></script>
@@ -18,10 +20,12 @@
         </div>
     </div>
 
+    <!--dynamically displays the current player-->
+
+
     <div id='bottom-panel-wrapper' >
-        <div id="action-buttons" >
-            <button id='pass-button' class="btn btn-default">Pass</button>
-        </div>
+        <div id='player-indicator' class="disable-click-events"></div>
+        <div id='bottom-panel' ></div>
     </div>
 
     <script>
