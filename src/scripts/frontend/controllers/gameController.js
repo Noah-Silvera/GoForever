@@ -1,4 +1,4 @@
-define(['controllers/controller','request','views/gameView','models/gameModel'], function(Controller,request,GameView,GameModel){
+define(['controllers/controller','lib/request','views/gameView','models/gameModel'], function(Controller,request,GameView,GameModel){
 
     class GameController extends Controller{
         
@@ -47,7 +47,7 @@ define(['controllers/controller','request','views/gameView','models/gameModel'],
     // http://requirejs.org/docs/api.html#circular
     // http://www.bitnative.com/2015/02/03/circular-dependencies-in-requirejs/
     var gameController = new GameController(GameView,GameModel)
-    gameController._view.setControl(gameController)
+    gameController.view.setControl(gameController)
     
     return gameController
 })

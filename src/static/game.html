@@ -8,11 +8,19 @@
 
     <h1> Game Page </h1>
 
+    <div id="board">
+        <div class="svg-wrapper">
+            <svg>
+
+            </svg>
+        <div>
+    </div>
+
     <script>
         require(['controllers/gameController'],function(GameController){
 
             // load the initial state
-            GameController.selectViewState('firstState')
+            GameController.selectViewState('gameActive')
 
         })
     </script>
