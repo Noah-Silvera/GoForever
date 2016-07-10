@@ -38,17 +38,35 @@ define(function(){
 
         'makeCircle':function makeCircle(x, y, r, c, stroke, strokeWidth){
 
-        var circ = document.createElementNS(SVGNameSpace, "circle"); 
-        
-        circ.setAttribute("cx", x);
-        circ.setAttribute("cy", y);
-        circ.setAttribute("r", r);
-        circ.setAttribute("fill", c);
-        circ.setAttribute("stroke", stroke);
-        circ.setAttribute("stroke-width", strokeWidth);
-        // circ.setAttribute("fill-opacity", 0.5);
+            var circ = document.createElementNS(SVGNameSpace, "circle"); 
+            
+            circ.setAttribute("cx", x);
+            circ.setAttribute("cy", y);
+            circ.setAttribute("r", r);
+            circ.setAttribute("fill", c);
+            circ.setAttribute("stroke", stroke);
+            circ.setAttribute("stroke-width", strokeWidth);
 
-        return circ;
+
+            return circ;
+
+        },
+
+        'makeTransparentCircle':function makeCircle(x, y, r, c,transparent){
+
+            var circ = document.createElementNS(SVGNameSpace, "circle"); 
+            
+            circ.setAttribute("cx", x);
+            circ.setAttribute("cy", y);
+            circ.setAttribute("r", r);
+            circ.setAttribute("fill", c);
+
+
+            if( transparent ){
+                circ.setAttribute("fill-opacity", 0.0);
+            }
+
+            return circ;
 
         }
     }

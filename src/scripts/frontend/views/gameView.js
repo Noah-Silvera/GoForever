@@ -12,21 +12,54 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             //simply a reference definition for the possible states that 
             // should be passed to the view
 
+            this.selectors = {
+                // where all the action buttons go
+                'bottomPanel': '#bottom-panel',
+                'passButton': '#pass-button',
+                'board':'#board',
+                'playerIndicator':'#player-indicator'
+            } 
+
         }
         
         render(){
+
+            // clear the bottom panel of all state specific buttons
+
+            $(this.selectors.bottomPanel).empty()
+
             switch(this.viewState){
                 case 'gameActive':
 
-                    //set up button handlers
+                    this.drawPlayerIndicator()
+                    
+                    
+                    ;(function drawBottomPanel(){
 
-                    //pass button
-                    $('#pass-button').on('click',(function(){
-                        this.control.makeMove({ 'pass':true })
-                    }).bind(this))
+
+                        // the action buttons for main gameplay
+                        $(this.selectors.bottomPanel).append(
+                            $('<div id="action-buttons" >').append(
+                                $('<button>')
+                                    .addClass('btn btn-default')
+                                    .attr('id','pass-button')
+                                    .text('Pass')
+                                    .on('click',(function makeMove(){
+                                        this.control.makeMove({ 'pass':true })
+                                    }).bind(this)),
+                                $('<button>')
+                                    .text('Replay ( TEMPORARY )')
+                                    .on('click',(function replay(){
+                                        this.control.selectViewState('replay')
+                                    }).bind(this))
+                                
+                            )
+                        )
+
+                    }).bind(this)()
 
                     // draw the board    
-                    var boardElem = $("#board").find('svg')[0];
+                    var boardElem = $(this.selectors.board).find('svg')[0];
 
                     this.drawBoard(boardElem,
                         {"size":11,"board":[[0,1,1,2,2,1,2,2,2,2,1],[2,2,2,2,0,2,1,0,0,1,1],[0,1,2,2,2,2,0,2,0,0,2],[2,1,0,2,1,0,2,0,2,1,0],[1,0,1,0,2,1,0,1,0,1,2],[0,0,0,0,0,2,2,0,1,1,1],[0,2,1,2,0,0,1,1,0,2,0],[1,1,1,0,0,1,2,2,1,2,2],[2,0,2,0,1,0,0,1,0,2,2],[2,2,1,0,2,1,1,1,1,0,2],[2,2,2,1,2,2,2,1,1,1,1]]}
@@ -35,6 +68,48 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
 
                     break;
                 case 'replay':
+
+                    this.drawPlayerIndicator()
+
+                    ;(function drawBottomPanel(){
+
+                        $(this.selectors.bottomPanel).append(
+
+                            $('<button>')
+
+                                .on('click',(function prevMove(e){
+                                    this.control.replayPrevMove()
+                                    e.stopPropagation()
+                                }).bind(this))
+                                .append(
+                                    $('<img class="svg">')
+                                        .attr('src','images/Back_(Flat).svg')                                
+                                ),
+                            
+                            $('<button>')
+
+                                .on('click',(function nextMove(e){
+                                    this.control.replayNextMove()
+                                    e.stopPropagation()
+                                }).bind(this))
+                                .append(
+                                    $('<img class="svg">')
+                                        .attr('src','images/Forward_(Flat).svg')                                
+                                )
+                        )
+                        
+                        $(this.selectors.bottomPanel).find('button').addClass('btn replay-button')
+
+
+                    }).bind(this)()
+                    
+
+                    // draw the board    
+                    var boardElem = $("#board").find('svg')[0];
+
+                    this.drawBoard(boardElem,
+                        {"size":11,"board":[[0,1,1,2,2,1,2,2,2,2,1],[2,2,2,2,0,2,1,0,0,1,1],[0,1,2,2,2,2,0,2,0,0,2],[2,1,0,2,1,0,2,0,2,1,0],[1,0,1,0,2,1,0,1,0,1,2],[0,0,0,0,0,2,2,0,1,1,1],[0,2,1,2,0,0,1,1,0,2,0],[1,1,1,0,0,1,2,2,1,2,2],[2,0,2,0,1,0,0,1,0,2,2],[2,2,1,0,2,1,1,1,1,0,2],[2,2,2,1,2,2,2,1,1,1,1]]}
+                        )
 
                     break;
                 case 'endGame':
@@ -83,11 +158,10 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                             break;
                         case 0:
                             svgElem.append(
-                                $( svgFactory.makeRectangle(
-                                    i*distance - distance/2,
-                                    j*distance - distance/2,
-                                    distance,
-                                    distance,
+                                $( svgFactory.makeTransparentCircle(
+                                    i*distance,
+                                    j*distance,
+                                    distance/2,
                                     'black',
                                     true )
 
@@ -98,6 +172,11 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                     var data = $(e.target).data()
                                     this.control.makeMove(data)
                                 }).bind(this))
+                                .hover(function(){
+                                    $(this).css("fill-opacity","0.25")
+                                },function(){
+                                    $(this).css("fill-opacity",'0')
+                                })
                             )
                                 
                             break;
@@ -106,6 +185,23 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                     }
                 }
             }
+
+        }
+
+        drawPlayerIndicator(){
+
+
+            console.error('----NOT IMPLEMENTED----- determine who is current player')
+
+            var curPlayer = 'White'
+
+
+
+            $(this.selectors.playerIndicator).empty().append(
+                $('<button type="button" class="btn btn-default">')
+                    .text(`${curPlayer}`)
+                .attr('background-color','white')
+            )
 
         }
         

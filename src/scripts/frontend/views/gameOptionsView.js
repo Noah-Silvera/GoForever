@@ -10,12 +10,14 @@ define(['./view','jquery'],function(View,$){
         render(){
              switch(this.viewState){
                 case 'default':
-                    $('#start-btn').on('click',function(){
+                    $('#start-btn').on('click',(function(){
                         console.info('starting game....')
 
                         console.error('---NOT IMPLEMENTED--- creating initial game info ')
                         console.error('---NOT IMPLEMENTED--- loading game page ')
-                    })
+
+                    }).bind(this))
+                    
                     break;
               default:
                     throw 'invalid state'

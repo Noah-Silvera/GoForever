@@ -13,3 +13,44 @@ $board-size: 50%;
    margin-bottom:10px;
    width: $board-size;
 }
+
+$action-button-spacing: 10px;
+
+#bottom-panel-wrapper{
+    width: 95%;
+    margin: 0 auto; 
+    text-align:center;
+
+}
+
+#bottom-panel-wrapper * {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+#bottom-panel-wrapper .btn {
+    margin-left: $action-button-spacing;
+    margin-right: $action-button-spacing;
+    display:inline-block;
+}
+
+#player-indicator .btn{
+    font-size:25px;
+    width:25%;
+    border-style: solid;
+    border-width:2px;
+    border-color:light-gray;
+}
+
+.replay-button {
+    padding: 0px;
+}
+
+// width of the replay arrows
+.replay-button img {
+    width: 30px;
+}
+
+.replay-button:hover{
+    box-shadow: 2px 2px 5px #888888;
+}
