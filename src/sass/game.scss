@@ -6,3 +6,10 @@ $board-size: 50%;
    margin:auto;
    width: $board-size;
 }
+
+#bottom-panel-wrapper{
+   margin:auto;
+   margin-top:10px;
+   margin-bottom:10px;
+   width: $board-size;
+}

@@ -17,12 +17,21 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
         render(){
             switch(this.viewState){
                 case 'gameActive':
-                    
-                    var boardElem = $("#board").find('svg')[0]; 
+
+                    //set up button handlers
+
+                    //pass button
+                    $('#pass-button').on('click',(function(){
+                        this.control.makeMove({ 'pass':true })
+                    }).bind(this))
+
+                    // draw the board    
+                    var boardElem = $("#board").find('svg')[0];
 
                     this.drawBoard(boardElem,
                         {"size":11,"board":[[0,1,1,2,2,1,2,2,2,2,1],[2,2,2,2,0,2,1,0,0,1,1],[0,1,2,2,2,2,0,2,0,0,2],[2,1,0,2,1,0,2,0,2,1,0],[1,0,1,0,2,1,0,1,0,1,2],[0,0,0,0,0,2,2,0,1,1,1],[0,2,1,2,0,0,1,1,0,2,0],[1,1,1,0,0,1,2,2,1,2,2],[2,0,2,0,1,0,0,1,0,2,2],[2,2,1,0,2,1,1,1,1,0,2],[2,2,2,1,2,2,2,1,1,1,1]]}
                         )
+                    
 
                     break;
                 case 'replay':
