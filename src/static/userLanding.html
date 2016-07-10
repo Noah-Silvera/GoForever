@@ -14,11 +14,17 @@
             <!--The nav bar is dynamically inserted into this element at runtime-->
             <div id='nav-bar-wrapper'>
             </div>
-        
-            <button class="btn-success btn-lg pull-right nav play-game" id="play-game-button">Play</button>
-
-            <label for="global-statistics-ordering">Order Ranking:</label>
-            <select class="form-control-inline" name="global-statistics-ordering" id="global-statistics-ordering"><select/>
+            <div class="better-border">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="global-statistics-ordering">Order Ranking:</label>
+                    <select class="form-control" name="global-statistics-ordering" id="global-statistics-ordering"><select/>
+                </div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4">
+                    <button class="btn-success btn-lg btn-block nav play-game" id="play-game-button">Play</button>
+                </div>
+            </div>
             <div id="global-statistics">
             <table class="table table-centered">
                 <thead>
@@ -34,6 +40,7 @@
                 <tbody id="global-statistics-table-body">
                 </tbody>
             </table>
+            </div>
         </div>
 
     <script>

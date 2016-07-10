@@ -3,15 +3,21 @@
 table.table-centered{
     margin: 0 auto !important;
     float: none !important;
+    margin-top: 10px;
 }
 
 #play-game-button{
-
     margin-bottom: 16px;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 select.form-control-inline{
     min-width: 175px;
     min-height: 8px;
     margin-top: 16px;
+}
+
+#global-statistics{
+    margin-top: 20px;
 }

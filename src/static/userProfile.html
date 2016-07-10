@@ -12,8 +12,66 @@
     <div id="nav-bar-wrapper">
 
     </div>
+    <div class="better-border container-fluid">
+        <div class="row text-center">
+            <div class="col-sm-4 ">
+               <div class="stats-div">
+                    <h1 >Welcome</h1>
+                    <h3 id="title-username">placeholder</h3>
+               </div>
+           </div>
+           <div class="col-sm-4 ">
+               <div class="stats-div">
+                    <h3>Games Played</h3>
+                    <h1 id="stats-games-played">10</h1>
+               </div>
+           </div>
+           <div class="col-sm-4">
+               <div class="stats-div">
+                    <h3>Games Won</h3>
+                    <h1 id="stats-games-won">10</h1>
+               </div>
+           </div>
+           <div class="col-sm-4">
+               <div class="stats-div">
+                    <h3>Win Percentage</h3>
+                    <h1 id="stats-win-percentage">100%</h1>
+               </div>
+           </div>
+           <div class="col-sm-4">
+               <div class="stats-div">
+                    <h3>Win Streak</h3>
+                    <h1 id="stats-win-streak">10</h1>
+               </div>
+           </div>
+           <div class="col-sm-4">
+               <div class="stats-div">
+                    <h3>Rank</h3>
+                    <h1 id="stats-rank">1</h1>
+               </div>
+           </div>
+        </div>
+        
+        <div class="better-border"><h2>Match History</h2>
+        <div id="match-history-div">
+        <table class="table table-centered">
+            <thead>
+                <tr>
+                <th class="hidden">Match Id</th>
+                <th>Start Date</th>
+                <th>Game Length</th>
+                <th>Score</th>
+                <th>Result</th>
+                <th>Replay</th>
+                </tr>
+            </thead>
+            <tbody id="match-history-body">
+            </tbody>
+        </table>
+        </div>
+        </div>
+     </div>
 
-    <h1> User Profile </h1>
 
     <script>
         require(['controllers/userController'],function(UserController){

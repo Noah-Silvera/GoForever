@@ -14,119 +14,121 @@
     </div>
 
     
-    
     <div class="better-border">
-        <h4>Change your default game settings here.</h4>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="well">Default Colour</div>
-            <div class="row">
-                <div class="col-sm-9">
-                    <select class="form-control" id="board-style" name="board-colour-scheme"></select>
-                </div>
-                <div class="col-sm-3">
-                    <button type="submit" id="submit-board-style" class="btn btn-success">Submit</button>
+        <div class="better-border">
+            <h4>Change your default game settings here.</h4>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="well">Default Colour</div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <select class="form-control" id="board-style" name="board-colour-scheme"></select>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="submit" id="submit-board-style" class="btn btn-success">Submit</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="well">Default Size</div>
-            <div class="row">
-                <div class="col-sm-9">
-                    <select class="form-control" id="board-size" name="board-size">
-                        <option></option>
-                        <option>9x9</option>
-                        <option>13x13</option>
-                        <option>19x19</option>
-                    </select>
-                </div>
-                <div class="col-sm-3">
-                    <button type="submit" id="submit-board-size" class="btn btn-success">Submit</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="well">Default Handicap</div>
-            <div class="row">
-                <div class="col-sm-9">
-                    <select class="form-control" name="game-handicaps" id="game-handicap "><select/>
-                </div>
-                <div class="col-sm-3">
-                    <button type="submit" id="submit-game-handicaps" class="btn btn-success">Submit</button>
+            <div class="col-sm-4">
+                <div class="well">Default Size</div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <select class="form-control" id="board-size" name="board-size">
+                            <option></option>
+                            <option>9x9</option>
+                            <option>13x13</option>
+                            <option>19x19</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="submit" id="submit-board-size" class="btn btn-success">Submit</button>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="col-sm-4">
+                <div class="well">Default Handicap</div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <select class="form-control" name="game-handicaps" id="game-handicap "><select/>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="submit" id="submit-game-handicaps" class="btn btn-success">Submit</button>
+                    </div>
+                </div>
+            </div>
+            </div>
 
-    <div class="better-border">
-        <h4>Proceed with caution, changes to account settings will be permanent.</h4>
-    </div>
-    
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="well">Change Email</div>
-                
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Email:</label>
-                        <div class="col-sm-10">
-                            <input name="change-email" type="text" class="form-control" id="email">
-                            
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="confirm-email">Confirm:</label>
-                        <div class="col-sm-10">
-                            <input name="confirm-change-email" type="text" class="form-control" id="confirm-email">
-                        </div>
-                    </div>
-                    <div class="form-group"> 
-                        <div class="col-sm-offset-2 col-sm-10">
-                             <button type="submit" id="submit-change-email" class="btn btn-success">Submit</button>
-                        </div>
-                    </div>
-                </form>
+        <div class="better-border">
+            <h4>Proceed with caution, changes to account settings will be permanent.</h4>
         </div>
-        <div class="col-sm-4">
-            <div class="well">Change Password</div>
-            <form class="form-horizontal" role="form">
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="password">Password:</label>
-                    <div class="col-sm-10">
-                        <input name="change-password" type="password" class="form-control" id="password">
-                    </div>
+        
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="well">Change Email</div>
+                        
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="email">Email:</label>
+                                <div class="col-sm-10">
+                                    <input name="change-email" type="text" class="form-control" id="email">
+                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="confirm-email">Confirm:</label>
+                                <div class="col-sm-10">
+                                    <input name="confirm-change-email" type="text" class="form-control" id="confirm-email">
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" id="submit-change-email" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </form>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="password">Confirm:</label>
-                    <div class="col-sm-10">
-                        <input name="confirm-change-password" type="password" class="form-control" id="password">
-                    </div>
-                </div>
-                <div class="form-group"> 
-                    <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" id="submit-change-password" class="btn btn-success">Submit</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-4">
-            <div class="well">Change Username</div>
-            <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="username">Username:</label>
-                        <div class="col-sm-10">
-                            <input name="change-username" type="text" class="form-control" id="username">
+                <div class="col-sm-4">
+                    <div class="well">Change Password</div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="password">Password:</label>
+                            <div class="col-sm-10">
+                                <input name="change-password" type="password" class="form-control" id="password">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group"> 
-                        <div class="col-sm-offset-2 col-sm-10">
-                             <button type="submit" id="submit-change-username" class="btn btn-success">Submit</button>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="password">Confirm:</label>
+                            <div class="col-sm-10">
+                                <input name="confirm-change-password" type="password" class="form-control" id="password">
+                            </div>
                         </div>
-                    </div>
-                </form>
-            
+                        <div class="form-group"> 
+                            <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" id="submit-change-password" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-4">
+                    <div class="well">Change Username</div>
+                    <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="username">Username:</label>
+                                <div class="col-sm-10">
+                                    <input name="change-username" type="text" class="form-control" id="username">
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" id="submit-change-username" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    
+                </div>
+            </div>
         </div>
-    </div>
     </div>
 
     <script>

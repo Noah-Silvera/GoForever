@@ -1,1 +1,13 @@
 @import 'global';
+
+div.stats-div{
+    background-color: $light-orange;
+    border-radius: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-width: 6px;
+    border-color: $dark-gold;
+    border-style: solid;
+}
