@@ -13,8 +13,8 @@ define(['./view','jquery'],function(View,$){
                     $('#start-btn').on('click',function(){
                         console.info('starting game....')
 
-                        console.info('---NOT IMPLEMENTED--- creating initial game info ')
-                        console.info('---NOT IMPLEMENTED--- loading game page ')
+                        console.error('---NOT IMPLEMENTED--- creating initial game info ')
+                        console.error('---NOT IMPLEMENTED--- loading game page ')
                     })
                     break;
               default:
