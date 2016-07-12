@@ -33,21 +33,20 @@ label{
     margin-top: 16px;
 }
 
-#opponent-selector, #colour-selector, #colour-selector-indicators {
-    margin-top: 13px;
+#opponent-selector, #colour-selector{
     width:100%;
     text-align:center;
     display:inline-block;
 }
 
 
-#opponent-selector button, #colour-selector button, #colour-selector-indicators button {
+#opponent-selector button, #colour-selector button {
     width:50%;
 }
 
 #colour-selector-wrapper {
-    margin-top:15px;
-    margin-bottom:15px;
+    margin-top:5px;
+    margin-bottom:5px;
 }
 
 #colour-selector-wrapper *{
