@@ -12,6 +12,15 @@ define(['./model'], function(Model){
         addData(gameData){
             // handle and send data to database
         }
+
+        getData(){
+            return {
+                '_id': 123,
+                'dateTime': null,
+                'whiteUserId': 000
+                // 'blackUserId': 
+            }
+        }
         
     }
     

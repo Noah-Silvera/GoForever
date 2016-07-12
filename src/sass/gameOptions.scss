@@ -1,7 +1,7 @@
 @import 'global';
 
 #div-with-bg{
-    background-image: url('goGame.png');
+    background-image: url('images/goGame.png');
     min-height: 500px;
     min-width:  500px;
     margin-top: 0px;
@@ -32,6 +32,38 @@ label{
 #start-btn{
     margin-top: 16px;
 }
+
+#opponent-selector, #colour-selector, #colour-selector-indicators {
+    margin-top: 13px;
+    width:100%;
+    text-align:center;
+    display:inline-block;
+}
+
+
+#opponent-selector button, #colour-selector button, #colour-selector-indicators button {
+    width:50%;
+}
+
+#colour-selector-wrapper {
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+#colour-selector-wrapper *{
+    margin-top:0px;
+}
+
+#colour-selector button:hover {
+    font-weight:bold;
+}
+
+#colour-selector-indicators button {
+    margin:0;
+    padding:0;
+}
+
+
 
 
 

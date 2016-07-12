@@ -1,4 +1,5 @@
 $font-stack:    Helvetica, sans-serif;
+
 $brown: #b98146;
 $light-grey-orange: #d5b490;
 $green: #63b946;
@@ -7,6 +8,8 @@ $light-orange: #ffcc66;
 $grey-blue: #609f9f;
 $light-red: #ff5050;
 $creamy-green: #ccffcc;
+$circle-radius: 50px;
+$hover-shadow:5px -5px rgba(0,0,0,0.6);
 
 a.navbar-brand{
     font-size: 24px;
@@ -23,3 +26,17 @@ div.better-border{
 .disable-click-events {
     pointer-events: none;
 }
+
+.circle { 
+    width:$circle-radius;
+    height:$circle-radius;
+    border: solid 1px #555;
+    opacity: 0.9;
+    border-radius:100px;
+
+ }
+
+ .shadow {
+    box-shadow: 5px -5px rgba(0,0,0,0.6);
+    border-radius:8px;
+ }
