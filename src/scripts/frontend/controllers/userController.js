@@ -3,27 +3,59 @@
     class UserController extends Controller{
         
         create(){
-            var data = null;
-            data.name = $("#name").val();
-            data.email = $("#email").val();
-            data.password = $("#password").val();
-            data.password_confirm = $("#password_confirmation").val();
+            var data = {};
+            data.name = $("#register-username").val();
+            data.email = $("#register-email").val();
+            data.email_confirm = $("#register-email-confirm").val();
+            data.password = $("#register-password").val();
+            data.password_confirm = $("#register-password-confirm").val();
 
             var valid = true;
             if (data.password !== data.password_confirm) valid = false;
-
-            /**
-             * Must validate e-mail format and name length as well
-             */
+            
+            if (data.email !== data.email_confirm) valid = false;
+            
+            if (data.name.length == 0) valid = false;
+            
+            if (data.password.length == 0) valid = false;
 
             if(valid){
 
                 // should update the model here
                 // this.post("/users", data);
             } else {
-                this.selectViewState(2);
+                
+                // select view state changes nothing at the moment
+                this.selectViewState("landingPage");
                 this.view.notify();
             }
+        }
+        
+        login(){
+            var data = {};
+            data.name = $("#login-username").val();
+            data.password = $("#login-password").val();
+            
+            var valid = true;
+            if (data.name.length == 0) valid = false;
+            
+            if (data.password.length == 0) valid = false;
+            
+            if(valid){//logic should be reversed later
+
+                // should update the model here
+                // this.post("/users", data);
+            } else {
+                
+                // select view state changes nothing at the moment
+                this.selectViewState("landingPage"); 
+                this.view.notify();
+            }
+        }
+        
+        forgotCredentials(){
+            //send username and pass by email
+            throw "method not implemented"
         }
 
         playGame(options){
