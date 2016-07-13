@@ -14,6 +14,18 @@ define(['./view','jquery','controllers/userController'],function(View,$,userCont
             switch(this.viewState){
                 // get all
                 case 'indexPage':
+                
+                    $("#login").on('click',(function(){
+                        this.control.login()
+                    }).bind(this))
+                    
+                    $("#register").on('click',(function(){
+                        this.control.create()
+                    }).bind(this))
+                    
+                    $("#forgot-credentials").on('click',(function(){
+                        this.control.forgotCredentials()
+                    }).bind(this))
 
                     // event handlers intialized here
                     // state specific DOM manips dealt with here

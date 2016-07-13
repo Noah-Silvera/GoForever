@@ -11,6 +11,14 @@ define(['./view','jquery'],function(View,$){
                 'emptyBoard': 'images/emptyBoardCloseup.png'
             }
             
+            this.colours = {
+                
+            }
+            
+            this.handicaps = {
+                
+            }
+            
 
 
         }
@@ -26,7 +34,11 @@ define(['./view','jquery'],function(View,$){
                     }).bind(this))
 
 
-
+                    // populate lists
+                    
+                    $("#board-style").append(
+                        $('<option>').attr( 'id',"colour1").text('colour1')
+                    )
                     /**
                      * Create the opponent buttons that allow a user to choose between playing against a computer or an AI
                      */

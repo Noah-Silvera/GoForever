@@ -23,37 +23,38 @@
                 <div class="well well-sm">Sign Up</div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="username">Username:</label>
+                        <label class="control-label col-sm-2" for="register-username">Username:</label>
                         <div class="col-sm-10">
-                            <input name="register-username" type="text" class="form-control" id="username">
+                            <input name="register-username" type="text" class="form-control" id="register-username">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Email:</label>
+                        <label class="control-label col-sm-2" for="register-email">Email:</label>
                         <div class="col-sm-10">
-                            <input name="register-email" type="text" class="form-control" id="email">
+                            <input name="register-email" type="text" class="form-control" id="register-email">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Confirm Email:</label>
+                        <label class="control-label col-sm-2" for="register-email-confirm">Confirm Email:</label>
                         <div class="col-sm-10">
-                            <input name="register-email-confirm" type="text" class="form-control" id="email">
+                            <input name="register-email-confirm" type="text" class="form-control" id="register-email-confirm">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="password">Password:</label>
+                        <label class="control-label col-sm-2" for="register-password">Password:</label>
                         <div class="col-sm-10">
+                             <input name="register-password" type="password" class="form-control" id="register-password">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="password">Confirm Password:</label>
+                        <label class="control-label col-sm-2" for="register-password-confirm">Confirm Password:</label>
                         <div class="col-sm-10">
-                            <input name="register-password-confirm" type="password" class="form-control" id="password">
+                            <input name="register-password-confirm" type="password" class="form-control" id="register-password-confirm">
                         </div>
                     </div>
                     <div class="form-group"> 
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-success">Register</button>
+                            <button type="submit" class="btn btn-success" id="register">Register</button>
                         </div>
                     </div>
                 </form>
@@ -63,27 +64,27 @@
                 
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="username">Username:</label>
+                        <label class="control-label col-sm-2" for="login-username">Username:</label>
                         <div class="col-sm-10">
-                            <input name="login-username" type="text" class="form-control" id="username">
+                            <input name="login-username" type="text" class="form-control" id="login-username">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="password">Password:</label>
+                        <label class="control-label col-sm-2" for="login-password">Password:</label>
                         <div class="col-sm-10">
-                            <input name="login-password" type="password" class="form-control" id="password">
+                            <input name="login-password" type="password" class="form-control" id="login-password">
                         </div>
                     </div>
                     <div class="form-group"> 
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-success">Submit</button>
-                                <button type="submit" class="btn btn-default">I forgot my password/username</button>
+                                <button type="submit" class="btn btn-success" id="login">Submit</button>
+                                <button type="submit" class="btn btn-default" id="forgot-credentials">I forgot my password/username</button>
                                 
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox">Remember Me
+                                    <input type="checkbox">Remember Me</input>
                                 </label>
                             </div>
                         </div>
