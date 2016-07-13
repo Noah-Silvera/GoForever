@@ -40,13 +40,13 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
 
         }
 
-        makeMove(data){
+        makeMove(data, state){
             if( data.pass ){
                 console.error('---- NOT IMPLEMENTED --- Passing...')
                 return;
             }
-
-            console.error(`---- NOT IMPLEMENTED --- making move at ${data.x}, ${data.y}`)
+            state.board[data.x][data.y] = 1;
+            this.view.drawBoard(state);
         }
 
         replayPrevMove(){

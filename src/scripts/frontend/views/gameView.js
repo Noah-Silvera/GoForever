@@ -59,10 +59,9 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                     }).bind(this)()
 
                     // draw the board    
-                    var boardElem = $(this.selectors.board).find('svg')[0];
 
-                    this.drawBoard(boardElem,
-                        {"size":11,"board":[[0,1,1,2,2,1,2,2,2,2,1],[2,2,2,2,0,2,1,0,0,1,1],[0,1,2,2,2,2,0,2,0,0,2],[2,1,0,2,1,0,2,0,2,1,0],[1,0,1,0,2,1,0,1,0,1,2],[0,0,0,0,0,2,2,0,1,1,1],[0,2,1,2,0,0,1,1,0,2,0],[1,1,1,0,0,1,2,2,1,2,2],[2,0,2,0,1,0,0,1,0,2,2],[2,2,1,0,2,1,1,1,1,0,2],[2,2,2,1,2,2,2,1,1,1,1]]}
+                    this.drawBoard(
+                        {"size":11,"board":[[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
                         )
                     
 
@@ -105,11 +104,10 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                     
 
                     // draw the board    
-                    var boardElem = $("#board").find('svg')[0];
 
-                    this.drawBoard(boardElem,
-                        {"size":11,"board":[[0,1,1,2,2,1,2,2,2,2,1],[2,2,2,2,0,2,1,0,0,1,1],[0,1,2,2,2,2,0,2,0,0,2],[2,1,0,2,1,0,2,0,2,1,0],[1,0,1,0,2,1,0,1,0,1,2],[0,0,0,0,0,2,2,0,1,1,1],[0,2,1,2,0,0,1,1,0,2,0],[1,1,1,0,0,1,2,2,1,2,2],[2,0,2,0,1,0,0,1,0,2,2],[2,2,1,0,2,1,1,1,1,0,2],[2,2,2,1,2,2,2,1,1,1,1]]}
-                        )
+                    this.drawBoard(
+                        {"size":11,"board":[[0,1,1,2,2,1,2,2,2,2,1],[2,2,2,2,0,2,1,0,0,1,1],[0,1,2,2,2,2,0,2,0,0,2],[2,1,0,2,1,0,2,0,2,1,0],[1,0,1,0,2,1,0,1,0,1,2],[0,0,0,0,0,2,2,0,1,1,1],[0,2,1,2,0,0,1,1,0,2,0],[1,1,1,0,0,1,2,2,1,2,2],[2,0,2,0,1,0,0,1,0,2,2],[2,2,1,0,2,1,1,1,1,0,2],[2,2,2,1,2,2,2,1,1,1,1]]})
+                        
 
                     break;
                 case 'endGame':
@@ -122,8 +120,11 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
         }
         
         //state requires size board n*n with moves 0, 1, 2 for this to function correctly
-        drawBoard(svgElem, state){
+        drawBoard(state){
+            
+            var svgElem = $("#board").find('svg')[0];
             svgElem = $(svgElem)
+            svgElem.empty();
             
             var H = svgElem.parent().width()
             var W = svgElem.parent().width()
@@ -170,7 +171,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                 .attr('data-y',j)
                                 .on('click',(function(e){
                                     var data = $(e.target).data()
-                                    this.control.makeMove(data)
+                                    this.control.makeMove(data, state)
                                 }).bind(this))
                                 .hover(function(){
                                     $(this).css("fill-opacity","0.25")

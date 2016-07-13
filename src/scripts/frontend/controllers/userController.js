@@ -26,8 +26,6 @@
             } else {
                 
                 // select view state changes nothing at the moment
-                this.selectViewState("landingPage");
-                this.view.notify();
             }
         }
         
@@ -48,8 +46,6 @@
             } else {
                 
                 // select view state changes nothing at the moment
-                this.selectViewState("landingPage"); 
-                this.view.notify();
             }
         }
         
