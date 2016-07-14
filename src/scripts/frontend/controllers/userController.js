@@ -28,7 +28,7 @@
                 // select view state changes nothing at the moment
             }
         }
-        
+        //Login should be handled in sessions controller, not here
         login(){
             var data = {};
             data.name = $("#login-username").val();

@@ -36,7 +36,7 @@ define(function(){
          * Retrieves data from the model
          */
         getData(v){
-            this.model.getData();
+            return this.model.getData();
         }
     }
 })

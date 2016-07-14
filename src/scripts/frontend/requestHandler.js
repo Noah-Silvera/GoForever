@@ -45,7 +45,7 @@ define(['lib/request'],function(request){
          * @param  {String} model string rep of the model to send data to
          * @param  {String} id UIID relating to the model data
          */
-        sendData(model, id){
+        sendData(model, id, data){
             return new Promise(function(resolve,reject){
                
                 reject('method not implemented')
