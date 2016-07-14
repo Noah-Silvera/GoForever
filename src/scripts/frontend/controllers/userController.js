@@ -30,7 +30,7 @@
                 this.view.notify();
             }
         }
-        
+        //Login should be handled in sessions controller, not here
         login(){
             var data = {};
             data.name = $("#login-username").val();

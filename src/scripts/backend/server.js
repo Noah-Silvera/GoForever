@@ -8,6 +8,72 @@ var app = express()
 var helmet = require('helmet')
 var dbAdapter = require('./dbAdapter')
 
+
+//STUFF FOR SESSIONS/CURRENT WORK
+var passport = require('passport');
+var flash    = require('connect-flash');
+var session      = require('express-session');
+var cookieParser = require('cookie-parser');
+require('./config/passport')(passport);
+
+// required for passport
+app.use(session({ secret: 'ilovestuffstuffstusususus' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+/**
+ * Logout
+ * None of these three routes require the /api, since I didn't know how
+ * they would be handled when they met multiple routing criteria
+ * which can be changed later
+ */
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/index.html');
+});
+
+/**
+ * Signup
+ * This is used instead of a /post/users since it was easier to incorporate
+ * data validation into the passport config. However, such data validation is
+ * useful for all data models and we could extend it into the db adapter
+ * and then remove this extra route
+ */
+app.post('/signup', passport.authenticate('local-signup', {
+    successRedirect : '/userLanding.html', // redirect to the profile
+    failureRedirect : '/index.html', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+}));
+
+
+/**
+ * Login
+ */
+app.post('/login', passport.authenticate('local-login', {
+    successRedirect : '/userLanding.html', // redirect to the profile
+    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+}));
+
+/**
+ * This will redirect people to the home page if they try to access
+ * a secure page while not logged in.
+ */
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/index.html');
+}
+
+
+
+
+
 // a fix to propagate errors thrown in promises
 // https://gist.github.com/benjamingr/0237932cee84712951a2
 process.on('unhandledRejection', function(reason, p){
@@ -55,6 +121,11 @@ var staticFileArr = [
 /**
  * @param  {Array} fileList A list of html files to set up static routing for
  */
+
+////////////////////////////////////////////////
+//// Incorporate isLoggedIn() here somehow?
+//// Maybe make two different staticFileaArrs?
+////////////////////////////////////////////////
 ;(function staticRoutingFactory(fileList){
 
     fileList.forEach(function(fileName){
