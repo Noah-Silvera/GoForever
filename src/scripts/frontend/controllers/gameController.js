@@ -45,9 +45,35 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
                 console.error('---- NOT IMPLEMENTED --- Passing...')
                 return;
             }
-            state.board[data.x][data.y] = 1;
-            this.view.drawBoard(state);
+            if (isValidMove(data,state)){
+                state.board[data.x][data.y] = 1;
+                this.view.drawBoard(state);
+                tallyScores(state);
+            }
+            
         }
+        
+        isValidMove(data, state){
+            return true;
+        }
+        
+        tallyScores(state){
+            for(var i = 0; i < state.size; i++){
+                for(var j = 0; j < state.size; j++){
+                    data = {
+                        'x':i, 'y':j
+                    }
+                    if(state[i][j] != 0){
+                        switch(state){
+                            case (state[i + 1][j] == state[i][j]):
+                                break;
+                         {     
+                    }
+                    
+                }
+            }
+        }
+        
 
         replayPrevMove(){
             console.error(`---- NOT IMPLEMENTED --- replaying previous move...`)

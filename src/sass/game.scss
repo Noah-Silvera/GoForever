@@ -4,7 +4,7 @@ $board-size: 50%;
 
 #board{
    margin:auto;
-   width: $board-size;
+  // width: $board-size;
 }
 
 #bottom-panel-wrapper{
@@ -40,6 +40,29 @@ $action-button-spacing: 10px;
     border-style: solid;
     border-width:2px;
     border-color:light-gray;
+}
+
+#background-score-black{
+    background-color: lightgrey;
+    border-color: Black;
+    border-width: medium;
+    border-style: solid;
+    border-radius: 10px;
+    width: 85%;
+    height: 50px;
+    text-align:center;
+    margin: 0 auto; 
+}
+
+#background-score-white{
+    border-color: Black;
+    border-width: medium;
+    border-style: solid;
+    border-radius: 10px;
+    width: 85%;
+    height: 50px;
+    text-align:center;
+    margin: 0 auto; 
 }
 
 .replay-button {

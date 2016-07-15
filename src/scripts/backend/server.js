@@ -14,7 +14,7 @@ var passport = require('passport');
 var flash    = require('connect-flash');
 var session      = require('express-session');
 var cookieParser = require('cookie-parser');
-require('./config/passport')(passport);
+//require('./config/passport')(passport); If i didn't forget to uncomment there is no ./config/passport at the moment
 
 // required for passport
 app.use(session({ secret: 'ilovestuffstuffstusususus' })); // session secret

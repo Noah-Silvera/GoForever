@@ -61,7 +61,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                     // draw the board    
 
                     this.drawBoard(
-                        {"size":11,"board":[[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
+                        {"size":11,"board":[[0,2,0,0,0,0,0,0,1,0,0],[2,0,2,0,0,0,0,1,0,1,0],[2,0,2,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0],[0,0,0,0,0,2,0,2,0,0,0],[0,0,0,0,0,0,2,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
                         )
                     
 
@@ -135,33 +135,33 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             svgElem.attr('xmlns:xlink','http://www.w3.org/1999/xlink')
 
             
-            for(var i = H/(state.size); i < H; i += H/(state.size)){
+            for(var i = H/(state.size + 1); i < H; i += H/(state.size + 1)){
                 svgElem.append(svgFactory.makeLine(0, i, W, i));
             }
-            for(var i = W/(state.size ); i < W; i += W/(state.size)){
+            for(var i = W/(state.size + 1); i < W; i += W/(state.size + 1)){
                 svgElem.append(svgFactory.makeLine(i, 0, i, H));
             }
             
-            svgElem.append(svgFactory.makeRectangle(0, 0, W, H/(2*(state.size )), "Peru"));
-            svgElem.append(svgFactory.makeRectangle(0, H - H/(2*(state.size )), W, H/(2*(state.size )), "Peru"));
-            svgElem.append(svgFactory.makeRectangle(0, 0, W/(2*(state.size )), H, "Peru"));
-            svgElem.append(svgFactory.makeRectangle(W - W/(2*(state.size )), 0, W/(2*(state.size )), H, "Peru"));
+            svgElem.append(svgFactory.makeRectangle(0, 0, W, H/(2*(state.size + 1)), "Peru"));
+            svgElem.append(svgFactory.makeRectangle(0, H - H/(2*(state.size + 1)), W, H/(2*(state.size + 1)), "Peru"));
+            svgElem.append(svgFactory.makeRectangle(0, 0, W/(2*(state.size + 1)), H, "Peru"));
+            svgElem.append(svgFactory.makeRectangle(W - W/(2*(state.size + 1)), 0, W/(2*(state.size + 1)), H, "Peru"));
             
-            for(var i = 1; i < (state.board.length); i++){
-            var distance = H/(state.size );
-                for(var j = 1; j < (state.size ); j++){
+            for(var i = 0; i < (state.board.length); i++){
+            var distance = H/(state.size + 1);
+                for(var j = 0; j < (state.size + 1); j++){
                     switch (state.board[i][j]){
                         case 1:
-                            svgElem.append(svgFactory.makeCircle(i*distance, j*distance, distance/2, "black", "Peru", 2));
+                            svgElem.append(svgFactory.makeCircle((i + 1)*distance, (j + 1)*distance, distance/2, "black", "Peru", 4));
                             break;
                         case 2:
-                            svgElem.append(svgFactory.makeCircle(i*distance, j*distance, distance/2, "lightGray", "Peru", 2));
+                            svgElem.append(svgFactory.makeCircle((i + 1)*distance, (j + 1)*distance, distance/2, "lightGray", "Peru", 4));
                             break;
                         case 0:
                             svgElem.append(
                                 $( svgFactory.makeTransparentCircle(
-                                    i*distance,
-                                    j*distance,
+                                    (i + 1)*distance,
+                                    (j + 1)*distance,
                                     distance/2,
                                     'black',
                                     true )
