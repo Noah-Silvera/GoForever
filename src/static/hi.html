@@ -1,0 +1,39 @@
+<head>
+    <script src="lib/require.js"></script>
+    <script src="lib/require_shim.js"></script>
+</head>
+<script>
+
+</script>
+
+
+<script> 
+      require( ['RequestHandler'],function(RequestHandler){
+
+        window.RequestHandler = RequestHandler
+        model = "users";
+        id = "1";
+        data = {"username" : "hihihi", "email" : "hihihi@hi.hi"};
+        
+        var getTest = function(){
+            RequestHandler.get(model, id);
+        }
+        
+        var postTest = function(){
+            RequestHandler.create(model, data);
+        }
+        
+        var patchTest = function(){
+            RequestHandler.edit(model, id, data);
+        }
+        
+        window.getTest = getTest
+        window.postTest = postTest
+        window.patchTest = patchTest
+
+      })
+</script>
+
+<a href="#" onclick="getTest()">GET IT<br>
+<a href="#" onclick="postTest()">POST IT<br>
+<a href="#" onclick="patchTest()">PATCH IT<br>
