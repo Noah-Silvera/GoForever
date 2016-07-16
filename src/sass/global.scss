@@ -10,6 +10,11 @@ $light-red: #ff5050;
 $creamy-green: #ccffcc;
 $circle-radius: 50px;
 $hover-shadow:5px -5px rgba(0,0,0,0.6);
+$beach: url('images/beach.png');
+$dragon: url('images/dragon.png');
+$forest: url('images/forest.png');
+$metal: url('images/metal.png');
+$river: url('images/river.png');
 
 a.navbar-brand{
     font-size: 24px;
@@ -26,6 +31,37 @@ div.better-border{
 .disable-click-events {
     pointer-events: none;
 }
+
+.beach{
+    background-image: $beach;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.dragon{
+    background-image: $dragon;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.forest{
+    background-image: $forest;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.metal{
+    background-image: $metal;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.river{
+    background-image: $river;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
 
 .circle { 
     width:$circle-radius;

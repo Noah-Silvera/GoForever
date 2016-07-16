@@ -45,33 +45,50 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
                 console.error('---- NOT IMPLEMENTED --- Passing...')
                 return;
             }
-            if (isValidMove(data,state)){
+            //if (this.isValidMove(data,state)){
                 state.board[data.x][data.y] = 1;
                 this.view.drawBoard(state);
                 tallyScores(state);
-            }
+            //}
             
         }
         
         isValidMove(data, state){
-            return true;
+            var tempBoard = state
+
+            /*var postData = {
+                "size": size,
+                "board": board,
+                "last": lastMove
+            }
+            
+            var options = {
+                url: 'http://roberts.seng.uvic.ca:3000//util/findArmies',
+                port: '30000',
+                body: JSON.stringify(postData),
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Content-Length': Buffer.byteLength(JSON.stringify(postData))
+                    'Access-Control-Allow-Origin': 'http://roberts.seng.uvic.ca:3000'
+                } 
+            };
+            
+            return new Promise(function(resolve,reject){
+                request.post(options,function(err,res,body){
+                    console.debug(res)
+
+                    if(err) reject(err)
+
+                    resolve(body)
+                })
+
+
+            })*/
+
         }
         
         tallyScores(state){
-            for(var i = 0; i < state.size; i++){
-                for(var j = 0; j < state.size; j++){
-                    data = {
-                        'x':i, 'y':j
-                    }
-                    if(state[i][j] != 0){
-                        switch(state){
-                            case (state[i + 1][j] == state[i][j]):
-                                break;
-                         {     
-                    }
-                    
-                }
-            }
+            
         }
         
 
