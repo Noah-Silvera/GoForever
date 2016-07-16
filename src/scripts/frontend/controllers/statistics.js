@@ -1,66 +1,63 @@
 define(['controllers/controller', 'views/UserView', 'models/UserModel', 'lib/request'], function (Controller, UserView, UserModel, request) {
 
-    console.log("it works");
-    document.getElementById("title-username").value = "HI THERE";
-    document.getElementById("stats-games-played").value = stats[0].totalGames;
-    document.getElementById("stats-games-won").value = stats[0].totalWins;
-    document.getElementByID("stats-win-percentage").value = stats[0].winPercentage;
-    document.getElementById("stats-win-streak") = stats[0].winStreak;
-    document.getElementById("stats-rank") = stats[0].rank;
-    /////////////////////////////////////////////////////////////////////
+   displayStats();
 
-    //                        Match History
+    function displayStats() {
+        $("#title-username").text("Hi There");
+        $("#stats-games-played").text("1337");
+        $("#stats-games-won").text("1337");
+        $("#stats-win-percentage").text("13.37%");
+        $("#stats-win-streak").text("1337");
+        $("#stats-rank").text("F");
+        console.log($("#title-username").text());
 
-    ////////////////////////////////////////////////////////////////////
-    var match;
+        var user = document.getElementById("username_s").value;
 
-    function addMatchHistory() {
-        match = {
-            userName: document.getElementById("userName_m").value,
-            startDate: Date(),
-            gameLength: document.getElementById("gameLength").value,
-            result: document.getElementById("result").value,
-        };
+        var x = new XMLHttpRequest();
+        x.open("GET", "/getStats", true);
+        x.setRequestHeader("Content-type", "application/json");
+        x.send(JSON.stringify({userName: user}));
+        x.onreadystatechange = function () {
+            if (x.readyState == 4 && x.status == 200) {
+                var stats = JSON.parse(x.responseText);
 
+                document.getElementById("title-username").value = stats[0].userName;
+                $("#stats-games-played").text(stats[0].totalGames);
+                $("#stats-games-won").text(stats[0].totalWins);
+                $("#stats-win-percentage").text(stats[0].winPercentage);
+                $("#stats-win-streak").text(stats[0].winStreak);
+                $("#stats-rank").text(stats[0].rank);
+            }
+        }
+
+        /*
+        var user = document.getElementById("username_s").value;
         var post = new XMLHttpRequest();
-        post.open("POST", "/matchHistory", true);
+        post.open("POST", "/statisticsRemove", true);
         post.setRequestHeader("Content-type", "application/json");
         post.send(JSON.stringify({
-            userName: match.userName,
-            startDate: match.startDate,
-            gameLength: match.gameLength,
-            score: data[k].score,
-            result: match.result,
+            userName: user,
         }));
-    }
 
-    function getMatchHistory() {
         var x = new XMLHttpRequest();
-        x.open("GET", "/matchHistory", true);
-        x.send();
-        return x;
+        x.open("GET", "/getStats", true);
+        x.send(JSON.stringify({userName: user}));
+        x.onreadystatechange = function () {
+            if (x.readyState == 4 && x.status == 200) {
+                var stats = JSON.parse(x.responseText);
+
+                document.getElementById("title-username").value = stats[0].userName;
+                document.getElementById("stats-games-played").value = stats[0].totalGames;
+                document.getElementById("stats-games-won").value = stats[0].totalWins;
+                document.getElementByID("stats-win-percentage").value = stats[0].winPercentage;
+                document.getElementById("stats-win-streak") = stats[0].winStreak;
+                document.getElementById("stats-rank") = stats[0].rank;
+            }
+        }*/
     }
 
-    function updateMatchHistoryTable(data) {
-        if (data == null) {
-            return;
-        }
-        for (var k = 0; k < data.length; k++) {
 
-            var mh = document.getElementById("match-history-div");
-            var row = mh.insertRow();
-            var col0 = row.insertCell(0);
-            var col1 = row.insertCell(1);
-            var col2 = row.insertCell(2);
-            var col3 = row.insertCell(3);
 
-            col0.innerHTML = ddata[k].startDate;
-            col1.innerHTML = data[k].gameLength;
-            col2.innerHTML = date[k].score;
-            col3.innerHTML = data[k].result;
-            col4.innerHTML = "BUTTON"; //BUTTON
-        }
-    }
     ////////////////////////////////////////////////////////////////////
 
     //                      Statistics and Ranking
@@ -68,13 +65,7 @@ define(['controllers/controller', 'views/UserView', 'models/UserModel', 'lib/req
     ////////////////////////////////////////////////////////////////////
     var stats;
 
-
-    function getRank() {
-
-    }
-
     function addStats() {
-        console.log("posting to table");
         stats = {
             userName: document.getElementById("userName_s").value,
             totalGames: 0,
@@ -143,37 +134,9 @@ define(['controllers/controller', 'views/UserView', 'models/UserModel', 'lib/req
 
     }
 
-    function updateDisplayStats() {
-        var user = document.getElementById("username_s").value;
-        var post = new XMLHttpRequest();
-        post.open("POST", "/statisticsRemove", true);
-        post.setRequestHeader("Content-type", "application/json");
-        post.send(JSON.stringify({
-            userName: user,
-        }));
-
-        var x = new XMLHttpRequest();
-        x.open("GET", "/statistics", true);
-        x.send();
-        x.onreadystatechange = function () {
-            if (x.readyState == 4 && x.status == 200) {
-                var stats = JSON.parse(x.responseText);
-
-                document.getElementById("title-username").value = stats[0].userName;
-                document.getElementById("stats-games-played").value = stats[0].totalGames;
-                document.getElementById("stats-games-won").value = stats[0].totalWins;
-                document.getElementByID("stats-win-percentage").value = stats[0].winPercentage;
-                document.getElementById("stats-win-streak") = stats[0].winStreak;
-                document.getElementById("stats-rank") = stats[0].rank;
-            }
-        }
-    }
-
 
 
     window.onload = function () {
-
-
 
         document.getElementById("addMatch_button").onclick = function () {
             addMatchHistory();

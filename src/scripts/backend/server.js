@@ -228,7 +228,56 @@ app.get('/tree', function( req, res){
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(buildTreeHtml());
   res.send()
-});  
+});
+
+
+
+/////////////////////////
+
+// Statistics and Rankings
+
+/////////////////////////
+
+app.get("/getStats", function (req, res) {
+    console.log("GET Request to: /statistics");
+    db.statistics((req.body.userName), function (err, data) {
+        if (err) {
+            res.status(500).send();
+        } else {
+            console.log(data);
+            res.status(200).json(data);
+        }
+    });
+});
+
+app.post("/statistics", function (req, res) {
+    console.log("POST Request to: /statistics");
+
+    db.addStats(req.body, function (err) {
+        if (err) {
+            res.status(500).send();
+        } else {
+            res.status(200).send();
+        }
+    });
+});
+
+
+app.post("/statisticsRemove", function (req, res) {
+    console.log("POST Request to: /statisticsRemove");
+
+    db.removeStats((req.body.userName), function (err) {
+        if (err) {
+            res.status(500).send();
+        } else {
+            res.status(200).send();
+        }
+    });
+});
+
+
+
+
 
 
 

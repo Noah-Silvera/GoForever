@@ -16,38 +16,38 @@
         <div class="row text-center">
             <div class="col-sm-4 ">
                <div class="stats-div">
-                    <h1 >Welcome</h1>
-                    <h3 id="title-username">placeholder</h3>
+                    <h3>Welcome</h3>
+                    <h1 id="title-username"></h1>
                </div>
            </div>
            <div class="col-sm-4 ">
                <div class="stats-div">
                     <h3>Games Played</h3>
-                    <h1 id="stats-games-played">10</h1>
+                    <h1 id="stats-games-played"></h1>
                </div>
            </div>
            <div class="col-sm-4">
                <div class="stats-div">
                     <h3>Games Won</h3>
-                    <h1 id="stats-games-won">10</h1>
+                    <h1 id="stats-games-won"></h1>
                </div>
            </div>
            <div class="col-sm-4">
                <div class="stats-div">
                     <h3>Win Percentage</h3>
-                    <h1 id="stats-win-percentage">100%</h1>
+                    <h1 id="stats-win-percentage"></h1>
                </div>
            </div>
            <div class="col-sm-4">
                <div class="stats-div">
                     <h3>Win Streak</h3>
-                    <h1 id="stats-win-streak">10</h1>
+                    <h1 id="stats-win-streak"></h1>
                </div>
            </div>
            <div class="col-sm-4">
                <div class="stats-div">
                     <h3>Rank</h3>
-                    <h1 id="stats-rank">1</h1>
+                    <h1 id="stats-rank"></h1>
                </div>
            </div>
         </div>
@@ -80,7 +80,8 @@
             UserController.selectViewState('profilePage')
 
         })
-        require(['controllers/machine.js'])
+        require(['controllers/statistics.js'])
+        require(['controllers/matchHistory.js'])
 
     </script>
 </body>
