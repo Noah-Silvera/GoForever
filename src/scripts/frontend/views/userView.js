@@ -43,6 +43,7 @@ define(['./view','jquery','controllers/userController'],function(View,$,userCont
                 // get one
                 case 'settingsPage':
                     this.drawNavBar()
+                    
 
                     break;
 

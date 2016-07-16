@@ -11,17 +11,27 @@ define(['./view','jquery'],function(View,$){
                 'emptyBoard': 'images/emptyBoardCloseup.png'
             }
             
-            this.colours = {
-                
+            this.style = {
+                'beach': 'images/beach.png',
+                'dragon': 'images/dragon.png',
+                'forest': 'images/dragon.png',
+                'metal': 'images/metal.png',
+                'river': 'images/river.png'
             }
             
             this.handicaps = {
-                
+                'size-9': {'2 pieces': 2, '3 pieces': 3, '4 pieces': 4, 'black has first move': 'black-moves-first'},
+                'size-13': {'2 pieces': 2, '3 pieces': 3, '4 pieces': 4, '5 pieces': 5,
+                            'black has first move': 'black-moves-first'},
+                'size-19': {'2 pieces': 2, '3 pieces': 3, '4 pieces': 4, '5 pieces': 5, '6 pieces': 6, '7 pieces': 7,
+                            '8 pieces': 8, '9 pieces': 9, 'black has first move': 'black-moves-first'}
             }
             
 
 
         }
+        
+        
         render(){
              switch(this.viewState){
                 case 'default':
@@ -35,10 +45,50 @@ define(['./view','jquery'],function(View,$){
 
 
                     // populate lists
+                    $( "#board-size" ).on("change", function (event) {
+                    switch (event.target.value){
+                        case "9x9" :
+                            $("#game-handicap").append(
+                                $('<option>').attr( 'id', 2).text('2 pieces'),
+                                $('<option>').attr( 'id', 3).text('3 pieces'),
+                                $('<option>').attr( 'id', 4).text('4 pieces'),
+                                $('<option>').attr( 'id', 0).text('black has first move')
+                            )
+                        break;
+                        case "13x13" :
+                            $("#game-handicap").append(
+                                $('<option>').attr( 'id', 2).text('2 pieces'),
+                                $('<option>').attr( 'id', 3).text('3 pieces'),
+                                $('<option>').attr( 'id', 4).text('4 pieces'),
+                                $('<option>').attr( 'id', 5).text('5 pieces'),
+                                $('<option>').attr( 'id', 0).text('black has first move')
+                            )
+                        break;
+                        case "19x19" :
+                            $("#game-handicap").append(
+                                $('<option>').attr( 'id', 2).text('2 pieces'),
+                                $('<option>').attr( 'id', 3).text('3 pieces'),
+                                $('<option>').attr( 'id', 4).text('4 pieces'),
+                                $('<option>').attr( 'id', 5).text('5 pieces'),
+                                $('<option>').attr( 'id', 6).text('6 pieces'),
+                                $('<option>').attr( 'id', 7).text('7 pieces'),
+                                $('<option>').attr( 'id', 8).text('8 pieces'),
+                                $('<option>').attr( 'id', 9).text('9 pieces'),
+                                $('<option>').attr( 'id', 0).text('black has first move')
+                            )
+                        break;
+                        default :
+                        throw "event not detected"
+                        }
+                    })
                     
-                    $("#board-style").append(
-                        $('<option>').attr( 'id',"colour1").text('colour1')
+                    
+                    $.each(this.style, function(index, value){
+                        $("#board-style").append(
+                        $('<option>').attr( 'id', value).text(index)
                     )
+                    });
+                    
                     /**
                      * Create the opponent buttons that allow a user to choose between playing against a computer or an AI
                      */
