@@ -27,6 +27,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             // clear the bottom panel of all state specific buttons
 
             $(this.selectors.bottomPanel).empty()
+            $("#board-wrapper").addClass("dragon")
 
             switch(this.viewState){
                 case 'gameActive':

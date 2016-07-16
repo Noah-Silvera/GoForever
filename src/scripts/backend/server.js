@@ -116,6 +116,7 @@ var staticFileArr = [
       'userLanding',
       'userSettings',
       'userProfile',
+      'hi'
     ]
             
 /**

@@ -2,9 +2,17 @@
 
 $board-size: 50%; 
 
+#board-wrapper{
+    padding: 2.5%;
+}
+
 #board{
    margin:auto;
   // width: $board-size;
+}
+
+#svg{
+    opacity: 0.90;
 }
 
 #bottom-panel-wrapper{
@@ -55,6 +63,7 @@ $action-button-spacing: 10px;
 }
 
 #background-score-white{
+    background-color: white;
     border-color: Black;
     border-width: medium;
     border-style: solid;
