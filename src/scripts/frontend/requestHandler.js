@@ -13,24 +13,20 @@ define(['lib/request'],function(request){
 
         
         /**
-         * TESTED
-         * This is a generic method for making a GET DATA api call to a server model representation
+         * This is a generic method for making a GET request to a server model representation
          * @param  {String} model string rep of the model to retrieve data for
-         * @param  {String} id UIID relating to the model data
+         * @param  {String} id Oject ID relating to the model data
          * @return  A promise that is fufilled with the response body, or rejected with the error. 
          *          The response is always printed to the console
          */
-        getData(model, id){
+        get(model, id){
 
             return new Promise((function(resolve,reject){
 
                 // create a request to the appropiate model with an ID param
                 var options = {
-                     "url" : `${this.serverUrl}/${this.base}/${model}?${id}`
+                     "url" : `/${this.base}/${model}/${id}`
                 }
-
-                // set the cors headers
-                options = this.cors(options)
 
                 request.get(options,function(err,res,body){
                     console.debug(res)
@@ -41,47 +37,64 @@ define(['lib/request'],function(request){
             }).bind(this))
             // must keep the this context to access local variables
         }
+        
         /**
-         * @param  {String} model string rep of the model to send data to
-         * @param  {String} id UIID relating to the model data
+         * This is a generic method for making a POST request to add a new document
+         * to the database
+         * @param  {String} model string rep of the model to retrieve data for
+         * @param  {JSON} data Oject ID relating to the model data
+         * @return  A promise that is fufilled with the response body, or rejected with the error. 
+         *          The response is always printed to the console
          */
-        sendData(model, id, data){
-            return new Promise(function(resolve,reject){
-               
-                reject('method not implemented')
-                
-                if( dataExists(model, id) ){
-                    //patch
-                } else{
-                    //post
+        create(model, data){
+
+            return new Promise((function(resolve,reject){
+
+                // create a request to the appropiate model with an ID param
+                var options = {
+                     "url" : `/${this.base}/${model}`,
+                     "body": data
                 }
-            })
 
+                request.post(options,function(err,res,body){
+                    console.debug(res)
+                    if(err) reject(err)
 
+                    resolve(body)
+                })
+            }).bind(this))
+            // must keep the this context to access local variables
         }
-
-
-        /**
-         * @param  {String} model string rep of the model to check if data exists
-         * @param  {String} id UIID relating to the model data
+        
+         /**
+         * This is a generic method for making a PATCH request to edit an existing document
+         * @param  {String} model string rep of the model to retrieve data for
+         * @param  {JSON} data Oject ID relating to the model data
+         * @return  A promise that is fufilled with the response body, or rejected with the error. 
+         *          The response is always printed to the console
          */
-        dataExists(model, id){
-            return new Promise(function(resolve,reject){
-                reject('method not implemented')
-            })
-        }
-        /**
-         * @param  {any} options appends http headers to an object to allow CORS
-         */
-        cors(options){
-            options.headers = {
-                'Access-Control-Allow-Origin': 'localhost:3000'
-            }
+         edit(model, id, data){
 
-            return options
+            return new Promise((function(resolve,reject){
+
+                // create a request to the appropiate model with an ID param
+                var options = {
+                     "url" : `/${this.base}/${model}/${id}`,
+                     "method" : "PATCH",
+                     "body" : data
+                }
+
+                request(options,function(err,res,body){
+                    console.debug(res)
+                    if(err) reject(err)
+
+                    resolve(body)
+                })
+            }).bind(this))
+            // must keep the this context to access local variables
         }
 
-    }
+   }
 
     var reqHandler = new RequestHandler()
 
