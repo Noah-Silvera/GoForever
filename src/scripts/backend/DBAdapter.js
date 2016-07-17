@@ -44,13 +44,14 @@ class DBAdapter {
             var con = mongoose.connection;
             
             // watch for an update to this connection
-            con.on('error', function(err){
+            con.on('error', (function(err){
                 reject(err) 
                 this.db = false
-            });
+            }).bind(this));
             con.once('open', (function() {
                 info('connected to Mongo with mongoose')
             	this.db = con
+                resolve()
             }).bind(this));
 
             
@@ -73,12 +74,38 @@ class DBAdapter {
             return schema
         }
 
-        // unfinished, just an example
-        // http://mongoosejs.com/docs/guide.html
         var User = mongoose.model( 'User', requireAllSchemaFields(new Schema({
-                name: String,
-                email: String
-            })) 
+            username: String,
+            email: String,
+            passwordHash: String,
+            rememberHash: String,
+            createdAt: Date,
+            updatedAt: Date,
+            activationHash: String,
+            activated: Boolean,
+            activatedAt: Date,
+            matchHistory: [String],               
+            boardColor: String,
+            boardSize: Number,
+            }))
+        )
+
+        var Match = mongoose.model('Match', requireAllSchemaFields(new Schema({
+            time: Date,
+            userId: String,
+            opponent: String,
+            userHandicap: String,
+            boardSize: Number,
+            moveLog: [],
+            whiteScore: Number,
+            blackScore: Number,
+            }))
+        )
+
+        var Sample = mongoose.model('Sample', requireAllSchemaFields(new Schema({
+            name: String,
+            matches: [String]
+            }))
         )
 
     }
@@ -90,20 +117,25 @@ class DBAdapter {
      * @param  {String} _id
      * @return {Object} The document specified by the id. If the document is not found the promise is rejected
      */
-    get(collectionName, _id){
+    get(collectionName, searchCriteria){
         return new Promise((function(resolve, reject){
-
 
             if( !this.db ) reject('not ready to connect to collections')
 
             collectionName = collectionName.trim()
 
-
-            reject('method not implemented')
+            // retrieve the appropiate model
+            //var model = this.db.model(collectionName)
+            var Model = mongoose.model(collectionName)
+            Model.findOne(searchCriteria,  function(err, model) {
+                if (err) reject('could not find')
+                resolve(model)
+            })
            
         }).bind(this))
     }
-    
+
+   
     /**
      * Create creates a new document from the json object 'object' in the specified collection
      * @param  {String} collectionName
@@ -112,13 +144,22 @@ class DBAdapter {
      *                  invalidates the schema
      */
     create(collectionName, object){
-        
         return new Promise((function(resolve, reject){
-            if( !this.db ) reject('not ready to connect to collections')
-
-            reject('method not implemented')
+            if (!this.db) reject('not ready to connect to collections')
+                console.log(object);
+                
+            var Model = mongoose.model(collectionName)
+            var newModel = new Model(object)
+            newModel.save (function(err, user){
+                if (err){
+                    reject('new user object was not stored')
+                } else{
+                    resolve(user.id)
+                }
+            })
         }).bind(this))
     }
+
 
     /**
      * Updates a document specified by _id in the collectionName
@@ -130,11 +171,17 @@ class DBAdapter {
      * @return {Object} The document after the update. Rejection occurs upon errors and an object that
      *                  invalidates the schema
      */
-    update(collectionName, _id, diffObject){
+    update(collectionName, searchCriteria, diffObject){
         return new Promise((function(resolve,reject){
             if( !this.db ) reject('not ready to connect to collections')
-
-            reject('method not implemented')
+            var Model = mongoose.model(collectionName)
+            Model.findByIdAndUpdate(searchCriteria, { $set: diffObject}, {new: true}, function(err, object) {
+                if (err){
+                    reject('object was not updated')
+                } else{
+                    resolve(object)
+                }
+            })
         }).bind(this))
     }
 }
@@ -147,4 +194,5 @@ dbAdapter.connect()
     })
 
 module.exports = dbAdapter
+
 

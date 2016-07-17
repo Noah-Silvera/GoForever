@@ -1,5 +1,6 @@
 define(['./view','jquery'],function(View,$){
     class GameOptionsView extends View {
+        
         constructor(){
             super(arguments)
             //simply a reference definition for the possible states that 
@@ -18,16 +19,6 @@ define(['./view','jquery'],function(View,$){
                 'metal': 'images/metal.png',
                 'river': 'images/river.png'
             }
-            
-            this.handicaps = {
-                'size-9': {'2 pieces': 2, '3 pieces': 3, '4 pieces': 4, 'black has first move': 'black-moves-first'},
-                'size-13': {'2 pieces': 2, '3 pieces': 3, '4 pieces': 4, '5 pieces': 5,
-                            'black has first move': 'black-moves-first'},
-                'size-19': {'2 pieces': 2, '3 pieces': 3, '4 pieces': 4, '5 pieces': 5, '6 pieces': 6, '7 pieces': 7,
-                            '8 pieces': 8, '9 pieces': 9, 'black has first move': 'black-moves-first'}
-            }
-            
-
 
         }
         
@@ -37,9 +28,35 @@ define(['./view','jquery'],function(View,$){
                 case 'default':
                     $('#start-btn').on('click',(function(){
                         console.info('starting game....')
+                        
+                        var hotSeat = $("#play-hot-seat").attr('data-selected')
+                        var colour = $("#player-black").attr('data-selected')
+                        var opponent;
+                        
+                        if(hotSeat){
+                            opponent = "hot-seat"
+                        }
+                        else{
+                            opponent = "ai"
+                        }
+                        var userColour;
+                        if(colour){
+                            userColour = "black"
+                        }
+                        else{
+                            userColour = "white"
+                        }
 
-                        console.error('---NOT IMPLEMENTED--- creating initial game info ')
-                        console.error('---NOT IMPLEMENTED--- loading game page ')
+                        var data = {
+                            "size" : $("#board-size").val(),
+                            "handicap": $("#game-handicap").val(),
+                            "style": $("#board-style").val(),
+                            "opponent":opponent,
+                            "userColour":userColour
+                            
+                        }
+                        var url = window.location.href.replace("gameOptions", "game?")
+                        window.location.href = url.concat(JSON.stringify(data))
 
                     }).bind(this))
 

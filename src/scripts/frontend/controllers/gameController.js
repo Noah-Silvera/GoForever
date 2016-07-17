@@ -16,13 +16,13 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
             }
             
             var options = {
-                url: 'http://roberts.seng.uvic.ca:3000/ai/random',
+                url: 'http://roberts.seng.uvic.ca:30000/ai/random',
                 port: '30000',
                 body: JSON.stringify(postData),
                 headers: {
                     'Content-Type': 'application/json',
                     // 'Content-Length': Buffer.byteLength(JSON.stringify(postData))
-                    'Access-Control-Allow-Origin': 'http://roberts.seng.uvic.ca:3000'
+                    'Access-Control-Allow-Origin': 'http://roberts.seng.uvic.ca:30000'
                 } 
             };
             
@@ -45,31 +45,38 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
                 console.error('---- NOT IMPLEMENTED --- Passing...')
                 return;
             }
-            //if (this.isValidMove(data,state)){
+            if (this.isValidMove(data,state)){
                 state.board[data.x][data.y] = 1;
                 this.view.drawBoard(state);
-                tallyScores(state);
-            //}
+                this.tallyScores(state);
+            }
             
         }
         
         isValidMove(data, state){
-            var tempBoard = state
+            var tempBoard = state.board;
+            tempBoard[data.x][data.y] = 1;
+            var lastMove = {
+                "x" : data.x,
+                "y" : data.y,
+                "c" : 1,
+                "pass" : false
+            }
 
-            /*var postData = {
-                "size": size,
-                "board": board,
+            var postData = {
+                "size": state.board.length,
+                "board": tempBoard,
                 "last": lastMove
             }
             
             var options = {
-                url: 'http://roberts.seng.uvic.ca:3000//util/findArmies',
+                url: 'http://roberts.seng.uvic.ca:30000/util/findArmies',
                 port: '30000',
                 body: JSON.stringify(postData),
                 headers: {
                     'Content-Type': 'application/json',
                     // 'Content-Length': Buffer.byteLength(JSON.stringify(postData))
-                    'Access-Control-Allow-Origin': 'http://roberts.seng.uvic.ca:3000'
+                    'Access-Control-Allow-Origin': 'http://roberts.seng.uvic.ca:30000'
                 } 
             };
             
@@ -83,7 +90,7 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
                 })
 
 
-            })*/
+            })
 
         }
         

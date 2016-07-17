@@ -27,7 +27,38 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             // clear the bottom panel of all state specific buttons
 
             $(this.selectors.bottomPanel).empty()
-            $("#board-wrapper").addClass("dragon")
+            
+            var options = window.location.href.substr(window.location.href.indexOf("?") + 1)
+            
+            options = options.replace(/%22/g, '"').replace(/%20/g, " ")
+            
+            options = JSON.parse(options)
+            
+            $("#board-wrapper").addClass(options.style)
+            
+            var board;
+            switch(options.size){
+                case"9x9":
+                    board = {"size":9,"board":[[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
+                    
+                    break;
+                case"13x13":
+                    board = {"size":13,"board":[[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
+                    
+                    break;
+                case"19x19":
+                    board = {"size":19,"board":[[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
+                    
+                    break;
+                default:
+                    throw "default size not implemented"
+            }
 
             switch(this.viewState){
                 case 'gameActive':
@@ -59,10 +90,11 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
 
                     }).bind(this)()
 
-                    // draw the board    
+                    // draw the board
+                    this.setHandicaps(board, options.handicap)
 
                     this.drawBoard(
-                        {"size":11,"board":[[0,2,0,0,0,0,0,0,1,0,0],[2,0,2,0,0,0,0,1,0,1,0],[2,0,2,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0],[0,0,0,0,0,2,0,2,0,0,0],[0,0,0,0,0,0,2,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
+                        board
                         )
                     
 
@@ -206,8 +238,76 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             )
 
         }
+        setHandicaps(board, handicap){
+            switch (board.size){
+                case 9:
+                    switch(handicap){
+                        case "4 pieces":
+                            board.board[7][7] = 1
+                        case "3 pieces":
+                            board.board[7][1] = 1
+                        case "2 pieces":
+                            board.board[1][1] = 1
+                            board.board[1][7] = 1
+                            break;
+                        case "black has first move":
+                            break;
+                        default:
+                            throw "invalid handicap"
+                    }
+                break;
+                case 13:
+                    switch(handicap){
+                        case "5 pieces":
+                            board.board[6][6] = 1
+                        case "4 pieces":
+                            board.board[10][10] = 1
+                        case "3 pieces":
+                            board.board[10][2] = 1
+                        case "2 pieces":
+                            board.board[2][10] = 1
+                            board.board[2][2] = 1
+                            break;
+                        case "black has first move":
+                            break;
+                        default:
+                            throw "invalid handicap"
+                    }
+                break;
+                case 19:
+                    switch(handicap){
+                        case "9 pieces":
+                            board.board[9][9] = 1
+                        case "8 pieces":
+                            board.board[16][9] = 1
+                        case "7 pieces":
+                            board.board[9][16] = 1
+                        case "6 pieces":
+                            board.board[2][9] = 1
+                        case "5 pieces":
+                            board.board[9][2] = 1
+                        case "4 pieces":
+                            board.board[16][16] = 1
+                        case "3 pieces":
+                            board.board[16][2] = 1
+                        case "2 pieces":
+                            board.board[2][16] = 1
+                            board.board[2][2] = 1
+                            break;
+                        case "black has first move":
+                            break;
+                        default:
+                            throw "invalid handicap"
+                    }
+                break;
+                default:
+                throw "invalid board size"
+            }
+        }
         
     }
+    
+    
 
     // this is part of a tricky workaround with circular dependencies
     // see the controllers return for details
