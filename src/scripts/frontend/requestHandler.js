@@ -53,7 +53,11 @@ define(['lib/request'],function(request){
                 // create a request to the appropiate model with an ID param
                 var options = {
                      "url" : `/${this.base}/${model}`,
-                     "body": data
+                     "json": data,
+                     headers : {
+                         "content-type" : "application/json"
+                     }
+
                 }
 
                 request.post(options,function(err,res,body){
@@ -81,7 +85,10 @@ define(['lib/request'],function(request){
                 var options = {
                      "url" : `/${this.base}/${model}/${id}`,
                      "method" : "PATCH",
-                     "body" : data
+                     "json" : data,
+                     headers : {
+                         "content-type" : "application/json"
+                     }
                 }
 
                 request(options,function(err,res,body){

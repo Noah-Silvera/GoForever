@@ -175,7 +175,7 @@ app.route(['/api/:model/:id','/api/:model'])
     }
 
     // retrieve the data
-    dbAdapter.get(req.model,req.id)
+    dbAdapter.get(req.model, {"_id" : req.id})
       .then(function(data){
         res.status(200)
         res.send(data)
@@ -184,7 +184,7 @@ app.route(['/api/:model/:id','/api/:model'])
       .catch(function(err){
         error(err)
 
-        res.status(501)
+        res.status(404)
         res.send(err)
       })
 
@@ -198,7 +198,7 @@ app.route(['/api/:model/:id','/api/:model'])
         res.send(result)
       },function(err){
         error(err)
-        res.status(501) // method not implemented
+        res.status(418) // method not implemented
         res.send(err)
       })
 
@@ -217,7 +217,7 @@ app.route(['/api/:model/:id','/api/:model'])
         res.send(result)
       },function(err){
         error(err)
-        res.status(501) // method not implemented
+        res.status(404) // method not implemented
         res.send(err)
       })
   })

@@ -146,7 +146,8 @@ class DBAdapter {
     create(collectionName, object){
         return new Promise((function(resolve, reject){
             if (!this.db) reject('not ready to connect to collections')
-
+                console.log(object);
+                
             var Model = mongoose.model(collectionName)
             var newModel = new Model(object)
             newModel.save (function(err, user){
