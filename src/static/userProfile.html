@@ -15,7 +15,7 @@
     <div class="better-border container-fluid">
         <div class="row text-center">
             <div class="col-sm-4 ">
-               <div class="stats-div">
+               <div class="stats-div" onload="displayStats()">
                     <h3>Welcome</h3>
                     <h1 id="title-username"></h1>
                </div>
@@ -65,7 +65,7 @@
                 <th>Replay</th>
                 </tr>
             </thead>
-            <tbody id="match-history-body">
+            <tbody id="match-history-body" onload="loadPage()">
             </tbody>
         </table>
         </div>
