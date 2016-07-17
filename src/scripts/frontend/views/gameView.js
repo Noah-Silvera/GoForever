@@ -91,7 +91,10 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                     }).bind(this)()
 
                     // draw the board
-                    this.setHandicaps(board, options.handicap)
+                    var scores = this.control.setHandicapsAndScores(board, options.handicap)
+                    
+                    $("#score-black").text(scores.black)
+                    $("#score-white").text(scores.white)
 
                     this.drawBoard(
                         board
@@ -238,72 +241,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             )
 
         }
-        setHandicaps(board, handicap){
-            switch (board.size){
-                case 9:
-                    switch(handicap){
-                        case "4 pieces":
-                            board.board[7][7] = 1
-                        case "3 pieces":
-                            board.board[7][1] = 1
-                        case "2 pieces":
-                            board.board[1][1] = 1
-                            board.board[1][7] = 1
-                            break;
-                        case "black has first move":
-                            break;
-                        default:
-                            throw "invalid handicap"
-                    }
-                break;
-                case 13:
-                    switch(handicap){
-                        case "5 pieces":
-                            board.board[6][6] = 1
-                        case "4 pieces":
-                            board.board[10][10] = 1
-                        case "3 pieces":
-                            board.board[10][2] = 1
-                        case "2 pieces":
-                            board.board[2][10] = 1
-                            board.board[2][2] = 1
-                            break;
-                        case "black has first move":
-                            break;
-                        default:
-                            throw "invalid handicap"
-                    }
-                break;
-                case 19:
-                    switch(handicap){
-                        case "9 pieces":
-                            board.board[9][9] = 1
-                        case "8 pieces":
-                            board.board[16][9] = 1
-                        case "7 pieces":
-                            board.board[9][16] = 1
-                        case "6 pieces":
-                            board.board[2][9] = 1
-                        case "5 pieces":
-                            board.board[9][2] = 1
-                        case "4 pieces":
-                            board.board[16][16] = 1
-                        case "3 pieces":
-                            board.board[16][2] = 1
-                        case "2 pieces":
-                            board.board[2][16] = 1
-                            board.board[2][2] = 1
-                            break;
-                        case "black has first move":
-                            break;
-                        default:
-                            throw "invalid handicap"
-                    }
-                break;
-                default:
-                throw "invalid board size"
-            }
-        }
+        
         
     }
     

@@ -2,6 +2,93 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
 
     class GameController extends Controller{
         
+        setHandicapsAndScores(board, handicap){
+            var scores = {"white": 0, "black": 0}
+            switch (board.size){
+                case 9:
+                    switch(handicap){
+                        case "4 pieces":
+                            board.board[7][7] = 1
+                            scores.white += .5
+                        case "3 pieces":
+                            board.board[7][1] = 1
+                            scores.white += .5
+                        case "2 pieces":
+                            board.board[1][1] = 1
+                            board.board[1][7] = 1
+                            scores.white += 1
+                            break;
+                        case "black has first move":
+                            scores.white += .5
+                            break;
+                        default:
+                            throw "invalid handicap"
+                    }
+                    break;
+                case 13:
+                    switch(handicap){
+                        case "5 pieces":
+                            board.board[6][6] = 1
+                            scores.white += .5
+                        case "4 pieces":
+                            board.board[10][10] = 1
+                            scores.white += .5
+                        case "3 pieces":
+                            board.board[10][2] = 1
+                            scores.white += .5
+                        case "2 pieces":
+                            board.board[2][10] = 1
+                            board.board[2][2] = 1
+                            scores.white += 1
+                            break;
+                        case "black has first move":
+                            scores.white += .5
+                            break;
+                        default:
+                            throw "invalid handicap"
+                    }
+                    break;
+                case 19:
+                    switch(handicap){
+                        case "9 pieces":
+                            board.board[9][9] = 1
+                            scores.white += .5
+                        case "8 pieces":
+                            board.board[16][9] = 1
+                            scores.white += .5
+                        case "7 pieces":
+                            board.board[9][16] = 1
+                            scores.white += .5
+                        case "6 pieces":
+                            board.board[2][9] = 1
+                            scores.white += .5
+                        case "5 pieces":
+                            board.board[9][2] = 1
+                            scores.white += .5
+                        case "4 pieces":
+                            board.board[16][16] = 1
+                            scores.white += .5
+                        case "3 pieces":
+                            board.board[16][2] = 1
+                            scores.white += .5
+                        case "2 pieces":
+                            board.board[2][16] = 1
+                            board.board[2][2] = 1
+                            scores.white += 1
+                            break;
+                        case "black has first move":
+                            scores.white += .5
+                            break;
+                        default:
+                            throw "invalid handicap"
+                    }
+                    break;
+                default:
+                    throw "invalid board size"
+            }
+            return scores;
+        }
+        
         
         getRandomMove(){
 
@@ -40,13 +127,13 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
 
         }
 
-        makeMove(data, state){
+        makeMove(data, state, colour){
             if( data.pass ){
                 console.error('---- NOT IMPLEMENTED --- Passing...')
                 return;
             }
             if (this.isValidMove(data,state)){
-                state.board[data.x][data.y] = 1;
+                state.board[data.x][data.y] = colour;
                 this.view.drawBoard(state);
                 this.tallyScores(state);
             }
