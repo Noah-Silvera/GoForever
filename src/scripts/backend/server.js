@@ -7,6 +7,7 @@ var bodyParser = require('body-parser')
 var app = express()
 var helmet = require('helmet')
 var dbAdapter = require('./dbAdapter')
+var aiInterface = require("./aiInterface");
 
 
 //STUFF FOR SESSIONS/CURRENT WORK
@@ -21,6 +22,9 @@ app.use(session({ secret: 'ilovestuffstuffstusususus' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 /**
  * Logout
@@ -55,6 +59,34 @@ app.post('/login', passport.authenticate('local-login', {
     failureRedirect : '/login', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
+
+/**
+ * post to ai move
+ */
+app.post("/move", function(req, res){
+
+    console.log("POST Request to: /move");
+
+    aiInterface.getRandomMove(req.body.size, req.body.board, req.body.last, function(move){
+        res.json(move);
+    });
+
+});
+
+/**
+ * post to get armies
+ */
+app.post("/getArmies", function(req, res){
+
+    console.log("POST Request to: /getArmies");
+    
+    
+    aiInterface.getArmies(req.body.size, req.body.board, req.body.last, function(armies){
+        res.json(armies);
+        
+    });
+
+});
 
 /**
  * This will redirect people to the home page if they try to access

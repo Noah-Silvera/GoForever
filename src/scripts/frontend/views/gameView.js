@@ -39,21 +39,21 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             var board;
             switch(options.size){
                 case"9x9":
-                    board = {"size":9,"board":[[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
+                    board = {"size":9,"board":[[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0]]}
                     
                     break;
                 case"13x13":
-                    board = {"size":13,"board":[[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
+                    board = {"size":13,"board":[[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0]]}
                     
                     break;
                 case"19x19":
-                    board = {"size":19,"board":[[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]]}
+                    board = {"size":19,"board":[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]}
                     
                     break;
                 default:
@@ -94,11 +94,16 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                     var scores = this.control.setHandicapsAndScores(board, options.handicap)
                     
                     $("#score-black").text(scores.black)
-                    $("#score-white").text(scores.white)
-
+                    $("#score-white").text(scores.whiteOffset + scores.white)
+                    if(scores.whiteOffset == .5){
                     this.drawBoard(
-                        board
+                        board, 1
                         )
+                    }else{
+                        this.drawBoard(
+                        board, 2
+                        )
+                    }
                     
 
                     break;
@@ -151,12 +156,11 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                     break;
                 default:
                     throw 'invalid state'
-                    break;
             }
         }
         
-        //state requires size board n*n with moves 0, 1, 2 for this to function correctly
-        drawBoard(state){
+        //state requires size board n*n with moves 0, 1, 2 for this to function correctly and colour of next move if in play state
+        drawBoard(state, colour){
             
             var svgElem = $("#board").find('svg')[0];
             svgElem = $(svgElem)
@@ -185,7 +189,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             
             for(var i = 0; i < (state.board.length); i++){
             var distance = H/(state.size + 1);
-                for(var j = 0; j < (state.size + 1); j++){
+                for(var j = 0; j < (state.size); j++){
                     switch (state.board[i][j]){
                         case 1:
                             svgElem.append(svgFactory.makeCircle((i + 1)*distance, (j + 1)*distance, distance/2, "black", "Peru", 4));
@@ -194,28 +198,42 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                             svgElem.append(svgFactory.makeCircle((i + 1)*distance, (j + 1)*distance, distance/2, "lightGray", "Peru", 4));
                             break;
                         case 0:
-                            svgElem.append(
-                                $( svgFactory.makeTransparentCircle(
-                                    (i + 1)*distance,
-                                    (j + 1)*distance,
-                                    distance/2,
-                                    'black',
-                                    true )
+                            if (typeof colour !== 'undefined'){
+                                svgElem.append(
+                                    $( svgFactory.makeTransparentCircle(
+                                        (i + 1)*distance,
+                                        (j + 1)*distance,
+                                        distance/2,
+                                        'black',
+                                        true )
 
+                                    )
+                                    .attr('data-x',i)
+                                    .attr('data-y',j)
+                                    .on('click',(function(e){
+                                        var data = $(e.target).data()
+                                        var lastMove = {
+                                            "x" : data.x,
+                                            "y" : data.y,
+                                            "c" : colour,
+                                            "pass" : false
+                                        }
+                                        
+                                        var boardState = {
+                                            "size": state.size,
+                                            "board": state.board,
+                                            "last": lastMove
+                                        }
+                                        //send state?
+                                        this.control.makeMove(boardState)
+                                    }).bind(this))
+                                    .hover(function(){
+                                        $(this).css("fill-opacity","0.25")
+                                    },function(){
+                                        $(this).css("fill-opacity",'0')
+                                    })
                                 )
-                                .attr('data-x',i)
-                                .attr('data-y',j)
-                                .on('click',(function(e){
-                                    var data = $(e.target).data()
-                                    this.control.makeMove(data, state)
-                                }).bind(this))
-                                .hover(function(){
-                                    $(this).css("fill-opacity","0.25")
-                                },function(){
-                                    $(this).css("fill-opacity",'0')
-                                })
-                            )
-                                
+                            }
                             break;
                         default:
                             

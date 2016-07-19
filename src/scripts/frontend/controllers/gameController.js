@@ -1,25 +1,29 @@
-define(['controllers/controller','lib/request','views/gameView','models/gameModel'], function(Controller,request,GameView,GameModel){
+define(['controllers/controller','views/gameView','models/gameModel'], function(Controller,GameView,GameModel){
+    
+    var tempData;
+    
 
     class GameController extends Controller{
         
+        
         setHandicapsAndScores(board, handicap){
-            var scores = {"white": 0, "black": 0}
+            var scores = {"white": 0, "black": 0, "whiteOffset": 0}
             switch (board.size){
                 case 9:
                     switch(handicap){
                         case "4 pieces":
                             board.board[7][7] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "3 pieces":
                             board.board[7][1] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "2 pieces":
                             board.board[1][1] = 1
                             board.board[1][7] = 1
-                            scores.white += 1
+                            scores.whiteOffset += 1
                             break;
                         case "black has first move":
-                            scores.white += .5
+                            scores.whiteOffset += .5
                             break;
                         default:
                             throw "invalid handicap"
@@ -29,20 +33,20 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
                     switch(handicap){
                         case "5 pieces":
                             board.board[6][6] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "4 pieces":
                             board.board[10][10] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "3 pieces":
                             board.board[10][2] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "2 pieces":
                             board.board[2][10] = 1
                             board.board[2][2] = 1
-                            scores.white += 1
+                            scores.whiteOffset += 1
                             break;
                         case "black has first move":
-                            scores.white += .5
+                            scores.whiteOffset += .5
                             break;
                         default:
                             throw "invalid handicap"
@@ -52,32 +56,32 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
                     switch(handicap){
                         case "9 pieces":
                             board.board[9][9] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "8 pieces":
                             board.board[16][9] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "7 pieces":
                             board.board[9][16] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "6 pieces":
                             board.board[2][9] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "5 pieces":
                             board.board[9][2] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "4 pieces":
                             board.board[16][16] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "3 pieces":
                             board.board[16][2] = 1
-                            scores.white += .5
+                            scores.whiteOffset += .5
                         case "2 pieces":
                             board.board[2][16] = 1
                             board.board[2][2] = 1
-                            scores.white += 1
+                            scores.whiteOffset += 1
                             break;
                         case "black has first move":
-                            scores.white += .5
+                            scores.whiteOffset += .5
                             break;
                         default:
                             throw "invalid handicap"
@@ -90,94 +94,61 @@ define(['controllers/controller','lib/request','views/gameView','models/gameMode
         }
         
         
-        getRandomMove(){
-
-            var size = 5
-            var board = 6
-            var lastMove = "asjhda"
-
-            var postData = {
-                "size": size,
-                "board": board,
-                "last": lastMove
-            }
+        getRandomMove(postData){
             
-            var options = {
-                url: 'http://roberts.seng.uvic.ca:30000/ai/random',
-                port: '30000',
-                body: JSON.stringify(postData),
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 'Content-Length': Buffer.byteLength(JSON.stringify(postData))
-                    'Access-Control-Allow-Origin': 'http://roberts.seng.uvic.ca:30000'
-                } 
-            };
-            
-            return new Promise(function(resolve,reject){
-                request.post(options,function(err,res,body){
-                    console.debug(res)
-
-                    if(err) reject(err)
-
-                    resolve(body)
-                })
-
-
-            })
+            $.ajax({
+                type: 'POST',
+                url : '/move',
+                dataType: "json",
+                data : JSON.stringify(postData), 
+                contentType : "application/json",
+                success : makeMove(data)
+            });
 
         }
 
-        makeMove(data, state, colour){
+        makeMove(data){
             if( data.pass ){
                 console.error('---- NOT IMPLEMENTED --- Passing...')
                 return;
             }
-            if (this.isValidMove(data,state)){
-                state.board[data.x][data.y] = colour;
-                this.view.drawBoard(state);
-                this.tallyScores(state);
-            }
+            tempData = data
+            
+            
+            this.isValidMove(data)
+            
             
         }
         
-        isValidMove(data, state){
-            var tempBoard = state.board;
-            tempBoard[data.x][data.y] = 1;
-            var lastMove = {
-                "x" : data.x,
-                "y" : data.y,
-                "c" : 1,
-                "pass" : false
-            }
-
+        isValidMove(state, cb){
+            var tempBoard = tempData.board;
+            tempBoard[state.last.x][state.last.y] = state.last.c;
+            
             var postData = {
-                "size": state.board.length,
+                "size" : tempData.size,
                 "board": tempBoard,
-                "last": lastMove
-            }
+                "last": tempData.last  }
+                
+                var callback = function(data, controller){
+                //state.board[data.x][data.y] = colour;
+                //this.view.drawBoard(state);
+                controller.tallyScores(state);
+                }
+                
+                $.ajax({
+                type: 'POST',
+                url : '/getArmies',
+                dataType: "json",
+                data : JSON.stringify(postData), 
+                contentType : "application/json",
+                success : function(data){
+                    callback(data, this)
+                }.bind(this),
+                error: function(xhr, status, error) {
+                    // check status && error
+                }
+            });
             
-            var options = {
-                url: 'http://roberts.seng.uvic.ca:30000/util/findArmies',
-                port: '30000',
-                body: JSON.stringify(postData),
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 'Content-Length': Buffer.byteLength(JSON.stringify(postData))
-                    'Access-Control-Allow-Origin': 'http://roberts.seng.uvic.ca:30000'
-                } 
-            };
-            
-            return new Promise(function(resolve,reject){
-                request.post(options,function(err,res,body){
-                    console.debug(res)
-
-                    if(err) reject(err)
-
-                    resolve(body)
-                })
-
-
-            })
 
         }
         
