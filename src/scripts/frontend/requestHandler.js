@@ -102,6 +102,67 @@ define(['lib/request'],function(request){
             }).bind(this))
             // must keep the this context to access local variables
         }
+        
+         signup(data){
+
+            return new Promise((function(resolve,reject){
+
+                // create a request to the appropiate model with an ID param
+                var options = {
+                     "url" : `/signup?username=${data.username}&email=${data.email}&password=${data.password}`,
+                     "method" : "POST",
+                }
+
+                request(options,function(err,res,body){
+                    console.debug(res)
+                    if(err) reject(err)
+
+                    resolve(body)
+                })
+            }).bind(this))
+            // must keep the this context to access local variables
+        }
+        
+         login(data){
+
+            return new Promise((function(resolve,reject){
+
+                // create a request to the appropiate model with an ID param
+                var options = {
+                     "url" : `/login?username=${data.username}&password=${data.password}`,
+                     "method" : "POST",
+                }
+
+                request(options,function(err,res,body){
+                    console.debug(res)
+                    if(err) reject(err)
+
+                    resolve(body)
+                })
+            }).bind(this))
+            // must keep the this context to access local variables
+        }
+
+         logout(){
+
+            return new Promise((function(resolve,reject){
+
+                // create a request to the appropiate model with an ID param
+                var options = {
+                     "url" : "/logout",
+                     "method" : "GET",
+                }
+
+                request(options,function(err,res,body){
+                    console.debug(res)
+                    if(err) reject(err)
+
+                    resolve(body)
+                })
+            }).bind(this))
+            // must keep the this context to access local variables
+        }
+
 
    }
 
