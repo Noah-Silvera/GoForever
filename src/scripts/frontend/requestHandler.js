@@ -53,7 +53,8 @@ define(['lib/request'],function(request){
                 // create a request to the appropiate model with an ID param
                 var options = {
                      "url" : `/${this.base}/${model}`,
-                     "json": data,
+                     "body": JSON.stringify(data),
+                     "json" : true,
                      headers : {
                          "content-type" : "application/json"
                      }
@@ -63,7 +64,8 @@ define(['lib/request'],function(request){
                 request.post(options,function(err,res,body){
                     console.debug(res)
                     if(err) reject(err)
-
+                    console.log(body);
+                    
                     resolve(body)
                 })
             }).bind(this))

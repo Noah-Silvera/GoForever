@@ -58,6 +58,7 @@ class DBAdapter {
         }).bind(this))
 
     }
+      
     /**
      * Initialize the models to be used in all database transactions
      */
@@ -66,6 +67,7 @@ class DBAdapter {
         // https://stackoverflow.com/questions/19762430/make-all-fields-required-in-mongoose
         function requireAllSchemaFields(schema) {
             for (var i in schema.paths) {
+                return schema
                 var attribute = schema.paths[i]
                 if (attribute.isRequired == undefined) {
                     attribute.required(true);
@@ -118,6 +120,9 @@ class DBAdapter {
      * @return {Object} The document specified by the id. If the document is not found the promise is rejected
      */
     get(collectionName, searchCriteria){
+        console.log(searchCriteria);
+        
+        searchCriteria._id = mongoose.Types.ObjectId(searchCriteria._id);
         return new Promise((function(resolve, reject){
 
             if( !this.db ) reject('not ready to connect to collections')
@@ -129,6 +134,8 @@ class DBAdapter {
             var Model = mongoose.model(collectionName)
             Model.findOne(searchCriteria,  function(err, model) {
                 if (err) reject('could not find')
+                console.log(model);
+                
                 resolve(model)
             })
            
@@ -151,10 +158,12 @@ class DBAdapter {
             var Model = mongoose.model(collectionName)
             var newModel = new Model(object)
             newModel.save (function(err, user){
+                console.log(object);
+                
                 if (err){
                     reject('new user object was not stored')
                 } else{
-                    resolve(user.id)
+                    resolve(user)
                 }
             })
         }).bind(this))
@@ -172,6 +181,7 @@ class DBAdapter {
      *                  invalidates the schema
      */
     update(collectionName, searchCriteria, diffObject){
+        searchCriteria._id = mongoose.Types.ObjectId(searchCriteria._id);
         return new Promise((function(resolve,reject){
             if( !this.db ) reject('not ready to connect to collections')
             var Model = mongoose.model(collectionName)

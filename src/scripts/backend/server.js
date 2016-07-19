@@ -209,13 +209,16 @@ app.route(['/api/:model/:id','/api/:model'])
     // retrieve the data
     dbAdapter.get(req.model, {"_id" : req.id})
       .then(function(data){
-        res.status(200)
-        res.send(data)
-
+        if(data === null){
+            res.status(404)
+            res.send(req.model + " not found.")
+        } else {
+            res.status(200)
+            res.send(data) 
+        }
       })
       .catch(function(err){
         error(err)
-
         res.status(404)
         res.send(err)
       })
@@ -230,7 +233,7 @@ app.route(['/api/:model/:id','/api/:model'])
         res.send(result)
       },function(err){
         error(err)
-        res.status(418) // method not implemented
+        res.status(418)
         res.send(err)
       })
 
@@ -243,13 +246,18 @@ app.route(['/api/:model/:id','/api/:model'])
     }
 
     // update the data
-    dbAdapter.update(req.model, req.id, req.body)
+    dbAdapter.update(req.model, {"_id" : req.id}, req.body)
       .then(function(result){
-        res.status(200)
-        res.send(result)
+        if(result === null){
+            res.status(404)
+            res.send(req.model + " not found.")
+        } else {
+            res.status(200)
+            res.send(result)
+        }
       },function(err){
         error(err)
-        res.status(404) // method not implemented
+        res.status(400)
         res.send(err)
       })
   })
