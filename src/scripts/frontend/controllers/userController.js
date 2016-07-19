@@ -1,10 +1,10 @@
- define(['controllers/controller','views/UserView','models/UserModel','lib/request'], function(Controller,UserView,UserModel,request){
+ define(['controllers/controller','views/UserView','models/UserModel','lib/request','RequestHandler'], function(Controller,UserView,UserModel,request,RequestHandler){
 
     class UserController extends Controller{
         
         create(){
             var data = {};
-            data.name = $("#register-username").val();
+            data.username = $("#register-username").val();
             data.email = $("#register-email").val();
             data.email_confirm = $("#register-email-confirm").val();
             data.password = $("#register-password").val();
@@ -18,9 +18,9 @@
             if (data.name.length == 0) valid = false;
             
             if (data.password.length == 0) valid = false;
-
-            if(valid){
                 RequestHandler.signup(data);
+            if(valid){
+                
             } else {
                 
                 // select view state changes nothing at the moment
