@@ -58,6 +58,7 @@ class DBAdapter {
         }).bind(this))
 
     }
+      
     /**
      * Initialize the models to be used in all database transactions
      */
@@ -119,6 +120,9 @@ class DBAdapter {
      * @return {Object} The document specified by the id. If the document is not found the promise is rejected
      */
     get(collectionName, searchCriteria){
+        console.log(searchCriteria);
+        
+        searchCriteria._id = mongoose.Types.ObjectId(searchCriteria._id);
         return new Promise((function(resolve, reject){
 
             if( !this.db ) reject('not ready to connect to collections')
@@ -130,6 +134,8 @@ class DBAdapter {
             var Model = mongoose.model(collectionName)
             Model.findOne(searchCriteria,  function(err, model) {
                 if (err) reject('could not find')
+                console.log(model);
+                
                 resolve(model)
             })
            
@@ -175,6 +181,7 @@ class DBAdapter {
      *                  invalidates the schema
      */
     update(collectionName, searchCriteria, diffObject){
+        searchCriteria._id = mongoose.Types.ObjectId(searchCriteria._id);
         return new Promise((function(resolve,reject){
             if( !this.db ) reject('not ready to connect to collections')
             var Model = mongoose.model(collectionName)
