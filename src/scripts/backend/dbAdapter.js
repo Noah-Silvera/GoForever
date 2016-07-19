@@ -66,6 +66,7 @@ class DBAdapter {
         // https://stackoverflow.com/questions/19762430/make-all-fields-required-in-mongoose
         function requireAllSchemaFields(schema) {
             for (var i in schema.paths) {
+                return schema
                 var attribute = schema.paths[i]
                 if (attribute.isRequired == undefined) {
                     attribute.required(true);
@@ -151,10 +152,12 @@ class DBAdapter {
             var Model = mongoose.model(collectionName)
             var newModel = new Model(object)
             newModel.save (function(err, user){
+                console.log(object);
+                
                 if (err){
                     reject('new user object was not stored')
                 } else{
-                    resolve(user.id)
+                    resolve(user)
                 }
             })
         }).bind(this))
