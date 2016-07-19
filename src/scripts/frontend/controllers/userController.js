@@ -20,9 +20,7 @@
             if (data.password.length == 0) valid = false;
 
             if(valid){
-
-                // should update the model here
-                // this.post("/users", data);
+                RequestHandler.signup(data);
             } else {
                 
                 // select view state changes nothing at the moment
@@ -32,6 +30,7 @@
         login(){
             var data = {};
             data.name = $("#login-username").val();
+
             data.password = $("#login-password").val();
             
             var valid = true;
@@ -40,12 +39,9 @@
             if (data.password.length == 0) valid = false;
             
             if(valid){//logic should be reversed later
-
-                // should update the model here
-                // this.post("/users", data);
-            } else {
                 
-                // select view state changes nothing at the moment
+            } else {
+
             }
         }
         

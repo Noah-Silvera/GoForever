@@ -15,7 +15,7 @@ var passport = require('passport');
 var flash    = require('connect-flash');
 var session      = require('express-session');
 var cookieParser = require('cookie-parser');
-//require('./config/passport')(passport); If i didn't forget to uncomment there is no ./config/passport at the moment
+require('./config/passport')(passport);
 
 // required for passport
 app.use(session({ secret: 'ilovestuffstuffstusususus' })); // session secret
@@ -44,7 +44,7 @@ app.get('/logout', function(req, res) {
  * useful for all data models and we could extend it into the db adapter
  * and then remove this extra route
  */
-app.post('/signup', passport.authenticate('local-signup', {
+app.post('/signup', passport.authenticate('signup', {
     successRedirect : '/userLanding.html', // redirect to the profile
     failureRedirect : '/index.html', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
@@ -54,7 +54,7 @@ app.post('/signup', passport.authenticate('local-signup', {
 /**
  * Login
  */
-app.post('/login', passport.authenticate('local-login', {
+app.post('/login', passport.authenticate('login', {
     successRedirect : '/userLanding.html', // redirect to the profile
     failureRedirect : '/login', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
@@ -131,7 +131,8 @@ app.use(express.static(path.join(root,'/static').toString()));
 app.use(express.static(path.join(root,'/css').toString()));
 
  //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
-app.use(bodyParser())   
+app.use(bodyParser())
+app.use(cookieParser())   
 app.use(helmet.noCache())  
 
 // routing for the landing page 
