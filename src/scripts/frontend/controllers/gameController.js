@@ -1,6 +1,7 @@
 define(['controllers/controller','views/gameView','models/gameModel'], function(Controller,GameView,GameModel){
     
     var tempData;
+    var tempArmy;
     
 
     class GameController extends Controller{
@@ -115,12 +116,80 @@ define(['controllers/controller','views/gameView','models/gameModel'], function(
             tempData = data
             
             
-            this.isValidMove(data)
+           //special case suicide with no army
+           var suicide = true;
+            if (data.last.x !== 0){
+                if (data.board[data.last.x - 1][data.last.y] == 0 || data.board[data.last.x - 1][data.last.y] == data.last.c){
+                     suicide = false
+                }
+            }
+            if (data.last.x !== data.size - 1){
+                if (data.board[data.last.x + 1][data.last.y] == 0 || data.board[data.last.x + 1][data.last.y] == data.last.c){
+                     suicide = false
+                }
+            }
+            if (data.last.y !== data.size - 1){
+                if(data.board[data.last.x][data.last.y + 1] == 0 || data.board[data.last.x][data.last.y + 1] == data.last.c){ 
+                    suicide = false
+                }
+            }
+            if(data.last.y !== 0){ 
+                if(data.board[data.last.x][data.last.y - 1] == 0 || data.board[data.last.x][data.last.y - 1] == data.last.c){
+                    suicide = false
+                }
+            }
+            if (suicide){
+                alert("no suicide")
+                return;
+            }
+            
+            if (typeof tempArmy !== 'undefined') {
+    
+                for(var army = 0; army < tempArmy.armies.length; army++){
+                    //check if placement is invalid larger suicide
+                    if(tempArmy.armies[army].liberties.length == 1 &&
+                        tempData.last.c == tempArmy.armies[army].colour &&
+                        tempArmy.armies[army].liberties[0][0] == tempData.last.x &&
+                        tempData.last.y == tempArmy.armies[army].liberties[0][1]){
+                            
+                        var suicide = true
+                        if (data.last.x !== 0){
+                            if (data.board[data.last.x - 1][data.last.y] == 0){ suicide = false }
+                        }
+                        if (data.last.x !== data.size - 1){
+                            if (data.board[data.last.x + 1][data.last.y] == 0){ suicide = false }
+                        }
+                        if (data.last.y !== data.size - 1){
+                            if(data.board[data.last.x][data.last.y + 1] == 0){ suicide = false }
+                        }
+                        if(data.last.y !== 0){ 
+                            if( data.board[data.last.x][data.last.y - 1] == 0){ suicide = false }
+                        }
+                        if (suicide){
+                            alert("no suicide")
+                            return;
+                        }
+                    }
+                    
+                    //check if opposing piece surrounded your army
+                    if(tempArmy.armies[army].liberties.length == 1 &&
+                        tempData.last.c !== tempArmy.armies[army].colour &&
+                        tempData.last.x == tempArmy.armies[army].liberties[0][0] &&
+                        tempData.last.y == tempArmy.armies[army].liberties[0][1]){
+                            
+                        tempArmy.armies[army].tokens.forEach(function(element) {
+                            tempData.board[element.position[0]][element.position[1]] = 0
+                        }, this);
+                    }
+                }
+            }
+    
+            this.updateArmy(data)
             
             
         }
         
-        isValidMove(state, cb){
+        updateArmy(state, cb){
             var tempBoard = tempData.board;
             tempBoard[state.last.x][state.last.y] = state.last.c;
             
@@ -130,9 +199,22 @@ define(['controllers/controller','views/gameView','models/gameModel'], function(
                 "last": tempData.last  }
                 
                 var callback = function(data, controller){
-                //state.board[data.x][data.y] = colour;
-                //this.view.drawBoard(state);
-                controller.tallyScores(state);
+                    tempArmy = data;
+                    
+                    var colour;
+                    if(state.last.c = 1){ 
+                        colour = 2 
+                    }
+                    else{ 
+                        colour = 1 
+                    }
+                        
+                    controller.tallyScores(data, tempBoard);
+                    
+                    state.board = tempBoard
+                    controller.view.drawBoard(state, colour);
+                    
+                    
                 }
                 
                 $.ajax({
@@ -152,8 +234,10 @@ define(['controllers/controller','views/gameView','models/gameModel'], function(
 
         }
         
-        tallyScores(state){
-            
+        tallyScores(data, board){
+            data.armies.forEach(function(element) {
+                
+            }, this);
         }
         
 

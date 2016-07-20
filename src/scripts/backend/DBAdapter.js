@@ -74,6 +74,22 @@ class DBAdapter {
             return schema
         }
 
+        var User = mongoose.model( 'User', requireAllSchemaFields(new Schema({
+            username: String,
+            email: String,
+            passwordHash: String,
+            rememberHash: String,
+            createdAt: Date,
+            updatedAt: Date,
+            activationHash: String,
+            activated: Boolean,
+            activatedAt: Date,
+            matchHistory: [String],               
+            boardColor: String,
+            boardSize: Number,
+            }))
+        )
+
         var Match = mongoose.model('Match', requireAllSchemaFields(new Schema({
             time: Date,
             userId: String,
@@ -92,12 +108,15 @@ class DBAdapter {
             }))
         )
 
+<<<<<<< HEAD
         var Session = mongoose.model('Session', requireAllSchemaFields(new Schema({
             }))
         )
         
 
         var User = require('./config/user')
+=======
+>>>>>>> 3d36eed30e00e2c28829f50ca933c1a066a0400e
     }
     
     
