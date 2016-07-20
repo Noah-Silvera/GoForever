@@ -9,9 +9,9 @@ function getRandomMove(size, board, lastMove, cb){
     }
     
     var options = {
-        hostname: 'roberts.seng.uvic.ca',
+        hostname: 'localhost',
         path: '/ai/random',
-        port: '30000',
+        port: '3001',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
