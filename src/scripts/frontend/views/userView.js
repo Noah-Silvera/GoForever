@@ -106,7 +106,6 @@ define(['./view','jquery','controllers/userController'],function(View,$,userCont
                             }).bind(this))
 
                             var logoutButton = $('<li><a href="#"  class="nav account-settings" id="account-settings">Log out</a></li>').on('click',(function(){
-                                console.error('logging not not implemented')
                                 this.control.logout()
                             }).bind(this))
 

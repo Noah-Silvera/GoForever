@@ -91,9 +91,13 @@
 
 
         logout(){
-            // do logging out things here
-
-            window.location.href = 'http://localhost:3000/'
+            RequestHandler.logout()
+            .then(function(res){
+                console.log(res)
+            })
+            .catch(function(err){
+                console.log(err)
+            })
         }
         
     }
