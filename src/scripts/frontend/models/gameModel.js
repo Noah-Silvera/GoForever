@@ -4,12 +4,9 @@ define(['./model'], function(Model){
 
         constructor(){
             super()
-            this.modelName = 'match'
+            this.modelName = 'Match'
             // dummy ID for now - will have to figure out how this is generated
-            this.id = 123
-            this.data = {
-                
-            }
+            this.data._id = 123
         }    
     }
     

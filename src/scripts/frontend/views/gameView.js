@@ -23,7 +23,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
         }
         
         render(){
-
+            
             // clear the bottom panel of all state specific buttons
 
             $(this.selectors.bottomPanel).empty()

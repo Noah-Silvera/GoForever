@@ -2,9 +2,8 @@ define(['requestHandler'],function(RequestHandler){
 
     return class Model{
         constructor(){
-            this.data = null;
-            this.id = null;
-            this.model = null;
+            this.data = {};
+            this.modelName = null;
         }
 
         ////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-define(['./view','jquery'],function(View,$){
+define(['./view','jquery','models/gameModel'],function(View,$,gameModel){
     class GameOptionsView extends View {
         
         constructor(){
@@ -48,15 +48,29 @@ define(['./view','jquery'],function(View,$){
                         }
 
                         var data = {
-                            "size" : $("#board-size").val(),
-                            "handicap": $("#game-handicap").val(),
-                            "style": $("#board-style").val(),
+                            "time" : new Date(),
+                            "userId": null,
                             "opponent":opponent,
+                            "userHandicap": $("#game-handicap").val(),
+                            "boardSize" : $("#board-size").val(),
+                            // no moves yet
+                            "moveLog": [],
+                            "whiteScore": 0,
+                            "blackScore": 0,
+                            "style": $("#board-style").val(),
                             "userColour":userColour
-                            
                         }
-                        var url = window.location.href.replace("gameOptions", "game?")
-                        window.location.href = url.concat(JSON.stringify(data))
+
+                        gameModel.setData(data).then(function(data){
+
+                            var url = window.location.href.replace("gameOptions", "game?")
+                            window.location.href = url.concat(JSON.stringify(data._id))
+
+                        }).catch(function(err){
+                            alert('could not create game')
+                            console.error(err)
+                        })
+
 
                     }).bind(this))
 
