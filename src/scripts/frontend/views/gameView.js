@@ -42,7 +42,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                             var data = dataArr[0]
                             // set the appropiate scores
                             $("#score-black").text(data.blackScore)
-                            $("#score-white").text(data.whiteScore)
+                            $("#score-white").text(data.whiteScore + data.whiteOffset)
 
                             // continue on to draw the board
                             return Promise.resolve(data)

@@ -17,7 +17,11 @@ define(['./view','jquery','models/gameModel'],function(View,$,gameModel){
                 'dragon': 'images/dragon.png',
                 'forest': 'images/dragon.png',
                 'metal': 'images/metal.png',
-                'river': 'images/river.png'
+                'mountain': 'images/mountain.png',
+                'ocean': 'images/ocean.png',
+                'river': 'images/river.png',
+                'wood' : 'image/wood.png',
+                'grass' : 'image/grass.png'
             }
 
         }
@@ -74,8 +78,14 @@ define(['./view','jquery','models/gameModel'],function(View,$,gameModel){
 
 
                     }).bind(this))
-
-
+                    
+                    $("#game-handicap").append(
+                            $('<option>').attr( 'id', 2).text('2 pieces'),
+                            $('<option>').attr( 'id', 3).text('3 pieces'),
+                            $('<option>').attr( 'id', 4).text('4 pieces'),
+                            $('<option>').attr( 'id', 0).text('black has first move')
+                        )    
+                        
                     // populate lists
                     $( "#board-size" ).on("change", function (event) {
                     switch (event.target.value){

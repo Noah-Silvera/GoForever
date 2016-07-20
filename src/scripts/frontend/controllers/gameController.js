@@ -7,25 +7,25 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
     class GameController extends Controller{
         
         
-        setHandicapsAndScores(handicap, whiteScore, board, moveLog){
+        setHandicapsAndScores(board, handicap, moveLog){
             if( moveLog.length === 0){
-
+                var whiteOffset =  0
                 switch (board.size){
                     case 9:
                         switch(handicap){
                             case "4 pieces":
-                                board[7][7] = 1
-                                whiteScore += .5
+                                board.board[7][7] = 1
+                                whiteOffset += .5
                             case "3 pieces":
-                                board[7][1] = 1
-                                whiteScore += .5
+                                board.board[7][1] = 1
+                                whiteOffset += .5
                             case "2 pieces":
-                                board[1][1] = 1
-                                board[1][7] = 1
-                                whiteScore += 1
+                                board.board[1][1] = 1
+                                board.board[1][7] = 1
+                                whiteOffset += 1
                                 break;
                             case "black has first move":
-                                whiteScore += .5
+                                whiteOffset += .5
                                 break;
                             default:
                                 throw "invalid handicap"
@@ -34,21 +34,21 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     case 13:
                         switch(handicap){
                             case "5 pieces":
-                                board[6][6] = 1
-                                whiteScore += .5
+                                board.board[6][6] = 1
+                                whiteOffset += .5
                             case "4 pieces":
-                                board[10][10] = 1
-                                whiteScore += .5
+                                board.board[10][10] = 1
+                                whiteOffset += .5
                             case "3 pieces":
-                                board[10][2] = 1
-                                whiteScore += .5
+                                board.board[10][2] = 1
+                                whiteOffset += .5
                             case "2 pieces":
-                                board[2][10] = 1
-                                board[2][2] = 1
-                                whiteScore += 1
+                                board.board[2][10] = 1
+                                board.board[2][2] = 1
+                                whiteOffset += 1
                                 break;
                             case "black has first move":
-                                whiteScore += .5
+                                whiteOffset += .5
                                 break;
                             default:
                                 throw "invalid handicap"
@@ -57,33 +57,33 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     case 19:
                         switch(handicap){
                             case "9 pieces":
-                                board[9][9] = 1
-                                whiteScore += .5
+                                board.board[9][9] = 1
+                                whiteOffset += .5
                             case "8 pieces":
-                                board[16][9] = 1
-                                whiteScore += .5
+                                board.board[16][9] = 1
+                                whiteOffset += .5
                             case "7 pieces":
-                                board[9][16] = 1
-                                whiteScore += .5
+                                board.board[9][16] = 1
+                                whiteOffset += .5
                             case "6 pieces":
-                                board[2][9] = 1
-                                whiteScore += .5
+                                board.board[2][9] = 1
+                                whiteOffset += .5
                             case "5 pieces":
-                                board[9][2] = 1
-                                whiteScore += .5
+                                board.board[9][2] = 1
+                                whiteOffset += .5
                             case "4 pieces":
-                                board[16][16] = 1
-                                whiteScore += .5
+                                board.board[16][16] = 1
+                                whiteOffset += .5
                             case "3 pieces":
-                                board[16][2] = 1
-                                whiteScore += .5
+                                board.board[16][2] = 1
+                                whiteOffset += .5
                             case "2 pieces":
-                                board[2][16] = 1
-                                board[2][2] = 1
-                                whiteScore += 1
+                                board.board[2][16] = 1
+                                board.board[2][2] = 1
+                                whiteOffset += 1
                                 break;
                             case "black has first move":
-                                whiteScore += .5
+                                whiteOffset += .5
                                 break;
                             default:
                                 throw "invalid handicap"
@@ -92,15 +92,13 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     default:
                         throw "invalid board size"
                 }
-
                 return Promise.all([
-                        this.model.setProp('whiteScore', whiteScore),
+                        this.model.setProp('whiteOffset', whiteOffset),
                         this.model.setProp('board',board)
                     ])  
             } else {
                 return Promise.all([this.model.getData()])
             }
-            
         }
         /**
          * Creates a board and then returns the new data
@@ -132,7 +130,8 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         }
         
         
-        getRandomMove(postData){
+        
+       getRandomMove(postData){
             
             return this.model.getData().then(function(data){
                 var state = {
@@ -154,9 +153,108 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     console.error('---- NOT IMPLEMENTED --- Passing...')
                     return;
                 }
-                tempData = boardState
                     
+
+                
+
+
+                // retrieve the data so we can check validity
+                this.model.getData().then((function(data){
+
+                // check if the move is valid and not a suicide
+                    return this.checkSuicide(boardState,data.tempArmy)
+
+                }).bind(this)).then((function(data){
+                    // check the moveLog to see if the move has previously been played
+                    return this.checkKo(data.moveLog, boardState)
+                
+
+                // update the data since the move was valid and successful
+                }).bind(this)).catch(function(err){
+                    reject('invalid move')
+
+                /////////////////////////////////////
+                ///////  MOVE IS VALID   ////////////
+                /////////////////////////////////////
+                }).then((function(data){
+
+                    // check if this move captured a piece...
+                    return this.checkCaptured(data.tempArmy, data.board)
+                
+
+                }).bind(this)).then((function(data){
+
+
+                    // push the valid move onto the list of moves
+                    console.info('move is valid, updating data...')
+                    data.moveLog.push(boardState.last)
+                    // update the board with this new move
+                    data.board.board[boardState.last.x][boardState.last.y] = boardState.last.c
+
+                    // update the model with these changes
+                    return Promise.all([
+                            this.model.setProp('moveLog',data.moveLog),
+                            this.model.setProp('board', data.board)
+                        ])
+
+                }).bind(this)).then((function(){
                     
+                    console.info('updating armies...')
+                    return this.updateArmy(boardState) // ensure latest board state
+
+                }).bind(this)).then((function(data){
+
+                    console.info('tallying scores and updating data')
+                    return this.tallyScores(data.tempArmy, data.board)
+
+                }).bind(this)).then((function(dataArr){
+                    // resolve with a successful data callback
+                    var data = dataArr[0]
+                    console.info('re-rendering view')
+                    this.selectViewState('gameActive')
+                    resolve(data)
+                }).bind(this)).catch(function(err){
+                    reject(err)
+                })
+
+            }).bind(this))
+            
+            
+            
+        }
+
+        checkCaptured(armies,board){
+
+                // at least one army exists
+                if( armies != undefined){
+
+                    for(var army = 0; army < armies.length; army++){
+            
+                        //check if opposing piece surrounded your army
+                        if(armies[army].liberties.length == 1 &&
+                            board.last.c !== armies[army].colour &&
+                            board.last.x == armies[army].liberties[0][0] &&
+                            board.last.y == armies[army].liberties[0][1]){
+                                
+                            armies[army].tokens.forEach(function(element) {
+                                board.board[element.position[0]][element.position[1]] = 0
+                            }, this);
+                        }
+
+                    }
+
+                    return this.model.setProp('board',board)
+                
+                } else {
+
+                    return this.model.getData()
+                }
+
+        }
+
+        checkSuicide(boardState,armies){
+            return new Promise((function(resolve,reject){
+
                 //special case suicide with no army
                 var suicide = true;
                 if (boardState.last.x !== 0){
@@ -183,14 +281,15 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     reject("suicide")
                 }
                 
-                if (typeof tempArmy !== 'undefined') {
+                // some armies previously exist
+                if (typeof armies !== 'undefined') {
         
-                    for(var army = 0; army < tempArmy.armies.length; army++){
+                    for(var army = 0; army < armies.length; army++){
                         //check if placement is invalid larger suicide
-                        if(tempArmy.armies[army].liberties.length == 1 &&
-                            tempData.last.c == tempArmy.armies[army].colour &&
-                            tempArmy.armies[army].liberties[0][0] == tempData.last.x &&
-                            tempData.last.y == tempArmy.armies[army].liberties[0][1]){
+                        if(armies[army].liberties.length == 1 &&
+                            boardState.last.c == armies[army].colour &&
+                            armies[army].liberties[0][0] == boardState.last.x &&
+                            boardState.last.y == armies[army].liberties[0][1]){
                                 
                             var suicide = true
                             if (boardState.last.x !== 0){
@@ -209,86 +308,47 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                 reject("suicide")
                             }
                         }
-                        
-                        //check if opposing piece surrounded your army
-                        if(tempArmy.armies[army].liberties.length == 1 &&
-                            tempData.last.c !== tempArmy.armies[army].colour &&
-                            tempData.last.x == tempArmy.armies[army].liberties[0][0] &&
-                            tempData.last.y == tempArmy.armies[army].liberties[0][1]){
-                                
-                            tempArmy.armies[army].tokens.forEach(function(element) {
-                                tempData.board[element.position[0]][element.position[1]] = 0
-                            }, this);
-                        }
-                    }
-                }
-                
-
-
-                // update the data since the move was valid and successful
-                this.model.getData().then((function(data){
-                    // push the valid move onto the list of moves
-                    console.info('move is valid, updating data...')
-                    data.moveLog.push(boardState.last)
-                    // update the board with this new move
-                    data.board.board[boardState.last.x][boardState.last.y] = boardState.last.c
-
-                    // update the model with these changes
-                    return Promise.all([
-                            this.model.setProp('moveLog',data.moveLog),
-                            this.model.setProp('board', data.board)
-                        ])
-
-                }).bind(this)).then((function(){
                     
 
-                    console.info('updating armies...')
-                    return this.updateArmy(boardState)
+                    }
+                }
 
-                }).bind(this)).then((function(data){
-
-                    console.info('tallying scores and updating data')
-                    return this.tallyScores(data.armies, data.board)
-
-                }).bind(this)).then((function(data){
-                    // resolve with a successful data callback
-                    console.info('re-rendering view')
-                    this.selectViewState('gameActive')
+                this.model.getData().then(function(data){
                     resolve(data)
-                }).bind(this)).catch(function(err){
-                    reject(err)
                 })
 
             }).bind(this))
-            
-            
-            
+        }
+
+        checkKo(moveLog,boardState){
+            return this.model.getData()
         }
         
         updateArmy(state){
+
             return new Promise((function(resolve,reject){
-
-                console.error('----- TEMPORARY ---- resolving while armies is broken')
-                resolve(state)
-
-                var tempBoard = tempData.board;
-                tempBoard[state.last.x][state.last.y] = state.last.c;
+                //console.error('----- TEMPORARY ---- resolving while armies is broken')
+                //resolve(state)
                 
-                var postData = {
+                /*var postData = {
                     "size" : tempData.size,
                     "board": tempBoard,
-                    "last": tempData.last  }
+                    "last": tempData.last  }*/
                     
                     
                     $.ajax({
                     type: 'POST',
                     url : '/getArmies',
                     dataType: "json",
-                    data : JSON.stringify(postData), 
+                    data : JSON.stringify(state), 
                     contentType : "application/json",
-                    success : function(data){
-                        resolve(data)
-                    }.bind(this),
+                    success : (function(army){
+                        army = army.armies
+
+                       this.model.setProp('tempArmy', army).then(function(data){
+                           resolve(data)
+                       })
+                    }).bind(this),
                     error: function(xhr, status, error) {
                         // check status && error
                         reject(error)
@@ -296,19 +356,107 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 });
 
             }).bind(this))
+
+
+            
             
 
         }
         
         tallyScores(armies, board){
-            // data.armies.forEach(function(element) {
+            var arr = [];
+            var zeroes = [];
+            for(var army = 0; army < armies.length; army++){
+                var elem = armies[army]
+                for(var token = 0; token < elem.tokens.length; token ++) {
+                    arr.push(token.position)
+                }
+                for(var liberty = 0; liberty < elem.liberties.length; liberty++){
+                    var lib = elem.liberties[liberty]
+                    if($.inArray(lib ,zeroes) == -1){
+                        zeroes.push({ "pos" : lib, "c": elem.colour} )
+                    }
+                }
                 
-            // }, this);
+            }
+            for(var pos = 0; pos < zeroes.length; pos++){
+                var freeZeroes = []
+                var groupZeroes = []
+                this.recursiveTerritoryCheck(board, zeroes[pos], freeZeroes, groupZeroes)
+                
+            
+        
+            }
+            var whiteScore =0;
+            var blackScore =0;
 
-            // should update the model at the end
-
-            // should return a promise that sets the data to the appropiate score
-            return this.model.getData()
+            return Promise.all([this.model.setProp('whiteScore', whiteScore), this.model.setProp('blackScore', blackScore)])
+        }
+        
+        recursiveTerritoryCheck(board, zero, freeZeroes, groupZeroes){
+            groupZeroes.push(zero)
+            
+            //infinite loop problem with $.inArray find another solution
+            
+            if(zero.pos[1] > 0){ 
+                if(board[zero.pos[0]][(zero.pos[1] - 1)] == 0){
+                    var arrdown = [zero.pos[0], zero.pos[1] - 1]
+                    var downZero = {"pos": arrdown, "c": zero.c}
+                    if($.inArray(downZero, groupZeroes) == -1 && $.inArray(downZero, freeZeroes) == -1){
+                        this.recursiveTerritoryCheck(board, downZero, freeZeroes, groupZeroes)
+                    }
+                }
+                else if (board[zero.pos[0]][(zero.pos[1] - 1)] !== zero.c){
+                    freeZeroes = groupZeroes;
+                    groupZeroes = [];
+                    return;
+                }
+            }
+            
+            if(zero.pos[0] > 0){
+                if(board[(zero.pos[0] - 1)][(zero.pos[1])] == 0){
+                    var arrUp = [zero.pos[0] - 1, zero.pos[1]]
+                    var upZero = {"pos": arrUp, "c": zero.c}
+                    if($.inArray(upZero, groupZeroes) == -1 && $.inArray(upZero, freeZeroes) == -1){
+                        this.recursiveTerritoryCheck(board, upZero, freeZeroes, groupZeroes)
+                    }
+                }
+                else if (board[(zero.pos[0] - 1)][(zero.pos[1])] !== zero.c){
+                    freeZeroes = groupZeroes;
+                    groupZeroes = [];
+                    return;
+                }
+            }
+            
+            if(zero.pos[1] < board.length){
+                if(board[(zero.pos[0])][(zero.pos[1] + 1)] == 0){
+                    var arrUp = [zero.pos[0], zero.pos[1] + 1]
+                    var rightZero = {"pos": arrUp, "c": zero.c}
+                    if($.inArray(rightZero, groupZeroes) == -1 && $.inArray(rightZero, freeZeroes) == -1){
+                        this.recursiveTerritoryCheck(board, rightZero, freeZeroes, groupZeroes)
+                    }
+                }
+                else if(board[(zero.pos[0])][(zero.pos[1] + 1)] == zero.c){
+                    freeZeroes = groupZeroes;
+                    groupZeroes = [];
+                    return;
+                }
+            }
+            if(zero.pos[0] < board.length){
+                if(board[(zero.pos[0] + 1)][(zero.pos[1])] == 0){
+                    var arrUp = [zero.pos[0] + 1, zero.pos[1]]
+                    var rightZero = {"pos": arrUp, "c": zero.c}
+                    if($.inArray(rightZero, groupZeroes) == -1 && $.inArray(rightZero, freeZeroes) == -1){
+                        this.recursiveTerritoryCheck(board, rightZero, freeZeroes, groupZeroes)
+                    }
+                }
+                else if(board[(zero.pos[0] + 1)][(zero.pos[1])] == zero.c){
+                    freeZeroes = groupZeroes;
+                    groupZeroes = [];
+                    return;
+                }
+            }
+            
         }
         
 

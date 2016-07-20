@@ -47,7 +47,6 @@ define(['./view','jquery'],function(View,$){
                     case 'settingsPage':
                         this.drawNavBar()
                         
-
                         break;
 
                     case 'profilePage':
