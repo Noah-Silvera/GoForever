@@ -108,15 +108,12 @@ class DBAdapter {
             }))
         )
 
-<<<<<<< HEAD
         var Session = mongoose.model('Session', requireAllSchemaFields(new Schema({
             }))
         )
         
 
         var User = require('./config/user')
-=======
->>>>>>> 3d36eed30e00e2c28829f50ca933c1a066a0400e
     }
     
     
