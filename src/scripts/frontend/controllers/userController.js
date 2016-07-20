@@ -48,7 +48,9 @@
             if (data.password.length == 0) valid = false;
                 RequestHandler.login(data)
                     .then(function(res){
+                        console.debug(res)
                         window.location.href = 'http://localhost:3000/userLanding'
+                                              
                     })
                     .catch(function(err){
                         console.debug(err)
@@ -58,6 +60,17 @@
             } else {
 
             }
+        }
+        
+        logout(){
+            RequestHandler.logout()
+            .then(function(res){
+                console.log(res)
+                window.location.href = 'http://localhost:3000/'
+            })
+            .catch(function(err){
+                console.log(err)
+            })
         }
         
         forgotCredentials(){
@@ -89,16 +102,6 @@
             window.location.href = 'http://localhost:3000/userSettings'
         }
 
-
-        logout(){
-            RequestHandler.logout()
-            .then(function(res){
-                console.log(res)
-            })
-            .catch(function(err){
-                console.log(err)
-            })
-        }
         
     }
     

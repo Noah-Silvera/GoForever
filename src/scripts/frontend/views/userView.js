@@ -16,7 +16,7 @@ define(['./view','jquery'],function(View,$){
                 switch(this.viewState){
                     // get all
                     case 'indexPage':
-                    
+                        
                         $("#login").on('click',(function(){
                             this.control.login()
                         }).bind(this))
@@ -39,6 +39,7 @@ define(['./view','jquery'],function(View,$){
                     case 'landingPage':
                     
                         this.drawNavBar()
+                        
 
                         break;
 

@@ -23,17 +23,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // required for passport
-app.use(session({ secret: 'ilovestuffstuffstusususus' })); // session secret
+app.use(session({ secret: 'ilovestuffstuffstusususus',
+                    cookie:{
+                        maxAge: 3600000    
+                    }})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
-
-app.use(function(req, res, next){
-    console.log(req.message)
-    next();
-})
- 
-
 
 /**
  * Logout
@@ -79,6 +75,17 @@ app.post("/move", function(req, res){
     });
 
 });
+
+////////////////////////////////////////
+////  
+////
+////////////////////////////////////////
+app.use(function(req, res, next){
+    if(req.user){
+        res.user = req.user
+    }
+    next()
+})
 
 /**
  * post to get armies
@@ -130,6 +137,10 @@ require('./dbAdapter')
 
 var root = 'src/'
 
+app.get('/', function(req, res){
+    res.redirect('/index')
+})
+
 // set up express static directories
 app.use(express.static(path.join(root,'/scripts/frontend').toString()));
 app.use(express.static(path.join(root,'/static').toString()));
@@ -137,18 +148,6 @@ app.use(express.static(path.join(root,'/css').toString()));
 
 //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
 app.use(helmet.noCache())  
-
-app.use(function(req, res, next){
-    res.locals.messages = req.flash();
-    next();
-})
-
-// routing for the landing page 
-app.get('/', function( req, res){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(indexHtml);
-  res.send()
-});
 
 // the names of the html files to set up routing for
 var staticFileArr = [
@@ -160,7 +159,8 @@ var staticFileArr = [
 var secureFileArr = [ 
       'userLanding',
       'userSettings',
-      'userProfile'
+      'userProfile',
+      'index'
 ]          
 
 /**
@@ -194,27 +194,25 @@ var secureFileArr = [
 
       app.get(`/${fileName}`,function(req,res){
         if(req.isAuthenticated()){
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.end(fileString);
-            res.send()
+            if(fileName === "index"){
+                res.redirect('/userLanding')
+                res.send()
+            } else {
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.end(fileString);
+                res.send()
+            }
         } else {
-            res.redirect('/index.html')
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            fileString = fs.readFileSync(path.join(root,`static/index.html`))
+            res.end(fileString)
+            res.send()
         }
       })
     })
 
 })( secureFileArr )
 
-// routing for the tree  page 
-app.get('/', function(req, res){
-    if(req.isAuthenticated()){
-        res.redirect('/userLanding')
-    } else {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(indexHtml);
-        res.send()
-    }
-});   
 
 // all requests to model data
 // route both requests with and without an id
