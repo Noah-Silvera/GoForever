@@ -20,7 +20,7 @@ define(['./view','jquery','controllers/userController'],function(View,$,userCont
                     }).bind(this))
                     
                     $("#register").on('click',(function(){
-                        this.control.create()
+                        this.control.signup()
                     }).bind(this))
                     
                     $("#forgot-credentials").on('click',(function(){

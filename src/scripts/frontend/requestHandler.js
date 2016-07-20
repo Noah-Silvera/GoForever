@@ -136,7 +136,7 @@ define(['lib/request'],function(request){
                 request(options,function(err,res,body){
                     console.debug(res)
                     if(err) reject(err)
-
+                    console.log(res.body)
                     resolve(body)
                 })
             }).bind(this))

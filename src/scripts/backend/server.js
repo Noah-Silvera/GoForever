@@ -12,10 +12,15 @@ var aiInterface = require("./aiInterface");
 
 //STUFF FOR SESSIONS/CURRENT WORK
 var passport = require('passport');
+var cookieParser = require('cookie-parser');
 var flash    = require('connect-flash');
 var session      = require('express-session');
-var cookieParser = require('cookie-parser');
+
 require('./config/passport')(passport);
+
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 // required for passport
 app.use(session({ secret: 'ilovestuffstuffstusususus' })); // session secret
@@ -23,8 +28,12 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(function(req, res, next){
+    console.log(req.message)
+    next();
+})
+ 
+
 
 /**
  * Logout
@@ -47,7 +56,6 @@ app.get('/logout', function(req, res) {
 app.post('/signup', passport.authenticate('signup', {
     successRedirect : '/userLanding.html', // redirect to the profile
     failureRedirect : '/index.html', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
 }));
 
 
@@ -56,8 +64,7 @@ app.post('/signup', passport.authenticate('signup', {
  */
 app.post('/login', passport.authenticate('login', {
     successRedirect : '/userLanding.html', // redirect to the profile
-    failureRedirect : '/login', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
+    failureRedirect : '/index.html', // redirect back to the signup page if there is an error
 }));
 
 /**
@@ -104,8 +111,6 @@ function isLoggedIn(req, res, next) {
 
 
 
-
-
 // a fix to propagate errors thrown in promises
 // https://gist.github.com/benjamingr/0237932cee84712951a2
 process.on('unhandledRejection', function(reason, p){
@@ -130,10 +135,13 @@ app.use(express.static(path.join(root,'/scripts/frontend').toString()));
 app.use(express.static(path.join(root,'/static').toString()));
 app.use(express.static(path.join(root,'/css').toString()));
 
- //prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
-app.use(bodyParser())
-app.use(cookieParser())   
+//prevent caching for development purposes. Caching can leave some subtle bugs in the code given to the client.
 app.use(helmet.noCache())  
+
+app.use(function(req, res, next){
+    res.locals.messages = req.flash();
+    next();
+})
 
 // routing for the landing page 
 app.get('/', function( req, res){
@@ -146,12 +154,15 @@ app.get('/', function( req, res){
 var staticFileArr = [
       'game',
       'gameOptions',
-      'userLanding',
-      'userSettings',
-      'userProfile',
       'hi'
     ]
-            
+ 
+var secureFileArr = [ 
+      'userLanding',
+      'userSettings',
+      'userProfile'
+]          
+
 /**
  * @param  {Array} fileList A list of html files to set up static routing for
  */
@@ -175,12 +186,34 @@ var staticFileArr = [
 
 })( staticFileArr )
 
+;(function staticRoutingFactory(fileList){
+
+    fileList.forEach(function(fileName){
+
+      var fileString = fs.readFileSync(path.join(root,`static/${fileName}.html`))
+
+      app.get(`/${fileName}`,function(req,res){
+        if(req.isAuthenticated()){
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(fileString);
+            res.send()
+        } else {
+            res.redirect('/index.html')
+        }
+      })
+    })
+
+})( secureFileArr )
 
 // routing for the tree  page 
-app.get('/', function( req, res){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(indexHtml);
-  res.send()
+app.get('/', function(req, res){
+    if(req.isAuthenticated()){
+        res.redirect('/userLanding')
+    } else {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(indexHtml);
+        res.send()
+    }
 });   
 
 // all requests to model data

@@ -2,7 +2,7 @@
 
     class UserController extends Controller{
         
-        create(){
+        signup(){
             var data = {};
             data.username = $("#register-username").val();
             data.email = $("#register-email").val();
@@ -15,10 +15,17 @@
             
             if (data.email !== data.email_confirm) valid = false;
             
-            if (data.name.length == 0) valid = false;
+            if (data.username.length == 0) valid = false;
             
             if (data.password.length == 0) valid = false;
-                RequestHandler.signup(data);
+                RequestHandler.signup(data)
+                    .then(function(res){
+                        window.location.href = 'http://localhost:3000/userLanding'
+                    })
+                    .catch(function(err){
+                        console.debug(err)
+                    })                      
+                    
             if(valid){
                 
             } else {
@@ -26,18 +33,26 @@
                 // select view state changes nothing at the moment
             }
         }
-        //Login should be handled in sessions controller, not here
+        
+        
+
         login(){
             var data = {};
-            data.name = $("#login-username").val();
+            data.username = $("#login-username").val();
 
             data.password = $("#login-password").val();
             
             var valid = true;
-            if (data.name.length == 0) valid = false;
+            if (data.username.length == 0) valid = false;
             
             if (data.password.length == 0) valid = false;
-            
+                RequestHandler.login(data)
+                    .then(function(res){
+                        window.location.href = 'http://localhost:3000/userLanding'
+                    })
+                    .catch(function(err){
+                        console.debug(err)
+                    })
             if(valid){//logic should be reversed later
                 
             } else {
