@@ -52,11 +52,12 @@ define(['./view','jquery','models/gameModel'],function(View,$,gameModel){
                             "userId": null,
                             "opponent":opponent,
                             "userHandicap": $("#game-handicap").val(),
-                            "boardSize" : $("#board-size").val(),
+                            "boardSize" : $("#board-size").val().slice(0,1),
                             // no moves yet
                             "moveLog": [],
                             "whiteScore": 0,
                             "blackScore": 0,
+                            // these values aren't in the DB
                             "style": $("#board-style").val(),
                             "userColour":userColour
                         }
