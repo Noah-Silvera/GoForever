@@ -74,22 +74,6 @@ class DBAdapter {
             return schema
         }
 
-        var User = mongoose.model( 'User', requireAllSchemaFields(new Schema({
-            username: String,
-            email: String,
-            passwordHash: String,
-            rememberHash: String,
-            createdAt: Date,
-            updatedAt: Date,
-            activationHash: String,
-            activated: Boolean,
-            activatedAt: Date,
-            matchHistory: [String],               
-            boardColor: String,
-            boardSize: Number,
-            }))
-        )
-
         var Match = mongoose.model('Match', requireAllSchemaFields(new Schema({
             time: Date,
             userId: String,
@@ -108,6 +92,12 @@ class DBAdapter {
             }))
         )
 
+        var Session = mongoose.model('Session', requireAllSchemaFields(new Schema({
+            }))
+        )
+        
+
+        var User = require('./config/user')
     }
     
     
@@ -147,14 +137,16 @@ class DBAdapter {
         return new Promise((function(resolve, reject){
             if (!this.db) reject('not ready to connect to collections')
                 console.log(object);
+
+            collectionName = collectionName.trim()
                 
             var Model = mongoose.model(collectionName)
             var newModel = new Model(object)
-            newModel.save (function(err, user){
+            newModel.save (function(err, data){
                 if (err){
-                    reject('new user object was not stored')
+                    reject(`new ${collectionName} object was not stored\nErr:${err} `)
                 } else{
-                    resolve(user.id)
+                    resolve(data._id)
                 }
             })
         }).bind(this))
@@ -174,6 +166,10 @@ class DBAdapter {
     update(collectionName, searchCriteria, diffObject){
         return new Promise((function(resolve,reject){
             if( !this.db ) reject('not ready to connect to collections')
+
+            collectionName = collectionName.trim()
+
+
             var Model = mongoose.model(collectionName)
             Model.findByIdAndUpdate(searchCriteria, { $set: diffObject}, {new: true}, function(err, object) {
                 if (err){
