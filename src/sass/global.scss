@@ -15,6 +15,10 @@ $dragon: url('images/dragon.png');
 $forest: url('images/forest.png');
 $metal: url('images/metal.png');
 $river: url('images/river.png');
+$ocean: url('images/ocean.png');
+$mountain: url('images/mountain.png');
+$wood: url('images/wood.png');
+$grass: url('images/grass.png');
 
 a.navbar-brand{
     font-size: 24px;
@@ -50,6 +54,12 @@ div.better-border{
     background-size: 100%;
 }
 
+.grass{
+    background-image: $grass;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
 .metal{
     background-image: $metal;
     background-repeat: no-repeat;
@@ -58,6 +68,24 @@ div.better-border{
 
 .river{
     background-image: $river;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.ocean{
+    background-image: $ocean;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.mountain{
+    background-image: $mountain;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.wood{
+    background-image: $wood;
     background-repeat: no-repeat;
     background-size: 100%;
 }
