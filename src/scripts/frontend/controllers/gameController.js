@@ -98,8 +98,9 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         this.model.setProp('board',board)
                     ])  
             } else {
-                return this.model.getData()
+                return Promise.all([this.model.getData()])
             }
+            
         }
         /**
          * Creates a board and then returns the new data
@@ -147,136 +148,167 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
         }
 
-        makeMove(data){
-            if( data.pass ){
-                console.error('---- NOT IMPLEMENTED --- Passing...')
-                return;
-            }
-            tempData = data
-            
-            
-           //special case suicide with no army
-           var suicide = true;
-            if (data.last.x !== 0){
-                if (data.board[data.last.x - 1][data.last.y] == 0 || data.board[data.last.x - 1][data.last.y] == data.last.c){
-                     suicide = false
+        makeMove(boardState){
+            return new Promise((function(resolve,reject){
+                if( boardState.pass ){
+                    console.error('---- NOT IMPLEMENTED --- Passing...')
+                    return;
                 }
-            }
-            if (data.last.x !== data.size - 1){
-                if (data.board[data.last.x + 1][data.last.y] == 0 || data.board[data.last.x + 1][data.last.y] == data.last.c){
-                     suicide = false
-                }
-            }
-            if (data.last.y !== data.size - 1){
-                if(data.board[data.last.x][data.last.y + 1] == 0 || data.board[data.last.x][data.last.y + 1] == data.last.c){ 
-                    suicide = false
-                }
-            }
-            if(data.last.y !== 0){ 
-                if(data.board[data.last.x][data.last.y - 1] == 0 || data.board[data.last.x][data.last.y - 1] == data.last.c){
-                    suicide = false
-                }
-            }
-            if (suicide){
-                alert("no suicide")
-                return;
-            }
-            
-            if (typeof tempArmy !== 'undefined') {
-    
-                for(var army = 0; army < tempArmy.armies.length; army++){
-                    //check if placement is invalid larger suicide
-                    if(tempArmy.armies[army].liberties.length == 1 &&
-                        tempData.last.c == tempArmy.armies[army].colour &&
-                        tempArmy.armies[army].liberties[0][0] == tempData.last.x &&
-                        tempData.last.y == tempArmy.armies[army].liberties[0][1]){
-                            
-                        var suicide = true
-                        if (data.last.x !== 0){
-                            if (data.board[data.last.x - 1][data.last.y] == 0){ suicide = false }
-                        }
-                        if (data.last.x !== data.size - 1){
-                            if (data.board[data.last.x + 1][data.last.y] == 0){ suicide = false }
-                        }
-                        if (data.last.y !== data.size - 1){
-                            if(data.board[data.last.x][data.last.y + 1] == 0){ suicide = false }
-                        }
-                        if(data.last.y !== 0){ 
-                            if( data.board[data.last.x][data.last.y - 1] == 0){ suicide = false }
-                        }
-                        if (suicide){
-                            alert("no suicide")
-                            return;
-                        }
-                    }
+                tempData = boardState
                     
-                    //check if opposing piece surrounded your army
-                    if(tempArmy.armies[army].liberties.length == 1 &&
-                        tempData.last.c !== tempArmy.armies[army].colour &&
-                        tempData.last.x == tempArmy.armies[army].liberties[0][0] &&
-                        tempData.last.y == tempArmy.armies[army].liberties[0][1]){
-                            
-                        tempArmy.armies[army].tokens.forEach(function(element) {
-                            tempData.board[element.position[0]][element.position[1]] = 0
-                        }, this);
+                    
+                //special case suicide with no army
+                var suicide = true;
+                if (boardState.last.x !== 0){
+                    if (boardState.board[boardState.last.x - 1][boardState.last.y] == 0 || boardState.board[boardState.last.x - 1][boardState.last.y] == boardState.last.c){
+                        suicide = false
                     }
                 }
-            }
-    
-            this.updateArmy(data)
+                if (boardState.last.x !== boardState.size - 1){
+                    if (boardState.board[boardState.last.x + 1][boardState.last.y] == 0 || boardState.board[boardState.last.x + 1][boardState.last.y] == boardState.last.c){
+                        suicide = false
+                    }
+                }
+                if (boardState.last.y !== boardState.size - 1){
+                    if(boardState.board[boardState.last.x][boardState.last.y + 1] == 0 || boardState.board[boardState.last.x][boardState.last.y + 1] == boardState.last.c){ 
+                        suicide = false
+                    }
+                }
+                if(boardState.last.y !== 0){ 
+                    if(boardState.board[boardState.last.x][boardState.last.y - 1] == 0 || boardState.board[boardState.last.x][boardState.last.y - 1] == boardState.last.c){
+                        suicide = false
+                    }
+                }
+                if (suicide){
+                    reject("suicide")
+                }
+                
+                if (typeof tempArmy !== 'undefined') {
+        
+                    for(var army = 0; army < tempArmy.armies.length; army++){
+                        //check if placement is invalid larger suicide
+                        if(tempArmy.armies[army].liberties.length == 1 &&
+                            tempData.last.c == tempArmy.armies[army].colour &&
+                            tempArmy.armies[army].liberties[0][0] == tempData.last.x &&
+                            tempData.last.y == tempArmy.armies[army].liberties[0][1]){
+                                
+                            var suicide = true
+                            if (boardState.last.x !== 0){
+                                if (boardState.board[boardState.last.x - 1][boardState.last.y] == 0){ suicide = false }
+                            }
+                            if (boardState.last.x !== boardState.size - 1){
+                                if (boardState.board[boardState.last.x + 1][boardState.last.y] == 0){ suicide = false }
+                            }
+                            if (boardState.last.y !== boardState.size - 1){
+                                if(boardState.board[boardState.last.x][boardState.last.y + 1] == 0){ suicide = false }
+                            }
+                            if(boardState.last.y !== 0){ 
+                                if( boardState.board[boardState.last.x][boardState.last.y - 1] == 0){ suicide = false }
+                            }
+                            if (suicide){
+                                reject("suicide")
+                            }
+                        }
+                        
+                        //check if opposing piece surrounded your army
+                        if(tempArmy.armies[army].liberties.length == 1 &&
+                            tempData.last.c !== tempArmy.armies[army].colour &&
+                            tempData.last.x == tempArmy.armies[army].liberties[0][0] &&
+                            tempData.last.y == tempArmy.armies[army].liberties[0][1]){
+                                
+                            tempArmy.armies[army].tokens.forEach(function(element) {
+                                tempData.board[element.position[0]][element.position[1]] = 0
+                            }, this);
+                        }
+                    }
+                }
+                
+
+
+                // update the data since the move was valid and successful
+                this.model.getData().then((function(data){
+                    // push the valid move onto the list of moves
+                    console.info('move is valid, updating data...')
+                    data.moveLog.push(boardState.last)
+                    // update the board with this new move
+                    data.board.board[boardState.last.x][boardState.last.y] = boardState.last.c
+
+                    // update the model with these changes
+                    return Promise.all([
+                            this.model.setProp('moveLog',data.moveLog),
+                            this.model.setProp('board', data.board)
+                        ])
+
+                }).bind(this)).then((function(){
+                    
+
+                    console.info('updating armies...')
+                    return this.updateArmy(boardState)
+
+                }).bind(this)).then((function(data){
+
+                    console.info('tallying scores and updating data')
+                    return this.tallyScores(data.armies, data.board)
+
+                }).bind(this)).then((function(data){
+                    // resolve with a successful data callback
+                    console.info('re-rendering view')
+                    this.selectViewState('gameActive')
+                    resolve(data)
+                }).bind(this)).catch(function(err){
+                    reject(err)
+                })
+
+            }).bind(this))
+            
             
             
         }
         
-        updateArmy(state, cb){
-            var tempBoard = tempData.board;
-            tempBoard[state.last.x][state.last.y] = state.last.c;
-            
-            var postData = {
-                "size" : tempData.size,
-                "board": tempBoard,
-                "last": tempData.last  }
+        updateArmy(state){
+            return new Promise((function(resolve,reject){
+
+                console.error('----- TEMPORARY ---- resolving while armies is broken')
+                resolve(state)
+
+                var tempBoard = tempData.board;
+                tempBoard[state.last.x][state.last.y] = state.last.c;
                 
-                var callback = function(data, controller){
-                    tempArmy = data;
+                var postData = {
+                    "size" : tempData.size,
+                    "board": tempBoard,
+                    "last": tempData.last  }
                     
-                    var colour;
-                    if(state.last.c = 1){ 
-                        colour = 2 
+                    
+                    $.ajax({
+                    type: 'POST',
+                    url : '/getArmies',
+                    dataType: "json",
+                    data : JSON.stringify(postData), 
+                    contentType : "application/json",
+                    success : function(data){
+                        resolve(data)
+                    }.bind(this),
+                    error: function(xhr, status, error) {
+                        // check status && error
+                        reject(error)
                     }
-                    else{ 
-                        colour = 1 
-                    }
-                        
-                    controller.tallyScores(data, tempBoard);
-                    
-                    state.board = tempBoard
-                    controller.view.drawBoard(state, colour);
-                    
-                    
-                }
-                
-                $.ajax({
-                type: 'POST',
-                url : '/getArmies',
-                dataType: "json",
-                data : JSON.stringify(postData), 
-                contentType : "application/json",
-                success : function(data){
-                    callback(data, this)
-                }.bind(this),
-                error: function(xhr, status, error) {
-                    // check status && error
-                }
-            });
+                });
+
+            }).bind(this))
             
 
         }
         
-        tallyScores(data, board){
-            data.armies.forEach(function(element) {
+        tallyScores(armies, board){
+            // data.armies.forEach(function(element) {
                 
-            }, this);
+            // }, this);
+
+            // should update the model at the end
+
+            // should return a promise that sets the data to the appropiate score
+            return this.model.getData()
         }
         
 

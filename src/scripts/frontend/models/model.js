@@ -53,6 +53,8 @@ define(['requestHandler'],function(RequestHandler){
         }
 
         getProp(prop){
+            prop = prop.trim()
+
             return new Promise((function(resolve,reject){
                 this.getData().then(function(){
                     if( this.data.prop !== undefined || this.data.prop !== null ){
@@ -66,7 +68,18 @@ define(['requestHandler'],function(RequestHandler){
         }
 
         setProp(prop,val){
+            prop = prop.trim()
+
             this.data[prop] = val
+
+
+            for(var i =0; i < this.blackList.length; i++){
+                // don't need to bother updating if this is true, just straight up return the data
+                if( prop = this.blackList[i] ){
+                    console.info('returning data...')
+                    return Promise.resolve(this.data)
+                }
+            }
             return this.setData(this.data)
         }
 

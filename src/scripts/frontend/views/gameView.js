@@ -29,25 +29,63 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                 // clear the bottom panel of all state specific buttons
                 
                 $("#board-wrapper").addClass(data.style)
+
+                // beginning of the game
+                if( data.moveLog.length == 0){
+                    //create the board
+                    return this.control.createBoard(data.boardSize).then((function(data){
+                        // set up the handicaps
+                        return this.control.setHandicapsAndScores(data.userHandicap, data.whiteScore, data.board, data.moveLog)
+
+                    }).bind(this)).then((function(dataArr){
+                            // multiple copies of the data are returned, use the first copy
+                            var data = dataArr[0]
+                            // set the appropiate scores
+                            $("#score-black").text(data.blackScore)
+                            $("#score-white").text(data.whiteScore)
+
+                            // continue on to draw the board
+                            return Promise.resolve(data)
+                            
+                    }).bind(this)).catch(function(err){
+                        console.error('could not initialize game')
+                        throw err
+                    })
+                } else {
+                    // continue without doing inital game setup
+                    return Promise.resolve(data)
+                }
+
+
                 
-                return this.control.createBoard(data.boardSize)
 
             }).bind(this)).catch(function(err){
                 alert('could not retrieve data to render game')
                 throw err
             }).then((function(data){
 
+                var curPlayerColour;
+
+                if( data.moveLog.length === 0 ){
+                    // black takes the first move
+                    curPlayerColour = 1
+                } else {
+                    // choose the opposite colour of the last move
+                    curPlayerColour = ( data.moveLog.slice(-1)[0].c % 2 ) + 1
+                }
+
                 switch(this.viewState){
+
                     case 'gameActive':
 
-                        this.drawPlayerIndicator()
+                        this.drawPlayerIndicator(curPlayerColour)
                         
                         
                         ;(function drawBottomPanel(){
 
 
                             // the action buttons for main gameplay
-                            $(this.selectors.bottomPanel).append(
+                            $(this.selectors.bottomPanel).empty().append(
                                 $('<div id="action-buttons" >').append(
                                     $('<button>')
                                         .addClass('btn btn-default')
@@ -64,40 +102,24 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                     
                                 )
                             )
+                        }).bind(this)
 
-                        }).bind(this)()
+                      
 
-                        // it's the beginning of the game, so calculate and make the handicaps
-                      this.control.setHandicapsAndScores(data.userHandicap, data.whiteScore, data.board, data.moveLog).then((function(dataArr){
-                            // multiple copies of the data are returned, use the first copy
-                            var data = dataArr[0]
-                            // draw the board
-                            $("#score-black").text(data.blackScore)
-                            $("#score-white").text(data.whiteScore)
-                            if(data.whiteScore == .5){
-                            this.drawBoard(
-                                data.board, 1
-                                )
-                            }else{
-                                this.drawBoard(
-                                data.board, 2
-                                )
-                            }
-                            
-                      }).bind(this), function(err){
-                          console.error('could not set handicap scores')
-                          throw err
-                      })
+                        // draw the board with the right colour piece    
+                        this.drawBoard(data.board, curPlayerColour)
 
                     
                         break;
+
                     case 'replay':
 
-                        this.drawPlayerIndicator()
+                        this.drawPlayerIndicator(curPlayerColour)
+                        
 
                         ;(function drawBottomPanel(){
 
-                            $(this.selectors.bottomPanel).append(
+                            $(this.selectors.bottomPanel).empty().append(
 
                                 $('<button>')
 
@@ -123,9 +145,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                             )
                             
                             $(this.selectors.bottomPanel).find('button').addClass('btn replay-button')
-
-
-                        }).bind(this)()
+                        }).bind(this)
                         
 
                         break;
@@ -169,7 +189,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
             svgElem.append(svgFactory.makeRectangle(0, 0, W/(2*(state.size + 1)), H, "Peru"));
             svgElem.append(svgFactory.makeRectangle(W - W/(2*(state.size + 1)), 0, W/(2*(state.size + 1)), H, "Peru"));
             
-            for(var i = 0; i < (state.board.length); i++){
+            for(var i = 0; i < (state.size); i++){
             var distance = H/(state.size + 1);
                 for(var j = 0; j < (state.size); j++){
                     switch (state.board[i][j]){
@@ -194,6 +214,8 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                     .attr('data-y',j)
                                     .on('click',(function(e){
                                         var data = $(e.target).data()
+
+                                        // mark down the move just made
                                         var lastMove = {
                                             "x" : data.x,
                                             "y" : data.y,
@@ -207,7 +229,9 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                             "last": lastMove
                                         }
                                         //send state?
-                                        this.control.makeMove(boardState)
+                                        this.control.makeMove(boardState).then(function(result){
+                                            console.info('move successfully made')
+                                        })
                                     }).bind(this))
                                     .hover(function(){
                                         $(this).css("fill-opacity","0.25")
@@ -225,19 +249,26 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
 
         }
 
-        drawPlayerIndicator(){
+        drawPlayerIndicator(curPlayerColour){
 
+            var backgroundColourString = ''
+            var textColourString = ''
 
-            console.error('----NOT IMPLEMENTED----- determine who is current player')
-
-            var curPlayer = 'White'
+            if( curPlayerColour === 1){
+                backgroundColourString = 'black'
+                textColourString = 'white'
+            } else {
+                backgroundColourString = 'white'
+                textColourString = 'black'
+            }
 
 
 
             $(this.selectors.playerIndicator).empty().append(
                 $('<button type="button" class="btn btn-default">')
-                    .text(`${curPlayer}`)
-                .attr('background-color','white')
+                    .text(`${backgroundColourString}`)
+                    .css('background-color',backgroundColourString)
+                    .css('color',textColourString )
             )
 
         }
