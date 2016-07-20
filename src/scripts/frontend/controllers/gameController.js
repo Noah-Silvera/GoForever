@@ -236,11 +236,7 @@ define(['controllers/controller','views/gameView','models/gameModel'], function(
         
         tallyScores(data, board){
             data.armies.forEach(function(element) {
-                if(element.liberties == 0){
-                    for(var i = 0; i < element.position.length; i++){
-                        
-                    }
-                }
+                
             }, this);
         }
         
