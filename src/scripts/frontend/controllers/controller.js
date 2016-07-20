@@ -36,6 +36,7 @@ define(function(){
          * Retrieves data from the model
          */
         getData(v){
+            // returns a promise from the model with the corresponding data
             return this.model.getData();
         }
     }

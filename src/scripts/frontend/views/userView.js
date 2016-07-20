@@ -1,62 +1,69 @@
 //The view ALSO DEPENDS ON gameController.js
 // this cannot be modeled because of circular dependencies and requirejs
 // see gameController.js
-define(['./view','jquery','controllers/userController'],function(View,$,userController){
+define(['./view','jquery'],function(View,$){
 
     class UserView extends View {
 
         render(){
 
-            // buttons like 'play game' that are present on multiple pages
-            // are looked for and event handlers attached
-            this.setUpCommonButtons()
+            this.control.getData().then((function(data){
 
-            switch(this.viewState){
-                // get all
-                case 'indexPage':
-                
-                    $("#login").on('click',(function(){
-                        this.control.login()
-                    }).bind(this))
+                // buttons like 'play game' that are present on multiple pages
+                // are looked for and event handlers attached
+                this.setUpCommonButtons()
+
+                switch(this.viewState){
+                    // get all
+                    case 'indexPage':
                     
-                    $("#register").on('click',(function(){
-                        this.control.signup()
-                    }).bind(this))
+                        $("#login").on('click',(function(){
+                            this.control.login()
+                        }).bind(this))
+                        
+                        $("#register").on('click',(function(){
+                            this.control.signup()
+                        }).bind(this))
+                        
+                        $("#forgot-credentials").on('click',(function(){
+                            this.control.forgotCredentials()
+                        }).bind(this))
+
+                        // event handlers intialized here
+                        // state specific DOM manips dealt with here
+
+
+
+                        break;
+
+                    case 'landingPage':
                     
-                    $("#forgot-credentials").on('click',(function(){
-                        this.control.forgotCredentials()
-                    }).bind(this))
+                        this.drawNavBar()
 
-                    // event handlers intialized here
-                    // state specific DOM manips dealt with here
+                        break;
 
+                    // get one
+                    case 'settingsPage':
+                        this.drawNavBar()
+                        
 
+                        break;
 
-                    break;
+                    case 'profilePage':
+                        this.drawNavBar()
 
-                case 'landingPage':
-                
-                    this.drawNavBar()
+                        break;
 
-                    break;
+                    default:
+                        throw 'invalid state'
 
-                // get one
-                case 'settingsPage':
-                    this.drawNavBar()
-                    
+                        break;
+                }
 
-                    break;
-
-                case 'profilePage':
-                    this.drawNavBar()
-
-                    break;
-
-                default:
-                    throw 'invalid state'
-
-                    break;
-            }
+            }).bind(this)).catch(function(err){
+                alert('could not retrieve data to render')
+                console.error(err)
+            })
         }
         /**
          * Sets up event handlers for common purposes with the same purposes

@@ -23,6 +23,7 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "browser-sync": "^2.12.10",
     "gulp": "^3.9.1",

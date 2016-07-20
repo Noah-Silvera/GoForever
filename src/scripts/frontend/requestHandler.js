@@ -163,6 +163,23 @@ define(['lib/request'],function(request){
             // must keep the this context to access local variables
         }
 
+        getRandomMove(state){
+            return new Promise((function(resolve,reject){
+              // create a request to the appropiate model with an ID param
+                var options = {
+                     "url" : "/move",
+                     "json" : JSON.stringify(state),
+                }
+
+                request.post(options,function(err,res,body){
+                    console.debug(res)
+                    if(err) reject(err)
+
+                    resolve(body)
+                })
+            }).bind(this))
+        }
+
 
    }
 
