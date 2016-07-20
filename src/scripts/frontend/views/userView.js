@@ -46,6 +46,50 @@ define(['./view','jquery'],function(View,$){
                     case 'settingsPage':
                         this.drawNavBar()
                         
+                        $( "#board-size" ).on("change", function (event) {
+                        switch (event.target.value){
+                            case "9x9" :
+                                $("#game-handicap").append(
+                                    $('<option>').attr( 'id', 2).text('2 pieces'),
+                                    $('<option>').attr( 'id', 3).text('3 pieces'),
+                                    $('<option>').attr( 'id', 4).text('4 pieces'),
+                                    $('<option>').attr( 'id', 0).text('black has first move')
+                                )
+                            break;
+                            case "13x13" :
+                                $("#game-handicap").append(
+                                    $('<option>').attr( 'id', 2).text('2 pieces'),
+                                    $('<option>').attr( 'id', 3).text('3 pieces'),
+                                    $('<option>').attr( 'id', 4).text('4 pieces'),
+                                    $('<option>').attr( 'id', 5).text('5 pieces'),
+                                    $('<option>').attr( 'id', 0).text('black has first move')
+                                )
+                            break;
+                            case "19x19" :
+                                $("#game-handicap").append(
+                                    $('<option>').attr( 'id', 2).text('2 pieces'),
+                                    $('<option>').attr( 'id', 3).text('3 pieces'),
+                                    $('<option>').attr( 'id', 4).text('4 pieces'),
+                                    $('<option>').attr( 'id', 5).text('5 pieces'),
+                                    $('<option>').attr( 'id', 6).text('6 pieces'),
+                                    $('<option>').attr( 'id', 7).text('7 pieces'),
+                                    $('<option>').attr( 'id', 8).text('8 pieces'),
+                                    $('<option>').attr( 'id', 9).text('9 pieces'),
+                                    $('<option>').attr( 'id', 0).text('black has first move')
+                                )
+                                break;
+                                default :
+                                throw "event not detected"
+                                }
+                            })
+                            
+                            
+                        $.each(this.style, function(index, value){
+                            $("#board-style").append(
+                            $('<option>').attr( 'id', value).text(index)
+                        )
+                        });
+                        
 
                         break;
 

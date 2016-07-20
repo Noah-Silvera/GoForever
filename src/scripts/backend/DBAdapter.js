@@ -74,7 +74,7 @@ class DBAdapter {
             return schema
         }
 
-        var User = mongoose.model( 'User', requireAllSchemaFields(new Schema({
+        /*var User = mongoose.model( 'User', requireAllSchemaFields(new Schema({
             username: String,
             email: String,
             passwordHash: String,
@@ -88,7 +88,7 @@ class DBAdapter {
             boardColor: String,
             boardSize: Number,
             }))
-        )
+        )*/
 
         var Match = mongoose.model('Match', requireAllSchemaFields(new Schema({
             time: Date,
