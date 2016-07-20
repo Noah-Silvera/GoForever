@@ -19,14 +19,6 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                 'board':'#board',
                 'playerIndicator':'#player-indicator'
             } 
-            
-            this.style = {
-                'beach': 'images/beach.png',
-                'dragon': 'images/dragon.png',
-                'forest': 'images/dragon.png',
-                'metal': 'images/metal.png',
-                'river': 'images/river.png'
-            }
 
         }
         
