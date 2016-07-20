@@ -65,7 +65,7 @@
                 <th>Replay</th>
                 </tr>
             </thead>
-            <tbody id="match-history-body" onload="loadPage()">
+            <tbody id="match-history-body">
             </tbody>
         </table>
         </div>
@@ -80,8 +80,7 @@
             UserController.selectViewState('profilePage')
 
         })
-        require(['controllers/statistics.js'])
-        require(['controllers/matchHistory.js'])
+        require(['controllers/statsController.js'])
 
     </script>
 </body>
