@@ -40,7 +40,7 @@ function getRandomMove(size, board, lastMove, cb){
     
     
     req.on('error', (e) => {
-        console.log('problem with request: ${e.message}');
+        console.log(`problem with request: ${e}`);
     });
     
     req.write(JSON.stringify(postData));
@@ -56,9 +56,9 @@ function getArmies(size, board, lastMove, cb){
         "last": lastMove  }
     
     var options = {
-        hostname: 'roberts.seng.uvic.ca',
+        hostname: 'localhost',
         path: '/util/findArmies',
-        port: '30000',
+        port: '3001',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

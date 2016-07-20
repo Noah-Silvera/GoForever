@@ -153,9 +153,108 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     console.error('---- NOT IMPLEMENTED --- Passing...')
                     return;
                 }
-                tempData = boardState
                     
+
+                
+
+
+                // retrieve the data so we can check validity
+                this.model.getData().then((function(data){
+
+                // check if the move is valid and not a suicide
+                    return this.checkSuicide(boardState,data.tempArmy)
+
+                }).bind(this)).then((function(data){
+                    // check the moveLog to see if the move has previously been played
+                    return this.checkKo(data.moveLog, boardState)
+                
+
+                // update the data since the move was valid and successful
+                }).bind(this)).catch(function(err){
+                    reject('invalid move')
+
+                /////////////////////////////////////
+                ///////  MOVE IS VALID   ////////////
+                /////////////////////////////////////
+                }).then((function(data){
+
+                    // check if this move captured a piece...
+                    return this.checkCaptured(data.tempArmy, data.board)
+                
+
+                }).bind(this)).then((function(data){
+
+
+                    // push the valid move onto the list of moves
+                    console.info('move is valid, updating data...')
+                    data.moveLog.push(boardState.last)
+                    // update the board with this new move
+                    data.board.board[boardState.last.x][boardState.last.y] = boardState.last.c
+
+                    // update the model with these changes
+                    return Promise.all([
+                            this.model.setProp('moveLog',data.moveLog),
+                            this.model.setProp('board', data.board)
+                        ])
+
+                }).bind(this)).then((function(){
                     
+                    console.info('updating armies...')
+                    return this.updateArmy(boardState) // ensure latest board state
+
+                }).bind(this)).then((function(data){
+
+                    console.info('tallying scores and updating data')
+                    return this.tallyScores(data.tempArmy, data.board)
+
+                }).bind(this)).then((function(dataArr){
+                    // resolve with a successful data callback
+                    var data = dataArr[0]
+                    console.info('re-rendering view')
+                    this.selectViewState('gameActive')
+                    resolve(data)
+                }).bind(this)).catch(function(err){
+                    reject(err)
+                })
+
+            }).bind(this))
+            
+            
+            
+        }
+
+        checkCaptured(armies,board){
+
+                // at least one army exists
+                if( armies != undefined){
+
+                    for(var army = 0; army < armies.length; army++){
+            
+                        //check if opposing piece surrounded your army
+                        if(armies[army].liberties.length == 1 &&
+                            board.last.c !== armies[army].colour &&
+                            board.last.x == armies[army].liberties[0][0] &&
+                            board.last.y == armies[army].liberties[0][1]){
+                                
+                            armies[army].tokens.forEach(function(element) {
+                                board.board[element.position[0]][element.position[1]] = 0
+                            }, this);
+                        }
+
+                    }
+
+                    return this.model.setProp('board',board)
+                
+                } else {
+
+                    return this.model.getData()
+                }
+
+        }
+
+        checkSuicide(boardState,armies){
+            return new Promise((function(resolve,reject){
+
                 //special case suicide with no army
                 var suicide = true;
                 if (boardState.last.x !== 0){
@@ -182,14 +281,15 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     reject("suicide")
                 }
                 
-                if (typeof tempArmy !== 'undefined') {
+                // some armies previously exist
+                if (typeof armies !== 'undefined') {
         
-                    for(var army = 0; army < tempArmy.armies.length; army++){
+                    for(var army = 0; army < armies.length; army++){
                         //check if placement is invalid larger suicide
-                        if(tempArmy.armies[army].liberties.length == 1 &&
-                            tempData.last.c == tempArmy.armies[army].colour &&
-                            tempArmy.armies[army].liberties[0][0] == tempData.last.x &&
-                            tempData.last.y == tempArmy.armies[army].liberties[0][1]){
+                        if(armies[army].liberties.length == 1 &&
+                            boardState.last.c == armies[army].colour &&
+                            armies[army].liberties[0][0] == boardState.last.x &&
+                            boardState.last.y == armies[army].liberties[0][1]){
                                 
                             var suicide = true
                             if (boardState.last.x !== 0){
@@ -209,65 +309,24 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                             }
                         }
                     
-                        //check if opposing piece surrounded your army
-                        if(tempArmy.armies[army].liberties.length == 1 &&
-                            tempData.last.c !== tempArmy.armies[army].colour &&
-                            tempData.last.x == tempArmy.armies[army].liberties[0][0] &&
-                            tempData.last.y == tempArmy.armies[army].liberties[0][1]){
-                                
-                            tempArmy.armies[army].tokens.forEach(function(element) {
-                                tempData.board[element.position[0]][element.position[1]] = 0
-                            }, this);
-                        }
+
                     }
                 }
-    
-            //this.updateArmy(data)
-            
-            // update the data since the move was valid and successful
-                this.model.getData().then((function(data){
-                    // push the valid move onto the list of moves
-                    console.info('move is valid, updating data...')
-                    data.moveLog.push(boardState.last)
-                    // update the board with this new move
-                    data.board.board[boardState.last.x][boardState.last.y] = boardState.last.c
 
-                    // update the model with these changes
-                    return Promise.all([
-                            this.model.setProp('moveLog',data.moveLog),
-                            this.model.setProp('board', data.board)
-                        ])
-
-                }).bind(this)).then((function(){
-                    
-
-                    console.info('updating armies...')
-                    return this.updateArmy(boardState) // ensure latest board state
-
-                }).bind(this)).then((function(data){
-
-                    console.info('tallying scores and updating data')
-                    return this.tallyScores(tempArmy, data.board)
-
-                }).bind(this)).then((function(dataArr){
-                    // resolve with a successful data callback
-                    var data = dataArr[0]
-                    console.info('re-rendering view')
-                    this.selectViewState('gameActive')
+                this.model.getData().then(function(data){
                     resolve(data)
-                }).bind(this)).catch(function(err){
-                    reject(err)
                 })
 
             }).bind(this))
-            
-            
-            
+        }
+
+        checkKo(moveLog,boardState){
+            return this.model.getData()
         }
         
         updateArmy(state){
 
-
+            return new Promise((function(resolve,reject){
                 //console.error('----- TEMPORARY ---- resolving while armies is broken')
                 //resolve(state)
                 
@@ -283,24 +342,32 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     dataType: "json",
                     data : JSON.stringify(state), 
                     contentType : "application/json",
-                    success : function(data){
-                        return Promise.all([this.model.setProp('tempArmy', data)])
-                    }.bind(this),
+                    success : (function(army){
+                        army = army.armies
+
+                       this.model.setProp('tempArmy', army).then(function(data){
+                           resolve(data)
+                       })
+                    }).bind(this),
                     error: function(xhr, status, error) {
                         // check status && error
-                        return Promise.reject(error)
+                        reject(error)
                     }
                 });
+
+            }).bind(this))
+
+
             
             
 
         }
         
-        tallyScores(data, board, controller){
+        tallyScores(armies, board){
             var arr = [];
             var zeroes = [];
-            for(var army = 0; army < data.armies.length; army++){
-                var elem = data.armies[army]
+            for(var army = 0; army < armies.length; army++){
+                var elem = armies[army]
                 for(var token = 0; token < elem.tokens.length; token ++) {
                     arr.push(token.position)
                 }
@@ -317,7 +384,12 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 var groupZeroes = []
                 this.recursiveTerritoryCheck(board, zeroes[pos], freeZeroes, groupZeroes)
                 
+            
+        
             }
+            var whiteScore =0;
+            var blackScore =0;
+
             return Promise.all([this.model.setProp('whiteScore', whiteScore), this.model.setProp('blackScore', blackScore)])
         }
         
