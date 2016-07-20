@@ -1,4 +1,4 @@
-define(['controllers/controller','views/gameView','models/gameModel'], function(Controller,GameView,GameModel){
+define(['controllers/controller','views/gameView','models/gameModel','requestHandler'], function(Controller,GameView,GameModel, requestHandler){
     
     var tempData;
     var tempArmy;
@@ -7,104 +7,143 @@ define(['controllers/controller','views/gameView','models/gameModel'], function(
     class GameController extends Controller{
         
         
-        setHandicapsAndScores(board, handicap){
-            var scores = {"white": 0, "black": 0, "whiteOffset": 0}
-            switch (board.size){
+        setHandicapsAndScores(handicap, whiteScore, board, moveLog){
+            if( moveLog.length === 0){
+
+                switch (board.size){
+                    case 9:
+                        switch(handicap){
+                            case "4 pieces":
+                                board[7][7] = 1
+                                whiteScore += .5
+                            case "3 pieces":
+                                board[7][1] = 1
+                                whiteScore += .5
+                            case "2 pieces":
+                                board[1][1] = 1
+                                board[1][7] = 1
+                                whiteScore += 1
+                                break;
+                            case "black has first move":
+                                whiteScore += .5
+                                break;
+                            default:
+                                throw "invalid handicap"
+                        }
+                        break;
+                    case 13:
+                        switch(handicap){
+                            case "5 pieces":
+                                board[6][6] = 1
+                                whiteScore += .5
+                            case "4 pieces":
+                                board[10][10] = 1
+                                whiteScore += .5
+                            case "3 pieces":
+                                board[10][2] = 1
+                                whiteScore += .5
+                            case "2 pieces":
+                                board[2][10] = 1
+                                board[2][2] = 1
+                                whiteScore += 1
+                                break;
+                            case "black has first move":
+                                whiteScore += .5
+                                break;
+                            default:
+                                throw "invalid handicap"
+                        }
+                        break;
+                    case 19:
+                        switch(handicap){
+                            case "9 pieces":
+                                board[9][9] = 1
+                                whiteScore += .5
+                            case "8 pieces":
+                                board[16][9] = 1
+                                whiteScore += .5
+                            case "7 pieces":
+                                board[9][16] = 1
+                                whiteScore += .5
+                            case "6 pieces":
+                                board[2][9] = 1
+                                whiteScore += .5
+                            case "5 pieces":
+                                board[9][2] = 1
+                                whiteScore += .5
+                            case "4 pieces":
+                                board[16][16] = 1
+                                whiteScore += .5
+                            case "3 pieces":
+                                board[16][2] = 1
+                                whiteScore += .5
+                            case "2 pieces":
+                                board[2][16] = 1
+                                board[2][2] = 1
+                                whiteScore += 1
+                                break;
+                            case "black has first move":
+                                whiteScore += .5
+                                break;
+                            default:
+                                throw "invalid handicap"
+                        }
+                        break;
+                    default:
+                        throw "invalid board size"
+                }
+
+                return Promise.all([
+                        this.model.setProp('whiteScore', whiteScore),
+                        this.model.setProp('board',board)
+                    ])  
+            } else {
+                return this.model.getData()
+            }
+        }
+        /**
+         * Creates a board and then returns the new data
+         * @param  {9, 13, or 19} boardSize
+         */
+        createBoard(boardSize){
+            switch(boardSize){
                 case 9:
-                    switch(handicap){
-                        case "4 pieces":
-                            board.board[7][7] = 1
-                            scores.whiteOffset += .5
-                        case "3 pieces":
-                            board.board[7][1] = 1
-                            scores.whiteOffset += .5
-                        case "2 pieces":
-                            board.board[1][1] = 1
-                            board.board[1][7] = 1
-                            scores.whiteOffset += 1
-                            break;
-                        case "black has first move":
-                            scores.whiteOffset += .5
-                            break;
-                        default:
-                            throw "invalid handicap"
-                    }
+                    return this.model.setProp( 'board', {"size":9,"board":[[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0]]}
+                    )
                     break;
                 case 13:
-                    switch(handicap){
-                        case "5 pieces":
-                            board.board[6][6] = 1
-                            scores.whiteOffset += .5
-                        case "4 pieces":
-                            board.board[10][10] = 1
-                            scores.whiteOffset += .5
-                        case "3 pieces":
-                            board.board[10][2] = 1
-                            scores.whiteOffset += .5
-                        case "2 pieces":
-                            board.board[2][10] = 1
-                            board.board[2][2] = 1
-                            scores.whiteOffset += 1
-                            break;
-                        case "black has first move":
-                            scores.whiteOffset += .5
-                            break;
-                        default:
-                            throw "invalid handicap"
-                    }
+                    return this.model.setProp( 'board', {"size":13,"board":[[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0]]}
+                    )
                     break;
                 case 19:
-                    switch(handicap){
-                        case "9 pieces":
-                            board.board[9][9] = 1
-                            scores.whiteOffset += .5
-                        case "8 pieces":
-                            board.board[16][9] = 1
-                            scores.whiteOffset += .5
-                        case "7 pieces":
-                            board.board[9][16] = 1
-                            scores.whiteOffset += .5
-                        case "6 pieces":
-                            board.board[2][9] = 1
-                            scores.whiteOffset += .5
-                        case "5 pieces":
-                            board.board[9][2] = 1
-                            scores.whiteOffset += .5
-                        case "4 pieces":
-                            board.board[16][16] = 1
-                            scores.whiteOffset += .5
-                        case "3 pieces":
-                            board.board[16][2] = 1
-                            scores.whiteOffset += .5
-                        case "2 pieces":
-                            board.board[2][16] = 1
-                            board.board[2][2] = 1
-                            scores.whiteOffset += 1
-                            break;
-                        case "black has first move":
-                            scores.whiteOffset += .5
-                            break;
-                        default:
-                            throw "invalid handicap"
-                    }
+                    return this.model.setProp( 'board', {"size":19,"board":[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]}
+                    )
                     break;
                 default:
-                    throw "invalid board size"
+                    throw ("default size not implemented")
             }
-            return scores;
         }
         
         
         getRandomMove(postData){
             
-            $.ajax({
-                type: 'POST',
-                url : '/move',
-                dataType: "json",
-                data : JSON.stringify(postData), 
-                contentType : "application/json",
-                success : makeMove(data)
-            });
+            return this.model.getData().then(function(data){
+                var state = {
+                    size : data.board.size,
+                    board : data.board.board,
+                    last: data.moveLog.slice(-1).pop()
+                }
+
+                return requestHandler.getRandomMove(state)
+
+            })
+            
 
         }
 

@@ -23,140 +23,122 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
         }
         
         render(){
-            
-            // clear the bottom panel of all state specific buttons
 
-            $(this.selectors.bottomPanel).empty()
-            
-            var options = window.location.href.substr(window.location.href.indexOf("?") + 1)
-            
-            options = options.replace(/%22/g, '"').replace(/%20/g, " ")
-            
-            options = JSON.parse(options)
-            
-            $("#board-wrapper").addClass(options.style)
-            
-            var board;
-            switch(options.size){
-                case"9x9":
-                    board = {"size":9,"board":[[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0]]}
-                    
-                    break;
-                case"13x13":
-                    board = {"size":13,"board":[[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0]]}
-                    
-                    break;
-                case"19x19":
-                    board = {"size":19,"board":[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]}
-                    
-                    break;
-                default:
-                    throw "default size not implemented"
-            }
+            this.control.getData().then((function(data){
+                
+                // clear the bottom panel of all state specific buttons
+                
+                $("#board-wrapper").addClass(data.style)
+                
+                return this.control.createBoard(data.boardSize)
 
-            switch(this.viewState){
-                case 'gameActive':
+            }).bind(this)).catch(function(err){
+                alert('could not retrieve data to render game')
+                throw err
+            }).then((function(data){
 
-                    this.drawPlayerIndicator()
-                    
-                    
-                    ;(function drawBottomPanel(){
+                switch(this.viewState){
+                    case 'gameActive':
+
+                        this.drawPlayerIndicator()
+                        
+                        
+                        ;(function drawBottomPanel(){
 
 
-                        // the action buttons for main gameplay
-                        $(this.selectors.bottomPanel).append(
-                            $('<div id="action-buttons" >').append(
-                                $('<button>')
-                                    .addClass('btn btn-default')
-                                    .attr('id','pass-button')
-                                    .text('Pass')
-                                    .on('click',(function makeMove(){
-                                        this.control.makeMove({ 'pass':true })
-                                    }).bind(this)),
-                                $('<button>')
-                                    .text('Replay ( TEMPORARY )')
-                                    .on('click',(function replay(){
-                                        this.control.selectViewState('replay')
-                                    }).bind(this))
-                                
-                            )
-                        )
-
-                    }).bind(this)()
-
-                    // draw the board
-                    var scores = this.control.setHandicapsAndScores(board, options.handicap)
-                    
-                    $("#score-black").text(scores.black)
-                    $("#score-white").text(scores.whiteOffset + scores.white)
-                    if(scores.whiteOffset == .5){
-                    this.drawBoard(
-                        board, 1
-                        )
-                    }else{
-                        this.drawBoard(
-                        board, 2
-                        )
-                    }
-                    
-
-                    break;
-                case 'replay':
-
-                    this.drawPlayerIndicator()
-
-                    ;(function drawBottomPanel(){
-
-                        $(this.selectors.bottomPanel).append(
-
-                            $('<button>')
-
-                                .on('click',(function prevMove(e){
-                                    this.control.replayPrevMove()
-                                    e.stopPropagation()
-                                }).bind(this))
-                                .append(
-                                    $('<img class="svg">')
-                                        .attr('src','images/Back_(Flat).svg')                                
-                                ),
-                            
-                            $('<button>')
-
-                                .on('click',(function nextMove(e){
-                                    this.control.replayNextMove()
-                                    e.stopPropagation()
-                                }).bind(this))
-                                .append(
-                                    $('<img class="svg">')
-                                        .attr('src','images/Forward_(Flat).svg')                                
+                            // the action buttons for main gameplay
+                            $(this.selectors.bottomPanel).append(
+                                $('<div id="action-buttons" >').append(
+                                    $('<button>')
+                                        .addClass('btn btn-default')
+                                        .attr('id','pass-button')
+                                        .text('Pass')
+                                        .on('click',(function makeMove(){
+                                            this.control.makeMove({ 'pass':true })
+                                        }).bind(this)),
+                                    $('<button>')
+                                        .text('Replay ( TEMPORARY )')
+                                        .on('click',(function replay(){
+                                            this.control.selectViewState('replay')
+                                        }).bind(this))
+                                    
                                 )
-                        )
-                        
-                        $(this.selectors.bottomPanel).find('button').addClass('btn replay-button')
+                            )
 
+                        }).bind(this)()
 
-                    }).bind(this)()
+                        // it's the beginning of the game, so calculate and make the handicaps
+                      this.control.setHandicapsAndScores(data.userHandicap, data.whiteScore, data.board, data.moveLog).then((function(dataArr){
+                            // multiple copies of the data are returned, use the first copy
+                            var data = dataArr[0]
+                            // draw the board
+                            $("#score-black").text(data.blackScore)
+                            $("#score-white").text(data.whiteScore)
+                            if(data.whiteScore == .5){
+                            this.drawBoard(
+                                data.board, 1
+                                )
+                            }else{
+                                this.drawBoard(
+                                data.board, 2
+                                )
+                            }
+                            
+                      }).bind(this), function(err){
+                          console.error('could not set handicap scores')
+                          throw err
+                      })
+
                     
+                        break;
+                    case 'replay':
 
-                    // draw the board    
+                        this.drawPlayerIndicator()
 
-                    this.drawBoard(
-                        {"size":11,"board":[[0,1,1,2,2,1,2,2,2,2,1],[2,2,2,2,0,2,1,0,0,1,1],[0,1,2,2,2,2,0,2,0,0,2],[2,1,0,2,1,0,2,0,2,1,0],[1,0,1,0,2,1,0,1,0,1,2],[0,0,0,0,0,2,2,0,1,1,1],[0,2,1,2,0,0,1,1,0,2,0],[1,1,1,0,0,1,2,2,1,2,2],[2,0,2,0,1,0,0,1,0,2,2],[2,2,1,0,2,1,1,1,1,0,2],[2,2,2,1,2,2,2,1,1,1,1]]})
+                        ;(function drawBottomPanel(){
+
+                            $(this.selectors.bottomPanel).append(
+
+                                $('<button>')
+
+                                    .on('click',(function prevMove(e){
+                                        this.control.replayPrevMove()
+                                        e.stopPropagation()
+                                    }).bind(this))
+                                    .append(
+                                        $('<img class="svg">')
+                                            .attr('src','images/Back_(Flat).svg')                                
+                                    ),
+                                
+                                $('<button>')
+
+                                    .on('click',(function nextMove(e){
+                                        this.control.replayNextMove()
+                                        e.stopPropagation()
+                                    }).bind(this))
+                                    .append(
+                                        $('<img class="svg">')
+                                            .attr('src','images/Forward_(Flat).svg')                                
+                                    )
+                            )
+                            
+                            $(this.selectors.bottomPanel).find('button').addClass('btn replay-button')
+
+
+                        }).bind(this)()
                         
 
-                    break;
-                case 'endGame':
+                        break;
+                    case 'endGame':
 
-                    break;
-                default:
-                    throw 'invalid state'
-            }
+                        break;
+                    default:
+                        throw 'invalid state'
+                }
+            }).bind(this)).catch(function(err){
+                console.error('could not create board')
+                throw err
+            })
         }
         
         //state requires size board n*n with moves 0, 1, 2 for this to function correctly and colour of next move if in play state

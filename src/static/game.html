@@ -45,14 +45,7 @@
     <script>
         require(['controllers/gameController'],function(GameController){
 
-            // load the initial data then viewState
-
-            GameController.getData().then(function(result){
-                console.info('fake data returned')
-                console.debug(result)
-
-                GameController.selectViewState('gameActive')
-            })
+            GameController.selectViewState('gameActive')
         })
     </script>
 </body>
