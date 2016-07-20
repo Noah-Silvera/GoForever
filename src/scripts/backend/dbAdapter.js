@@ -74,21 +74,6 @@ class DBAdapter {
             return schema
         }
 
-        /*var User = mongoose.model( 'User', requireAllSchemaFields(new Schema({
-            username: String,
-            email: String,
-            passwordHash: String,
-            rememberHash: String,
-            createdAt: Date,
-            updatedAt: Date,
-            activationHash: String,
-            activated: Boolean,
-            activatedAt: Date,
-            matchHistory: [String],               
-            boardColor: String,
-            boardSize: Number,
-            }))
-        )*/
 
         var Match = mongoose.model('Match', requireAllSchemaFields(new Schema({
             time: Date,
