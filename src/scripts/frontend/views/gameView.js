@@ -60,7 +60,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                 
 
             }).bind(this)).catch(function(err){
-                alert('could not retrieve data to render game')
+                toastr.error('could not retrieve data to render game')
                 throw err
             }).then((function(data){
 
@@ -128,7 +128,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                             console.info('move retracted')
                                         }).catch( (err) => {
                                             if( err.message === "first-move" ){
-                                                alert('no more moves to return too')
+                                                toastr.error('no more moves to return too')
                                             }
                                         })
                                         e.stopPropagation()
@@ -243,17 +243,31 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                             console.info('move successfully made')
 
                                             return this.control.checkIfAi()
-                                        }).bind(this),function(err){
+                                        }).bind(this),(function(err){
                                             console.error('user move failed')
                                             console.error(err)
-                                            if( err.message === 'ko'){
-                                                alert('cannot place a piece where previously placed')
-                                            } else if( err.message === 'suicide'){
-                                                alert('cannot suicide')
+
+                                            // use gameplay error messages
+
+                                            switch(err.message){
+                                                case 'ko':
+                                                    toastr.error('cannot place a piece where previously placed')
+                                                    break;
+                                                
+                                                case 'suicide':
+                                                    toastr.error('cannot suicide')
+                                                    break;
+                                                
+                                                case 'replay-error':
+                                                    toastr.error('cannot place a piece during replay')
+                                                    break;
+
                                             }
+
+
                                             console.error(err)
                                             return Promise.reject(err)
-                                        }).then((function(result){
+                                        }).bind(this)).then((function(result){
                                             console.info('ai move made if applicable')
                                         }).bind(this),function(err){
                                             console.error('ai move failed')

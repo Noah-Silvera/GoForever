@@ -205,8 +205,8 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     Promise.resolve().then((function(){
                         return this.model.getData()
                     }).bind(this)).then((function(data){
-                        return Promise.resolve(data)
-                        // return this.checkCaptureSpecialCase(boardState,data.tempArmy)
+                        // return Promise.resolve(data)
+                        return this.checkCaptureSpecialCase(boardState,data.tempArmy)
 
                     }).bind(this)).then((function(data){
                     // check if the move is valid and not a suicide
@@ -359,6 +359,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                 
                             armies[army].tokens.forEach(function(element) {
                                 board.board[element.position[0]][element.position[1]] = 0
+                                toastr.success('You captured an enemy piece!')
                             }, this);
                         }
 
@@ -407,6 +408,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                         
                                         if (counter == 3){
                                             boardState.board[x][y] = 0
+                                            toastr.success('You captured an enemy piece!')
                                         }
                                     }
                             }
@@ -439,6 +441,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                         
                                         if (counter == 3){
                                             boardState.board[x][y] = 0
+                                            toastr.success('You captured an enemy piece!')
                                         }
                                     }
                             }
@@ -470,6 +473,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                         
                                         if (counter == 3){
                                             boardState.board[x][y] = 0
+                                            toastr.success('You captured an enemy piece!')
                                         }
                                     }
                             }
@@ -501,6 +505,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                         
                                         if (counter == 3){
                                             boardState.board[x][y] = 0
+                                            toastr.success('You captured an enemy piece!')
                                         }
                                     }
                             }
