@@ -56,9 +56,9 @@ function getArmies(size, board, lastMove, cb){
         "last": lastMove  }
     
     var options = {
-        hostname: 'localhost',
+        hostname: 'roberts.seng.uvic.ca',
         path: '/util/findArmies',
-        port: '3001',
+        port: '30000',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ function getArmies(size, board, lastMove, cb){
     
     
     req.on('error', (e) => {
-        console.log('problem with request: ${e.message}');
+        console.log(`problem with request: ${e.message}`);
     });
     
     req.write(JSON.stringify(postData));

@@ -179,7 +179,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 }).then((function(data){
 
                     // check if this move captured a piece...
-                    return this.checkCaptured(data.tempArmy, data.board)
+                    return this.checkCaptured(data.tempArmy, boardState)
                 
 
                 }).bind(this)).then((function(data){
@@ -254,6 +254,14 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
         checkSuicide(boardState,armies){
             return new Promise((function(resolve,reject){
+                
+                // not suicide special case no army surrounded by enemy but also capturing enemy
+                if (typeof armies !== 'undefined') {
+        
+                    for(var army = 0; army < armies.length; army++){
+
+                    }
+                }
 
                 //special case suicide with no army
                 var suicide = true;
@@ -321,6 +329,12 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         }
 
         checkKo(moveLog,boardState){
+            
+            for(var i = 0; i < moveLog; i++){
+                if(moveLog[i] === boardState.last){
+                    reject("recreated previous board")
+                }
+            }
             return this.model.getData()
         }
         
@@ -364,10 +378,19 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         }
         
         tallyScores(armies, board){
+            var whiteScore =0;
+            var blackScore =0;
+
             var arr = [];
             var zeroes = [];
+            var onlyArmy = true;
             for(var army = 0; army < armies.length; army++){
                 var elem = armies[army]
+                if (armies.length > 1 && army < armies.length - 1){
+                    if(armies[army].colour !== armies[army + 1].colour){
+                        onlyArmy = false;
+                    }
+                }
                 for(var token = 0; token < elem.tokens.length; token ++) {
                     arr.push(token.position)
                 }
@@ -379,81 +402,130 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 }
                 
             }
-            for(var pos = 0; pos < zeroes.length; pos++){
-                var freeZeroes = []
-                var groupZeroes = []
-                this.recursiveTerritoryCheck(board, zeroes[pos], freeZeroes, groupZeroes)
-                
+            if(armies.length !== 1 && !onlyArmy){
+                for(var pos = 0; pos < zeroes.length; pos++){
+                    var freeZeroes = []
+                    var groupZeroes = []
+                    this.recursiveTerritoryCheck(board.board, zeroes[pos], freeZeroes, groupZeroes)
+                    
             
-        
+                }
             }
-            var whiteScore =0;
-            var blackScore =0;
-
+            else if(armies.length == 1){
+                
+                if(armies[0].colour == 1){blackScore = armies[0].tokens.length}
+                
+                if(armies[0].colour == 2){whiteScore = armies[0].tokens.length}
+                 
+            }
+            else{
+                for(var army = 0; army < armies.length; army++){
+                    
+                    // not considering hole in army at the moment
+                    if(armies[0].colour == 1){blackScore += armies[0].tokens.length}
+                    if(armies[0].colour == 2){whiteScore += armies[0].tokens.length}
+                }
+            }
+            
             return Promise.all([this.model.setProp('whiteScore', whiteScore), this.model.setProp('blackScore', blackScore)])
         }
         
         recursiveTerritoryCheck(board, zero, freeZeroes, groupZeroes){
+            //if(freeZeroes.length > 0){return}
             groupZeroes.push(zero)
+            if(zero.pos[1] > 0){
+                if (board[zero.pos[0]][(zero.pos[1] - 1)] !== zero.c &&
+                    board[zero.pos[0]][(zero.pos[1] - 1)] !== 0){
+                        
+                        freeZeroes.push(zero)
+                }
+            }
+            if(zero.pos[0] > 0){
+                if(board[(zero.pos[0] - 1)][(zero.pos[1])] !== zero.c &&
+                    board[(zero.pos[0] - 1)][(zero.pos[1])] !== 0){
+                        
+                        freeZeroes.push(zero)
+                }
+            }
+            
+            if(zero.pos[1] < board.length - 1){
+                if(board[(zero.pos[0])][(zero.pos[1] + 1)] !== zero.c &&
+                    board[(zero.pos[0])][(zero.pos[1] + 1)] !== 0){
+                        
+                        freeZeroes.push(zero)
+                }
+            }
+            if(zero.pos[0] < board.length - 1){
+                if(board[(zero.pos[0] + 1)][(zero.pos[1])] !== zero.c &&
+                    board[(zero.pos[0] + 1)][(zero.pos[1])] !== 0){
+                    
+                        freeZeroes.push(zero)
+                }
+            }
             
             //infinite loop problem with $.inArray find another solution
-            
-            if(zero.pos[1] > 0){ 
+            if(zero.pos[1] > 0){
                 if(board[zero.pos[0]][(zero.pos[1] - 1)] == 0){
-                    var arrdown = [zero.pos[0], zero.pos[1] - 1]
-                    var downZero = {"pos": arrdown, "c": zero.c}
-                    if($.inArray(downZero, groupZeroes) == -1 && $.inArray(downZero, freeZeroes) == -1){
+                    var arr = [zero.pos[0], zero.pos[1] - 1]
+                    var downZero = {"pos": arr, "c": zero.c}
+                    var inGroup = false
+                    for(var i = 0; i < groupZeroes.length; i++){
+                        if (groupZeroes[i].pos[0] === zero.pos[0] && groupZeroes[i].pos[1] === zero.pos[1] - 1){
+                            inGroup = true
+                        }
+                    }
+                    if(!inGroup){
                         this.recursiveTerritoryCheck(board, downZero, freeZeroes, groupZeroes)
                     }
-                }
-                else if (board[zero.pos[0]][(zero.pos[1] - 1)] !== zero.c){
-                    freeZeroes = groupZeroes;
-                    groupZeroes = [];
-                    return;
                 }
             }
             
             if(zero.pos[0] > 0){
-                if(board[(zero.pos[0] - 1)][(zero.pos[1])] == 0){
-                    var arrUp = [zero.pos[0] - 1, zero.pos[1]]
-                    var upZero = {"pos": arrUp, "c": zero.c}
-                    if($.inArray(upZero, groupZeroes) == -1 && $.inArray(upZero, freeZeroes) == -1){
-                        this.recursiveTerritoryCheck(board, upZero, freeZeroes, groupZeroes)
+                if (board[(zero.pos[0] - 1)][(zero.pos[1])] == 0){
+                    var arr = [zero.pos[0] - 1, zero.pos[1]]
+                    var upZero = {"pos": arr, "c": zero.c}
+                    var inGroup = false
+                    for(var i = 0; i < groupZeroes.length; i++){
+                        if (groupZeroes[i].pos[0] === zero.pos[0] - 1 && groupZeroes[i].pos[1] === zero.pos[1]){
+                            inGroup = true
+                        }
                     }
-                }
-                else if (board[(zero.pos[0] - 1)][(zero.pos[1])] !== zero.c){
-                    freeZeroes = groupZeroes;
-                    groupZeroes = [];
-                    return;
+                    if(!inGroup){
+                        this.recursiveTerritoryCheck(board, upZero, freeZeroes, groupZeroes)
+                        
+                    }
                 }
             }
             
-            if(zero.pos[1] < board.length){
+            if(zero.pos[1] < board.length - 1){
                 if(board[(zero.pos[0])][(zero.pos[1] + 1)] == 0){
-                    var arrUp = [zero.pos[0], zero.pos[1] + 1]
-                    var rightZero = {"pos": arrUp, "c": zero.c}
-                    if($.inArray(rightZero, groupZeroes) == -1 && $.inArray(rightZero, freeZeroes) == -1){
+                    var arr = [zero.pos[0], zero.pos[1] + 1]
+                    var rightZero = {"pos": arr, "c": zero.c}
+                    var inGroup = false
+                    for(var i = 0; i < groupZeroes.length; i++){
+                        if (groupZeroes[i].pos[0] === zero.pos[0] && groupZeroes[i].pos[1] === zero.pos[1] + 1){
+                            inGroup = true
+                        }
+                    }
+                    if(!inGroup){
                         this.recursiveTerritoryCheck(board, rightZero, freeZeroes, groupZeroes)
                     }
-                }
-                else if(board[(zero.pos[0])][(zero.pos[1] + 1)] == zero.c){
-                    freeZeroes = groupZeroes;
-                    groupZeroes = [];
-                    return;
                 }
             }
-            if(zero.pos[0] < board.length){
+            if(zero.pos[0] < board.length - 1){
                 if(board[(zero.pos[0] + 1)][(zero.pos[1])] == 0){
-                    var arrUp = [zero.pos[0] + 1, zero.pos[1]]
-                    var rightZero = {"pos": arrUp, "c": zero.c}
-                    if($.inArray(rightZero, groupZeroes) == -1 && $.inArray(rightZero, freeZeroes) == -1){
-                        this.recursiveTerritoryCheck(board, rightZero, freeZeroes, groupZeroes)
+                    var arr = [zero.pos[0] + 1, zero.pos[1]]
+                    var leftZero = {"pos": arr, "c": zero.c}
+                    var inGroup = false
+                    for(var i = 0; i < groupZeroes.length; i++){
+                        if (groupZeroes[i].pos[0] === zero.pos[0] + 1 && groupZeroes[i].pos[1] === zero.pos[1]){
+                            inGroup = true
+                        }
                     }
-                }
-                else if(board[(zero.pos[0] + 1)][(zero.pos[1])] == zero.c){
-                    freeZeroes = groupZeroes;
-                    groupZeroes = [];
-                    return;
+                    if(!inGroup){
+                        this.recursiveTerritoryCheck(board, leftZero, freeZeroes, groupZeroes)
+                        
+                    }
                 }
             }
             
