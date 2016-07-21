@@ -229,9 +229,17 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                             "last": lastMove
                                         }
                                         //send state?
-                                        this.control.makeMove(boardState).then(function(result){
+                                        this.control.makeMove(boardState).then((function(result){
                                             console.info('move successfully made')
+
+                                            return this.control.checkIfAi()
+                                        }).bind(this)).then(function(result){
+                                            console.info('ai move made if applicable')
+                                        }).catch( (err) => {
+                                            console.error('ai move failed')
+                                            throw err
                                         })
+
                                     }).bind(this))
                                     .hover(function(){
                                         $(this).css("fill-opacity","0.25")

@@ -40,7 +40,7 @@ define(['requestHandler'],function(RequestHandler){
 
         getData(){
             return new Promise((function(resolve,reject){
-                console.error('----- NOT IMPLEMENTENED ---- data retrieval')
+                // console.error('----- NOT IMPLEMENTENED ---- data retrieval')
                 console.info('echoing data')
                 resolve(this.data)
 /*

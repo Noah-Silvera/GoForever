@@ -131,35 +131,43 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         
         
         
-       getRandomMove(postData){
-            
-            return this.model.getData().then(function(data){
-                var state = {
-                    size : data.board.size,
-                    board : data.board.board,
-                    last: data.moveLog.slice(-1).pop()
-                }
+       getRandomMove(){
+           return new Promise((function(resolve,reject){
 
-                return requestHandler.getRandomMove(state)
+                Promise.resolve().then((function(){
+                    return this.model.getData()
+                }).bind(this)).then(function(data){
+                    var state = {
+                        size : data.board.size,
+                        board : data.board.board,
+                        last: data.moveLog.slice(-1).pop()
+                    }
 
-            })
-            
+                    return requestHandler.getRandomMove(state)
+
+                }).then(function(move){
+                   resolve(move)
+                }).catch((err) => {
+                    console.error('error caught in get random Move')
+                    reject(err)
+                })
+
+           }).bind(this))
 
         }
 
-        makeMove(boardState){
-            return new Promise((function(resolve,reject){
-                if( boardState.pass ){
-                    console.error('---- NOT IMPLEMENTED --- Passing...')
-                    return;
-                }
-                    
+        makeMove(boardState,aiMove){
+            if( boardState.pass ){
+                console.error('---- NOT IMPLEMENTED --- Passing...')
+                return;
+            }
 
-                
+           return new Promise((function(resolve,reject){
 
 
-                // retrieve the data so we can check validity
-                this.model.getData().then((function(data){
+                Promise.resolve().then((function(){
+                    return this.model.getData()
+                }).bind(this)).then((function(data){
 
                 // check if the move is valid and not a suicide
                     return this.checkSuicide(boardState,data.tempArmy)
@@ -170,19 +178,16 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 
 
                 // update the data since the move was valid and successful
-                }).bind(this)).catch(function(err){
-                    reject('invalid move')
-
-                /////////////////////////////////////
-                ///////  MOVE IS VALID   ////////////
-                /////////////////////////////////////
-                }).then((function(data){
-
+                }).bind(this)).then((function(data){
+                    console.info(data)
                     // check if this move captured a piece...
-                    return this.checkCaptured(data.tempArmy, data.board)
+                    return this.checkCaptured(data.tempArmy, data.board, data.moveLog.slice(-1)[0] )
                 
 
                 }).bind(this)).then((function(data){
+                /////////////////////////////////////
+                /////////  MOVE IS VALID  ///////////
+                /////////////////////////////////////
 
 
                     // push the valid move onto the list of moves
@@ -205,25 +210,99 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 }).bind(this)).then((function(data){
 
                     console.info('tallying scores and updating data')
+                    return Promise.all([this.model.getData()])
                     return this.tallyScores(data.tempArmy, data.board)
 
                 }).bind(this)).then((function(dataArr){
                     // resolve with a successful data callback
                     var data = dataArr[0]
+
+
                     console.info('re-rendering view')
-                    this.selectViewState('gameActive')
+                    this.view.notify()
+
                     resolve(data)
-                }).bind(this)).catch(function(err){
+                    
+
+
+                }).bind(this)).catch((err) => {
+                    console.error('error caught in making a move')
                     reject(err)
                 })
 
-            }).bind(this))
-            
+        
+           }).bind(this))
+
             
             
         }
 
-        checkCaptured(armies,board){
+        makeAIMove(){
+            return new Promise((function(resolve,reject){
+                console.info('making ai move...')
+                Promise.resolve().then((function(){
+                        return this.getRandomMove()
+                }).bind(this)).then((function(move){
+                    // mark down the move the ai just made
+                    var lastMove = move
+                    
+                    // create the new move request from the most recent data
+                    var boardState = {
+                        "last": lastMove
+                    }
+
+                    this.boardState = boardState
+
+                    return (this.model.getData())
+
+                }).bind(this)).then((function(data){
+                    
+                    this.boardState["size"] = data.board.size
+                    this.boardState["board"] = data.board.board
+
+                    var boardState = this.boardState
+
+                    // make the move
+                    return this.makeMove(boardState,true)
+
+                }).bind(this)).then((function(data){
+                    console.info('ai move made')
+                    console.debug('resulting data:')
+                    console.debug(data)
+
+                    // notify the view changes have been made
+                    this.view.notify()
+
+                    // return success response to client
+                    resolve(data)
+
+                }).bind(this)).catch(function(err){
+                        console.error('could not retrieve valid move from ai')
+                        reject('invalid move')
+                })
+
+            }).bind(this))
+
+        }
+
+        checkIfAi(){
+            return new Promise((function(resolve,reject){
+                Promise.resolve().then((function(){
+                        return this.model.getData()
+                }).bind(this)).then((function(data){
+                    if( data.opponent === 'ai'){
+                        resolve(this.makeAIMove())
+                    } else {
+                        resolve()
+                    }
+                }).bind(this)).catch( (err) => {
+                    console.info('error caught in checking if ai should make a move')
+                    reject(err)
+                })
+            }).bind(this))
+        }
+
+        checkCaptured(armies,board, lastMove){
 
                 // at least one army exists
                 if( armies != undefined){
@@ -232,9 +311,9 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
             
                         //check if opposing piece surrounded your army
                         if(armies[army].liberties.length == 1 &&
-                            board.last.c !== armies[army].colour &&
-                            board.last.x == armies[army].liberties[0][0] &&
-                            board.last.y == armies[army].liberties[0][1]){
+                            lastMove.c !== armies[army].colour &&
+                            lastMove.x == armies[army].liberties[0][0] &&
+                            lastMove.y == armies[army].liberties[0][1]){
                                 
                             armies[army].tokens.forEach(function(element) {
                                 board.board[element.position[0]][element.position[1]] = 0
@@ -278,7 +357,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     }
                 }
                 if (suicide){
-                    reject("suicide")
+                    reject(new Error("suicide"))
                 }
                 
                 // some armies previously exist
@@ -305,7 +384,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                 if( boardState.board[boardState.last.x][boardState.last.y - 1] == 0){ suicide = false }
                             }
                             if (suicide){
-                                reject("suicide")
+                                reject(new Error("suicide"))
                             }
                         }
                     

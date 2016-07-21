@@ -167,8 +167,12 @@ define(['lib/request'],function(request){
             return new Promise((function(resolve,reject){
               // create a request to the appropiate model with an ID param
                 var options = {
-                     "url" : "/move",
-                     "json" : JSON.stringify(state),
+                     url : "/move",
+                     json :true,
+                     headers : {
+                         'content-type': 'application/json'
+                     },
+                     body : JSON.stringify(state)
                 }
 
                 request.post(options,function(err,res,body){

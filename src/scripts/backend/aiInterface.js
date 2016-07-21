@@ -10,7 +10,7 @@ function getRandomMove(size, board, lastMove, cb){
     
     var options = {
         hostname: 'localhost',
-        path: '/ai/random',
+        path: '/ai/attackEnemy',
         port: '3001',
         method: 'POST',
         headers: {
