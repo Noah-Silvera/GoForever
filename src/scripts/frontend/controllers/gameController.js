@@ -169,6 +169,9 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     return this.model.getData()
                 }).bind(this)).then((function(data){
 
+                    return this.checkCaptureSpecialCase(boardState,data.tempArmy)
+
+                }).bind(this)).then((function(data){
                 // check if the move is valid and not a suicide
                     return this.checkSuicide(boardState,data.tempArmy)
 
@@ -331,111 +334,115 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 }
 
         }
+
         
         checkCaptureSpecialCase(boardState, armies){
-            
-                // not suicide special case no army surrounded by enemy but also capturing enemy
-                if (typeof armies !== 'undefined') {
-                    for(var army = 0; army < armies.length; army++){
-                        for(var token = 0; token < armies[army].tokens.length; lib++){
-                            var tempT = armies[army].tokens[army]
-                            if(tempT.position[0] > 0){
-                                if(tempT.position[0] - 1 == boardState.last.x + 1 &&
-                                    tempT.position[1] == boardState.last.y){
+            // not suicide special case no army surrounded by enemy but also capturing enemy
+            if (typeof armies !== 'undefined') {
+                for(var army = 0; army < armies.length; army++){
+                    for(var token = 0; token < armies[army].tokens.length; lib++){
+                        var tempT = armies[army].tokens[army]
+                        if(tempT.position[0] > 0){
+                            if(tempT.position[0] - 1 == boardState.last.x + 1 &&
+                                tempT.position[1] == boardState.last.y){
+                                    
+                                    var notLib = true
+                                    
+                                    
+                                    for(var lib = 0; lib < tempT.liberties.length; lib++){
                                         
-                                        var notLib = true
-                                        
-                                        
-                                        for(var lib = 0; lib < tempT.liberties.length; lib++){
-                                            
-                                            if (tempT.liberties[lib].position[0] == tempT.position[0] - 1 &&
-                                                tempT.liberties[lib].position[1] == tempT.position[1]){
-                                                    
-                                                    notLib = false
-                                            } 
-                                        }
-                                        
-                                        if(notLib){
-                                            boardState.board[tempT.position[0] - 1][tempT.position[1]] = 0
-                                        }
-                                }
+                                        if (tempT.liberties[lib].position[0] == tempT.position[0] - 1 &&
+                                            tempT.liberties[lib].position[1] == tempT.position[1]){
+                                                
+                                                notLib = false
+                                        } 
+                                    }
+                                    
+                                    if(notLib){
+                                        boardState.board[tempT.position[0] - 1][tempT.position[1]] = 0
+                                    }
                             }
-                            
-                            if(tempT.position[1] > 0){
-                                if(tempT.position[1] - 1 == boardState.last.y + 1 && 
-                                    tempT.position[0] == boardState.last.x){
-                                        
-                                        var notLib = true
-                                        
-                                        for(var lib = 0; lib < tempT.liberties.length; lib++){
-                                            
-                                            if (tempT.liberties[lib].position[1] == tempT.position[1] - 1 &&
-                                                tempT.liberties[lib].position[0] == tempT.position[0]){
-                                                    
-                                                    notLib = false
-                                            } 
-                                        }
-                                        
-                                        if(notLib){
-                                            boardState.board[tempT.position[0]][tempT.position[1] - 1] = 0
-                                        }
-                                }
-                            }
-                            
-                            if(tempT.position[0] < boardState.board.length - 1){
-                                if(tempT.position[0] + 1 == boardState.last.x - 1 &&
-                                    tempT.position[1] == boardState.last.y){
-                                        
+                        }
+                        
+                        if(tempT.position[1] > 0){
+                            if(tempT.position[1] - 1 == boardState.last.y + 1 && 
+                                tempT.position[0] == boardState.last.x){
+                                    
                                     var notLib = true
                                     
                                     for(var lib = 0; lib < tempT.liberties.length; lib++){
-                                            
-                                            if (tempT.liberties[lib].position[0] == tempT.position[0] + 1 &&
-                                                tempT.liberties[lib].position[1] == tempT.position[1]){
-                                                    
-                                                    notLib = false
-                                            } 
-                                        }
                                         
-                                        if(notLib){
-                                            boardState.board[tempT.position[0] + 1][tempT.position[1]] = 0
-                                        }
-                                }
-                            }
-                            
-                            if(tempT.position[1] < boardState.board.length - 1){
-                                if(tempT.position[1] + 1 == boardState.last.y - 1 && 
-                                    tempT.position[0] == boardState.last.x){
-                                        
-                                    var notLib = true
+                                        if (tempT.liberties[lib].position[1] == tempT.position[1] - 1 &&
+                                            tempT.liberties[lib].position[0] == tempT.position[0]){
+                                                
+                                                notLib = false
+                                        } 
+                                    }
                                     
-                                    for(var lib = 0; lib < tempT.liberties.length; lib++){
-                                            
-                                            if (tempT.liberties[lib].position[0] == tempT.position[0] &&
-                                                tempT.liberties[lib].position[1] == tempT.position[1] + 1){
-                                                    
-                                                    notLib = false
-                                            } 
-                                        }
+                                    if(notLib){
+                                        boardState.board[tempT.position[0]][tempT.position[1] - 1] = 0
+                                    }
+                            }
+                        }
+                        
+                        if(tempT.position[0] < boardState.board.length - 1){
+                            if(tempT.position[0] + 1 == boardState.last.x - 1 &&
+                                tempT.position[1] == boardState.last.y){
+                                    
+                                var notLib = true
+                                
+                                for(var lib = 0; lib < tempT.liberties.length; lib++){
                                         
-                                        if(notLib){
-                                            boardState.board[tempT.position[0]][tempT.position[1] + 1] = 0
-                                        }
-                                }
+                                        if (tempT.liberties[lib].position[0] == tempT.position[0] + 1 &&
+                                            tempT.liberties[lib].position[1] == tempT.position[1]){
+                                                
+                                                notLib = false
+                                        } 
+                                    }
+                                    
+                                    if(notLib){
+                                        boardState.board[tempT.position[0] + 1][tempT.position[1]] = 0
+                                    }
+                            }
+                        }
+                        
+                        if(tempT.position[1] < boardState.board.length - 1){
+                            if(tempT.position[1] + 1 == boardState.last.y - 1 && 
+                                tempT.position[0] == boardState.last.x){
+                                    
+                                var notLib = true
+                                
+                                for(var lib = 0; lib < tempT.liberties.length; lib++){
+                                        
+                                        if (tempT.liberties[lib].position[0] == tempT.position[0] &&
+                                            tempT.liberties[lib].position[1] == tempT.position[1] + 1){
+                                                
+                                                notLib = false
+                                        } 
+                                    }
+                                    
+                                    if(notLib){
+                                        boardState.board[tempT.position[0]][tempT.position[1] + 1] = 0
+                                    }
                             }
                         }
                     }
-
-                    return this.model.setProp('board',board)
-                
-                } else {
-
-                    return this.model.getData()
                 }
+
+                return this.model.setProp('board',board)
+            
+            } else {
+
+                return this.model.getData()
+            }
         }
 
         checkSuicide(boardState,armies){
             return new Promise((function(resolve,reject){
+
+                var err = new Error("suicide")
+                err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
+                err.board = boardState.board
                 
 
                 //special case suicide with no army
@@ -461,9 +468,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     }
                 }
                 if (suicide){
-                    var err = new Error("suicide")
-                    err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
-                    err.board = boardState.board
+
                     reject(err)
                 }
                 
@@ -491,7 +496,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                 if( boardState.board[boardState.last.x][boardState.last.y - 1] == 0){ suicide = false }
                             }
                             if (suicide){
-                                reject(new Error("suicide"))
+                                reject(err)
                             }
                         }
                     
@@ -510,7 +515,9 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
             
             for(var i = 0; i < moveLog; i++){
                 if(moveLog[i] === boardState.last){
-                    reject("recreated previous board")
+                    var err = new Error("ko")
+                    err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
+                    err.board = boardState.board
                 }
             }
             return this.model.getData()
