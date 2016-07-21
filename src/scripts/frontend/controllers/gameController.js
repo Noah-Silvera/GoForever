@@ -366,7 +366,10 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     }
                 }
                 if (suicide){
-                    reject(new Error("suicide"))
+                    var err = new Error("suicide")
+                    err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
+                    err.board = boardState.board
+                    reject(err)
                 }
                 
                 // some armies previously exist

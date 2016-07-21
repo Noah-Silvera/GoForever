@@ -233,9 +233,13 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                             console.info('move successfully made')
 
                                             return this.control.checkIfAi()
-                                        }).bind(this)).then(function(result){
+                                        }).bind(this),function(err){
+                                            console.error('user move failed')
+                                            console.error(err)
+                                            return Promise.reject(err)
+                                        }).then((function(result){
                                             console.info('ai move made if applicable')
-                                        }).catch( (err) => {
+                                        }).bind(this),function(err){
                                             console.error('ai move failed')
                                             console.error(err)
                                         })
