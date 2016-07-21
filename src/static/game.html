@@ -2,9 +2,10 @@
     <link rel="stylesheet" href="/game.css">
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="lib/jquery.svg.js"></script>
-    <link href = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel = "stylesheet">
     <script src="lib/toastr.js"></script>
     <link href="lib/toastr.css" rel="stylesheet"/>
+    <link href = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel = "stylesheet">
+    <script src = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="lib/require.js"></script>
     <script src="lib/require_shim.js"></script>
 </head>
@@ -13,10 +14,32 @@
     <div class="well sm">
         <h2 id="user-or-guest"></h2>
     </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="end-result-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="end-result-title"></h4>
+            </div>
+            <div class="modal-body" id="end-result-body">
+                Thanks for playing! You can replay this game anytime from your match history
+            </div>
+            <div class="modal-footer">
+                <button id="main-menu" type="button" class="btn btn-primary nav">Main Menu</button>
+                <button id="replay" type="button" class="btn btn-default nav" data-dismiss="modal">Replay Game</button>
+            </div>
+            </div>
+        </div>
+    </div>
     
     <div id="board-wrapper">
+
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3 score-counter">
                 <div id="background-score-black">
                     <h2 id="score-black"></h2>
                 </div>
@@ -30,13 +53,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 score-counter">
                 <div id="background-score-white">
                     <h2 id="score-white"></h2>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!--dynamically displays the current player-->
 
