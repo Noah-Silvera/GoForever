@@ -11,7 +11,7 @@ define(['./model'], function(Model){
                 id: 123,
                 time: new Date(),
                 userId: 121,
-                opponent: 'ai',
+                opponent: 'hot-seat',
                 userHandicap: "black has first move",
                 boardSize: 9,
                 moveLog: [],

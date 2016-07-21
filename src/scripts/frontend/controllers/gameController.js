@@ -156,87 +156,107 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
         makeMove(boardState,aiMove){
             if( boardState.pass ){
-                console.error('---- NOT IMPLEMENTED --- Passing...')
-                return Promise.resolve();
-            }
-
-           return new Promise((function(resolve,reject){
 
 
-                Promise.resolve().then((function(){
-                    return this.model.getData()
-                }).bind(this)).then((function(data){
-                    // return Promise.resolve(data)
-                    return this.checkCaptureSpecialCase(boardState,data.tempArmy)
+                return new Promise( (resolve,reject) => {
 
-                }).bind(this)).then((function(data){
-                // check if the move is valid and not a suicide
-                    return this.checkSuicide(boardState,data.tempArmy)
+                    this.model.getData().then((data) => {
 
-                }).bind(this)).then((function(data){
-                    // check the moveLog to see if the move has previously been played
-                    return this.checkKo(data.moveLog, boardState)
-                
+                        if(     ( data.moveLog.slice(-1)[0] !== undefined && data.moveLog.slice(-1)[0].pass === true )
+                             || data.opponent === "ai" 
+                        ){
+                            this.selectViewState('replay')
+                            resolve('game ended')
+                        } else {
+                            data.moveLog.push( { pass: true } )
+                            return this.model.setProp('moveLog', data.moveLog)
+                        } 
 
-                // update the data since the move was valid and successful
-                }).bind(this)).then((function(data){
-                    console.info(data)
-                    // check if this move captured a piece...
-                    return this.checkCaptured(data.tempArmy, data.board, data.moveLog.slice(-1)[0] )
-
-                
-
-                }).bind(this)).then((function(data){
-                /////////////////////////////////////
-                /////////  MOVE IS VALID  ///////////
-                /////////////////////////////////////
-
-
-                    // push the valid move onto the list of moves
-                    console.info('move is valid, updating data...')
-                    data.moveLog.push(boardState.last)
-                    // update the board with this new move
-                    data.board.board[boardState.last.x][boardState.last.y] = boardState.last.c
-
-                    // update the model with these changes
-                    return Promise.all([
-                            this.model.setProp('moveLog',data.moveLog),
-                            this.model.setProp('board', data.board)
-                        ])
-
-                }).bind(this)).then((function(){
-                    
-                    console.info('updating armies...')
-                    return this.updateArmy(boardState) // ensure latest board state
-
-                }).bind(this)).then((function(data){
-
-                    console.info('tallying scores and updating data')
-                    // return Promise.all([this.model.getData()])
-                    return this.tallyScores(data.tempArmy, data.board)
-
-                }).bind(this)).then((function(dataArr){
-                    // resolve with a successful data callback
-                    var data = dataArr[0]
-
-
-                    console.info('re-rendering view')
-                    this.view.notify()
-
-                    resolve(data)
-                    
-
-
-                }).bind(this)).catch((err) => {
-                    console.error('error caught in making a move')
-                    reject(err)
+                    }).then( (data) => {
+                        resolve(data)
+                    })
                 })
 
-        
-           }).bind(this))
+            } else {
+
+                return new Promise((function(resolve,reject){
+
+
+                    Promise.resolve().then((function(){
+                        return this.model.getData()
+                    }).bind(this)).then((function(data){
+                        // return Promise.resolve(data)
+                        return this.checkCaptureSpecialCase(boardState,data.tempArmy)
+
+                    }).bind(this)).then((function(data){
+                    // check if the move is valid and not a suicide
+                        return this.checkSuicide(boardState,data.tempArmy)
+
+                    }).bind(this)).then((function(data){
+                        // check the moveLog to see if the move has previously been played
+                        return this.checkKo(data.moveLog, boardState)
+                    
+
+                    // update the data since the move was valid and successful
+                    }).bind(this)).then((function(data){
+                        console.info(data)
+                        // check if this move captured a piece...
+                        return this.checkCaptured(data.tempArmy, data.board, data.moveLog.slice(-1)[0] )
+
+                    
+
+                    }).bind(this)).then((function(data){
+                    /////////////////////////////////////
+                    /////////  MOVE IS VALID  ///////////
+                    /////////////////////////////////////
+
+
+                        // push the valid move onto the list of moves
+                        console.info('move is valid, updating data...')
+                        data.moveLog.push(boardState.last)
+                        // update the board with this new move
+                        data.board.board[boardState.last.x][boardState.last.y] = boardState.last.c
+
+                        // update the model with these changes
+                        return Promise.all([
+                                this.model.setProp('moveLog',data.moveLog),
+                                this.model.setProp('board', data.board)
+                            ])
+
+                    }).bind(this)).then((function(){
+                        
+                        console.info('updating armies...')
+                        return this.updateArmy(boardState) // ensure latest board state
+
+                    }).bind(this)).then((function(data){
+
+                        console.info('tallying scores and updating data')
+                        // return Promise.all([this.model.getData()])
+                        return this.tallyScores(data.tempArmy, data.board)
+
+                    }).bind(this)).then((function(dataArr){
+                        // resolve with a successful data callback
+                        var data = dataArr[0]
+
+
+                        console.info('re-rendering view')
+                        this.view.notify()
+
+                        resolve(data)
+                        
+
+
+                    }).bind(this)).catch((err) => {
+                        console.error('error caught in making a move')
+                        reject(err)
+                    })
 
             
-            
+                }).bind(this))
+
+                    
+                    
+            }
         }
 
         makeAIMove(){

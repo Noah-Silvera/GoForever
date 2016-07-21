@@ -102,7 +102,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                     
                                 )
                             )
-                        }).bind(this)
+                        }).bind(this)()
 
                       
 
@@ -145,7 +145,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                             )
                             
                             $(this.selectors.bottomPanel).find('button').addClass('btn replay-button')
-                        }).bind(this)
+                        }).bind(this)()
                         
 
                         break;
