@@ -1,7 +1,7 @@
 define(['lib/request', 'requestHandler'], function (request, requestHandler) {
     var match;
-    var user_Id;
 
+    //For get requests... Replace with your own
     var matchId =
         [
             "578fb20736d581d40c079353",
@@ -9,7 +9,12 @@ define(['lib/request', 'requestHandler'], function (request, requestHandler) {
             "578fbac5ccd97158278f74a5",
         ];
 
+    
+    //Posting and Get Data... Remove Respective function
 
+    //postMatchHistory();
+
+    //getMatchHistory();
 
     displayMatchHistory();
     displayStats();
@@ -21,6 +26,7 @@ define(['lib/request', 'requestHandler'], function (request, requestHandler) {
     function postMatchHistory() {
         console.log("postMatchHistory");
         
+        //Dummy
         requestHandler.create('Match', {
             time: Date(),
             gameLength: "13:37",
@@ -35,7 +41,7 @@ define(['lib/request', 'requestHandler'], function (request, requestHandler) {
         })
         .then(function (res) {
             console.log(res)
-            requestHandler.edit()
+            //requestHandler.create()
 
         });
         console.log(res);
@@ -62,6 +68,7 @@ define(['lib/request', 'requestHandler'], function (request, requestHandler) {
                 .then(function (res) {
                     var data = JSON.parse(res);
                     
+                    //Does not work
                     var replayButton = $('<input/>').attr({
                         //type: 'button',
                         id: 'replayMatch',
@@ -116,7 +123,7 @@ define(['lib/request', 'requestHandler'], function (request, requestHandler) {
 
         var rank = "Failure";
 
-        var i = 1;
+        var i = -1;
 
         for (i = matchId.length - 1; i >= 0; i--) {
             requestHandler.get('Match', matchId[i])
