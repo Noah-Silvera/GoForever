@@ -155,6 +155,10 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         }
 
         makeMove(boardState,aiMove){
+            if( this.view.viewState === 'replay' ){
+                return Promise.reject(new Error('replay-error') )
+            }
+
             if( boardState.pass ){
 
 
@@ -567,7 +571,8 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     "size" : tempData.size,
                     "board": tempBoard,
                     "last": tempData.last  }*/
-                    
+                
+
                     
                     $.ajax({
                     type: 'POST',
