@@ -338,8 +338,8 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
             // not suicide special case no army surrounded by enemy but also capturing enemy
             if (typeof armies !== 'undefined') {
                 for(var army = 0; army < armies.length; army++){
-                    for(var token = 0; token < armies[army].tokens.length; lib++){
-                        var tempT = armies[army].tokens[army]
+                    for(var token = 0; token < armies[army].tokens.length; token++){
+                        var tempT = armies[army].tokens[token]
                         if(tempT.position[0] > 0){
                             if(tempT.position[0] - 1 == boardState.last.x + 1 &&
                                 tempT.position[1] == boardState.last.y){
