@@ -278,8 +278,8 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     resolve(data)
 
                 }).bind(this)).catch(function(err){
-                        console.error('could not retrieve valid move from ai')
-                        reject('invalid move')
+                        console.error('error in making ai move')
+                        reject(err)
                 })
 
             }).bind(this))

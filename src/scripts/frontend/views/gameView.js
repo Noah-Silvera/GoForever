@@ -237,7 +237,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                             console.info('ai move made if applicable')
                                         }).catch( (err) => {
                                             console.error('ai move failed')
-                                            throw err
+                                            console.error(err)
                                         })
 
                                     }).bind(this))
