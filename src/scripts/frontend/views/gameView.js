@@ -93,16 +93,16 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                         .text('Pass')
                                         .on('click',(function makeMove(){
                                             this.control.makeMove({ 'pass':true })
-                                        }).bind(this)),
-                                    $('<button>')
-                                        .text('Replay ( TEMPORARY )')
-                                        .on('click',(function replay(){
-                                            this.control.selectViewState('replay')
                                         }).bind(this))
+                                    // $('<button>')
+                                    //     .text('Replay ( TEMPORARY )')
+                                    //     .on('click',(function replay(){
+                                    //         this.control.selectViewState('replay')
+                                    //     }).bind(this))
                                     
                                 )
                             )
-                        }).bind(this)
+                        }).bind(this)()
 
                       
 
@@ -124,7 +124,13 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                 $('<button>')
 
                                     .on('click',(function prevMove(e){
-                                        this.control.replayPrevMove()
+                                        this.control.replayPrevMove().then( (result) =>{
+                                            console.info('move retracted')
+                                        }).catch( (err) => {
+                                            if( err.message === "first-move" ){
+                                                alert('no more moves to return too')
+                                            }
+                                        })
                                         e.stopPropagation()
                                     }).bind(this))
                                     .append(
@@ -135,7 +141,9 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                 $('<button>')
 
                                     .on('click',(function nextMove(e){
-                                        this.control.replayNextMove()
+                                        this.control.replayNextMove().then( (result) => {
+                                            console.info('move advanced')
+                                        })
                                         e.stopPropagation()
                                     }).bind(this))
                                     .append(
@@ -145,7 +153,9 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                             )
                             
                             $(this.selectors.bottomPanel).find('button').addClass('btn replay-button')
-                        }).bind(this)
+                        }).bind(this)()
+
+                        this.drawBoard(data.board, curPlayerColour)
                         
 
                         break;
