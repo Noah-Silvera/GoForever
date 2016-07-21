@@ -2,7 +2,7 @@
 //The view ALSO DEPENDS ON gameController.js
 // this cannot be modeled because of circular dependencies and requirejs
 // see gameController.js
-define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
+define(['./view','utils/svgFactory'],function(View,svgFactory){
 
 
     class GameView extends View{
@@ -23,6 +23,23 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
         }
         
         render(){
+            
+            // set up common modals
+            $('.modal')
+                .on('show.bs.modal',(function(e){
+                    $(e.currentTarget).css('z-index',1000)
+                }).bind(this))
+                .on('hide.bs.modal', (function(e){
+                    $(e.currentTarget).css('z-index',-1000)
+                }).bind(this))
+
+            // set up the end Game modal
+
+            ;(function endGameModalSetup(){
+                $('.nav#main-menu').on('click',(function(){
+                    this.control.mainMenu()
+                }).bind(this))
+            }).bind(this)()
 
             this.control.getData().then((function(data){
                 
@@ -33,31 +50,23 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                 // beginning of the game
                 if( data.moveLog.length == 0){
                     //create the board
-                    return this.control.createBoard(data.boardSize).then((function(data){
-                        // set up the handicaps
-                        return this.control.setHandicapsAndScores(data.userHandicap, data.whiteScore, data.board, data.moveLog)
+                    return this.control.createBoard(data.boardSize)
+                } else return Promise.resolve(data)
 
-                    }).bind(this)).then((function(dataArr){
-                            // multiple copies of the data are returned, use the first copy
-                            var data = dataArr[0]
-                            // set the appropiate scores
-                            $("#score-black").text(data.blackScore)
-                            $("#score-white").text(data.whiteScore + data.whiteOffset)
+            }).bind(this)).then( (function(data){
 
-                            // continue on to draw the board
-                            return Promise.resolve(data)
-                            
-                    }).bind(this)).catch(function(err){
-                        console.error('could not initialize game')
-                        throw err
-                    })
-                } else {
-                    // continue without doing inital game setup
+                // only does this when applicable
+                return this.control.setHandicapsAndScores(data.board, data.userHandicap, data.moveLog)
+
+            }).bind(this)).then((function(dataArr){
+                    // multiple copies of the data are returned, use the first copy
+                    var data = dataArr[0]
+                    // set the appropiate scores
+                    $("#score-black").text(data.blackScore)
+                    $("#score-white").text(data.whiteScore + data.whiteOffset)
+
+                    // continue on to draw the board
                     return Promise.resolve(data)
-                }
-
-
-                
 
             }).bind(this)).catch(function(err){
                 toastr.error('could not retrieve data to render game')
@@ -80,6 +89,8 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
 
                         this.drawPlayerIndicator(curPlayerColour)
                         
+                        // ensure the score counters are visible
+                        $('.score-counter').css('opacity',100)
                         
                         ;(function drawBottomPanel(){
 
@@ -113,6 +124,11 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                         break;
 
                     case 'replay':
+
+                        // ensure the score counters are invisible
+                        $('.score-counter').css('opacity',0)
+
+                        this.control.setHandicapsAndScores(data.board, data.userHandicap, [])
 
                         this.drawPlayerIndicator(curPlayerColour)
                         
@@ -159,9 +175,7 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                         
 
                         break;
-                    case 'endGame':
 
-                        break;
                     default:
                         throw 'invalid state'
                 }
@@ -308,10 +322,23 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
 
             $(this.selectors.playerIndicator).empty().append(
                 $('<button type="button" class="btn btn-default">')
-                    .text(`${backgroundColourString}`)
+                    .text(`Current Player: ${backgroundColourString}`)
                     .css('background-color',backgroundColourString)
                     .css('color',textColourString )
             )
+
+        }
+
+        showEndGameModal(won){
+            
+            $('#end-result-title').text( (function(){
+                if(won){
+                    return 'You Won!'
+                } else return 'Better luck next time'
+            })() )
+
+            $('#end-result-modal').modal('show')
+
 
         }
         

@@ -166,9 +166,18 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
                     this.model.getData().then((data) => {
 
-                        // fake the opponents pass if AI
-                        // add a real pass if human
+                        // fake the ai opponents pass if the player is human
+                        if( data.opponent === "ai" ){
+                            // not already 2 passes, which would mean the AI passed first
+                            if( data.moveLog.length > 0 && !data.moveLog.slice(-2)[0].pass ){
+                                data.moveLog.push( { pass: true } )
+                            }
+                        }
+                        
+                        // add a pass for the current player, AI or human
                         data.moveLog.push( { pass: true } )
+
+
                         return this.model.setProp('moveLog', data.moveLog)
 
                     }).then( (data) => {
@@ -177,6 +186,10 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         if(  data.moveLog.slice(-1)[0] !== undefined && 
                             data.moveLog.slice(-2)[0].pass === true  &&
                             data.moveLog.slice(-1)[0].pass === true  ){
+                            
+                            console.error('---- NOT IMPLEMENTED ---- calculating winner')
+                            this.view.showEndGameModal(true)
+
                             // set the initial move counter to 0
                             this.model.setProp('curMoveNum',0).then( (data) => {
                                 // reset the board
@@ -871,8 +884,13 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
         }
         
+            
+        mainMenu(){
+            window.location.href = 'http://localhost:3000/userLanding'
+        }
 
     }
+
 
     // this is how the circular dependency between controllers and views are dealt with
     // the view does not know it's controller context on instantiation
