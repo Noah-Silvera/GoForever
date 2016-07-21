@@ -65,11 +65,18 @@ function getArmies(size, board, lastMove, cb){
             'Content-Length': Buffer.byteLength(JSON.stringify(postData))
         } 
     };
+
+    info('armies post data')
+    info(postData)
     
     var result = "";
     
     var req = http.request(options, (res) => {
         console.log(`STATUS: ${res.statusCode}`);
+        if( res.statusCode === 400){
+            debugger;
+        }
+
         console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
         res.setEncoding('utf8');
         res.on('data', (chunk) => {

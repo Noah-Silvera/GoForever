@@ -236,6 +236,12 @@ define(['./view','jquery','utils/svgFactory'],function(View,$,svgFactory){
                                         }).bind(this),function(err){
                                             console.error('user move failed')
                                             console.error(err)
+                                            if( err.message === 'ko'){
+                                                alert('cannot place a piece where previously placed')
+                                            } else if( err.message === 'suicide'){
+                                                alert('cannot suicide')
+                                            }
+                                            console.error(err)
                                             return Promise.reject(err)
                                         }).then((function(result){
                                             console.info('ai move made if applicable')
