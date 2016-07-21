@@ -389,15 +389,25 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                     
                                     for(var lib = 0; lib < tempT.liberties.length; lib++){
                                         
-                                        if (tempT.liberties[lib].position[0] == tempT.position[0] - 1 &&
-                                            tempT.liberties[lib].position[1] == tempT.position[1]){
+                                        if (tempT.liberties[lib][0] == tempT.position[0] - 1 &&
+                                            tempT.liberties[lib][1] == tempT.position[1]){
                                                 
                                                 notLib = false
                                         } 
                                     }
                                     
                                     if(notLib){
-                                        boardState.board[tempT.position[0] - 1][tempT.position[1]] = 0
+                                        var x = tempT.position[0] - 1
+                                        var y = tempT.position[1]
+                                        var counter = 0
+                                        if(boardState.board[x + 1][y] == boardState.last.c){counter++}
+                                        if(boardState.board[x - 1][y] == boardState.last.c){counter++}
+                                        if(boardState.board[x][y - 1] == boardState.last.c){counter++}
+                                        if(boardState.board[x][y + 1] == boardState.last.c){counter++}
+                                        
+                                        if (counter == 3){
+                                            boardState.board[x][y] = 0
+                                        }
                                     }
                             }
                         }
@@ -410,15 +420,26 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                     
                                     for(var lib = 0; lib < tempT.liberties.length; lib++){
                                         
-                                        if (tempT.liberties[lib].position[1] == tempT.position[1] - 1 &&
-                                            tempT.liberties[lib].position[0] == tempT.position[0]){
+                                        if (tempT.liberties[lib][1] == tempT.position[1] - 1 &&
+                                            tempT.liberties[lib][0] == tempT.position[0]){
                                                 
                                                 notLib = false
                                         } 
                                     }
                                     
                                     if(notLib){
-                                        boardState.board[tempT.position[0]][tempT.position[1] - 1] = 0
+                                        
+                                        var x = tempT.position[0]
+                                        var y = tempT.position[1] - 1
+                                        var counter = 0
+                                        if(boardState.board[x + 1][y] == boardState.last.c){counter++}
+                                        if(boardState.board[x - 1][y] == boardState.last.c){counter++}
+                                        if(boardState.board[x][y - 1] == boardState.last.c){counter++}
+                                        if(boardState.board[x][y + 1] == boardState.last.c){counter++}
+                                        
+                                        if (counter == 3){
+                                            boardState.board[x][y] = 0
+                                        }
                                     }
                             }
                         }
@@ -431,15 +452,25 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                 
                                 for(var lib = 0; lib < tempT.liberties.length; lib++){
                                         
-                                        if (tempT.liberties[lib].position[0] == tempT.position[0] + 1 &&
-                                            tempT.liberties[lib].position[1] == tempT.position[1]){
+                                        if (tempT.liberties[lib][0] == tempT.position[0] + 1 &&
+                                            tempT.liberties[lib][1] == tempT.position[1]){
                                                 
                                                 notLib = false
                                         } 
                                     }
                                     
                                     if(notLib){
-                                        boardState.board[tempT.position[0] + 1][tempT.position[1]] = 0
+                                        var x = tempT.position[0] + 1
+                                        var y = tempT.position[1]
+                                        var counter = 0
+                                        if(boardState.board[x + 1][y] == boardState.last.c){counter++}
+                                        if(boardState.board[x - 1][y] == boardState.last.c){counter++}
+                                        if(boardState.board[x][y - 1] == boardState.last.c){counter++}
+                                        if(boardState.board[x][y + 1] == boardState.last.c){counter++}
+                                        
+                                        if (counter == 3){
+                                            boardState.board[x][y] = 0
+                                        }
                                     }
                             }
                         }
@@ -452,15 +483,25 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                 
                                 for(var lib = 0; lib < tempT.liberties.length; lib++){
                                         
-                                        if (tempT.liberties[lib].position[0] == tempT.position[0] &&
-                                            tempT.liberties[lib].position[1] == tempT.position[1] + 1){
+                                        if (tempT.liberties[lib][0] == tempT.position[0] &&
+                                            tempT.liberties[lib][1] == tempT.position[1] + 1){
                                                 
                                                 notLib = false
                                         } 
                                     }
                                     
                                     if(notLib){
-                                        boardState.board[tempT.position[0]][tempT.position[1] + 1] = 0
+                                        var x = tempT.position[0]
+                                        var y = tempT.position[1] + 1
+                                        var counter = 0
+                                        if(boardState.board[x + 1][y] == boardState.last.c){counter++}
+                                        if(boardState.board[x - 1][y] == boardState.last.c){counter++}
+                                        if(boardState.board[x][y - 1] == boardState.last.c){counter++}
+                                        if(boardState.board[x][y + 1] == boardState.last.c){counter++}
+                                        
+                                        if (counter == 3){
+                                            boardState.board[x][y] = 0
+                                        }
                                     }
                             }
                         }
