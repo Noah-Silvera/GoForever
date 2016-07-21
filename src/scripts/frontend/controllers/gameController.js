@@ -1,7 +1,5 @@
 define(['controllers/controller','views/gameView','models/gameModel','requestHandler'], function(Controller,GameView,GameModel, requestHandler){
     
-    var tempData;
-    var tempArmy;
     
 
     class GameController extends Controller{
@@ -159,7 +157,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         makeMove(boardState,aiMove){
             if( boardState.pass ){
                 console.error('---- NOT IMPLEMENTED --- Passing...')
-                return;
+                return Promise.resolve();
             }
 
            return new Promise((function(resolve,reject){
@@ -168,8 +166,8 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 Promise.resolve().then((function(){
                     return this.model.getData()
                 }).bind(this)).then((function(data){
-
-                    return this.checkCaptureSpecialCase(boardState,data.tempArmy)
+                    return Promise.resolve(data)
+                    // return this.checkCaptureSpecialCase(boardState,data.tempArmy)
 
                 }).bind(this)).then((function(data){
                 // check if the move is valid and not a suicide

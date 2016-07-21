@@ -74,7 +74,7 @@ function getArmies(size, board, lastMove, cb){
     var req = http.request(options, (res) => {
         console.log(`STATUS: ${res.statusCode}`);
         if( res.statusCode === 400){
-            debugger;
+           cb( { pass: true })
         }
 
         console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
