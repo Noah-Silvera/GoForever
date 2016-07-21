@@ -162,15 +162,31 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
                     this.model.getData().then((data) => {
 
-                        if(     ( data.moveLog.slice(-1)[0] !== undefined && data.moveLog.slice(-1)[0].pass === true )
-                             || data.opponent === "ai" 
-                        ){
-                            this.selectViewState('replay')
-                            resolve('game ended')
+                        // fake the opponents pass if AI
+                        // add a real pass if human
+                        data.moveLog.push( { pass: true } )
+                        return this.model.setProp('moveLog', data.moveLog)
+
+                    }).then( (data) => {
+
+                        // game is ended, 2 passes have happened
+                        if(  data.moveLog.slice(-1)[0] !== undefined && 
+                            data.moveLog.slice(-2)[0].pass === true  &&
+                            data.moveLog.slice(-1)[0].pass === true  ){
+                            // set the initial move counter to 0
+                            this.model.setProp('curMoveNum',0).then( (data) => {
+                                // reset the board
+                                return this.createBoard(data.board.size)
+
+                            }).then( (data) => {
+
+                                this.selectViewState('replay')
+                                resolve('game ended')
+                            })
                         } else {
-                            data.moveLog.push( { pass: true } )
-                            return this.model.setProp('moveLog', data.moveLog)
-                        } 
+                            // continue without ending the game
+                            resolve()
+                        }
 
                     }).then( (data) => {
                         resolve(data)
@@ -185,8 +201,8 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     Promise.resolve().then((function(){
                         return this.model.getData()
                     }).bind(this)).then((function(data){
-                        // return Promise.resolve(data)
-                        return this.checkCaptureSpecialCase(boardState,data.tempArmy)
+                        return Promise.resolve(data)
+                        // return this.checkCaptureSpecialCase(boardState,data.tempArmy)
 
                     }).bind(this)).then((function(data){
                     // check if the move is valid and not a suicide
@@ -739,13 +755,71 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         
 
         replayPrevMove(){
-            console.error(`---- NOT IMPLEMENTED --- replaying previous move...`)
+            console.info('navigating to previous move')
+            return new Promise( (resolve,reject) => {
+                this.model.getData().then( (data) => {
+                    // at the first move
+                    if( data.curMoveNum === 0 ){
+                        reject(new Error('first-move'))
+                    } else {
+                        // retract the current move and subtract the number
+                        var moveToPlay = data.moveLog[data.curMoveNum]
+
+                        data.board.board[ moveToPlay.x ][ moveToPlay.y ] = 0
+
+                        return Promise.all([
+                            this.model.setProp('board',data.board),
+                            this.model.setProp('curMoveNum',data.curMoveNum - 1 )
+                        ])
+
+                    }
+
+                }).then( (dataArr) => {
+                    var data = dataArr[0]
+
+                    //re-render the view
+                    this.view.notify()
+
+                    resolve()
+
+                })
+            })
         }
 
         replayNextMove(){
-            console.error(`---- NOT IMPLEMENTED --- replaying next move...`)
+            // number of moves that are passes
+            var passCount = 2
+
+            console.info('navigating to next move')
+            return new Promise( (resolve,reject) => {
+                this.model.getData().then( (data) => {
+                    if( data.curMoveNum === data.moveLog.length - passCount ){
+                        reject(new Error('last-move'))
+                    } else {
+                        // retract the current move and subtract the number
+                        var moveToPlay = data.moveLog[data.curMoveNum]
+
+                        data.board.board[ moveToPlay.x ][ moveToPlay.y ] = moveToPlay.c
+
+                        return Promise.all([
+                            this.model.setProp('board',data.board),
+                            this.model.setProp('curMoveNum',data.curMoveNum + 1 )
+                        ])
+
+                    }
+                }).then( (dataArr) => {
+                    var data = dataArr[0]
+
+                    //re-render the view
+                    this.view.notify()
+
+                    resolve()
+
+                })
+            })
 
         }
+        
 
     }
 

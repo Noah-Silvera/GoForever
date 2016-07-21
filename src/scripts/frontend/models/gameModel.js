@@ -5,7 +5,7 @@ define(['./model'], function(Model){
         constructor(){
             super()
             this.modelName = 'Match'
-            this.blackList = ['board', 'whiteOffset', 'tempArmy']
+            this.blackList = ['board', 'whiteOffset', 'tempArmy','curMoveNum']
             // dummy ID for now - will have to figure out how this is generated
             this.data = {
                 id: 123,
