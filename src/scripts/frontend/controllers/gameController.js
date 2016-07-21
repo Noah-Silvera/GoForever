@@ -331,17 +331,112 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 }
 
         }
+        
+        checkCaptureSpecialCase(boardState, armies){
+            
+                // not suicide special case no army surrounded by enemy but also capturing enemy
+                if (typeof armies !== 'undefined') {
+                    for(var army = 0; army < armies.length; army++){
+                        for(var token = 0; token < armies[army].tokens.length; lib++){
+                            var tempT = armies[army].tokens[army]
+                            if(tempT.position[0] > 0){
+                                if(tempT.position[0] - 1 == boardState.last.x + 1 &&
+                                    tempT.position[1] == boardState.last.y){
+                                        
+                                        var notLib = true
+                                        
+                                        
+                                        for(var lib = 0; lib < tempT.liberties.length; lib++){
+                                            
+                                            if (tempT.liberties[lib].position[0] == tempT.position[0] - 1 &&
+                                                tempT.liberties[lib].position[1] == tempT.position[1]){
+                                                    
+                                                    notLib = false
+                                            } 
+                                        }
+                                        
+                                        if(notLib){
+                                            boardState.board[tempT.position[0] - 1][tempT.position[1]] = 0
+                                        }
+                                }
+                            }
+                            
+                            if(tempT.position[1] > 0){
+                                if(tempT.position[1] - 1 == boardState.last.y + 1 && 
+                                    tempT.position[0] == boardState.last.x){
+                                        
+                                        var notLib = true
+                                        
+                                        for(var lib = 0; lib < tempT.liberties.length; lib++){
+                                            
+                                            if (tempT.liberties[lib].position[1] == tempT.position[1] - 1 &&
+                                                tempT.liberties[lib].position[0] == tempT.position[0]){
+                                                    
+                                                    notLib = false
+                                            } 
+                                        }
+                                        
+                                        if(notLib){
+                                            boardState.board[tempT.position[0]][tempT.position[1] - 1] = 0
+                                        }
+                                }
+                            }
+                            
+                            if(tempT.position[0] < boardState.board.length - 1){
+                                if(tempT.position[0] + 1 == boardState.last.x - 1 &&
+                                    tempT.position[1] == boardState.last.y){
+                                        
+                                    var notLib = true
+                                    
+                                    for(var lib = 0; lib < tempT.liberties.length; lib++){
+                                            
+                                            if (tempT.liberties[lib].position[0] == tempT.position[0] + 1 &&
+                                                tempT.liberties[lib].position[1] == tempT.position[1]){
+                                                    
+                                                    notLib = false
+                                            } 
+                                        }
+                                        
+                                        if(notLib){
+                                            boardState.board[tempT.position[0] + 1][tempT.position[1]] = 0
+                                        }
+                                }
+                            }
+                            
+                            if(tempT.position[1] < boardState.board.length - 1){
+                                if(tempT.position[1] + 1 == boardState.last.y - 1 && 
+                                    tempT.position[0] == boardState.last.x){
+                                        
+                                    var notLib = true
+                                    
+                                    for(var lib = 0; lib < tempT.liberties.length; lib++){
+                                            
+                                            if (tempT.liberties[lib].position[0] == tempT.position[0] &&
+                                                tempT.liberties[lib].position[1] == tempT.position[1] + 1){
+                                                    
+                                                    notLib = false
+                                            } 
+                                        }
+                                        
+                                        if(notLib){
+                                            boardState.board[tempT.position[0]][tempT.position[1] + 1] = 0
+                                        }
+                                }
+                            }
+                        }
+                    }
+
+                    return this.model.setProp('board',board)
+                
+                } else {
+
+                    return this.model.getData()
+                }
+        }
 
         checkSuicide(boardState,armies){
             return new Promise((function(resolve,reject){
                 
-                // not suicide special case no army surrounded by enemy but also capturing enemy
-                if (typeof armies !== 'undefined') {
-        
-                    for(var army = 0; army < armies.length; army++){
-
-                    }
-                }
 
                 //special case suicide with no army
                 var suicide = true;
@@ -505,6 +600,9 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 for(var army = 0; army < armies.length; army++){
                     
                     // not considering hole in army at the moment
+                    var freeZeroes = []
+                    var groupZeroes = []
+                    this.recursiveTerritoryCheck(board.board, zeroes[pos], freeZeroes, groupZeroes)
                     if(armies[0].colour == 1){blackScore += armies[0].tokens.length}
                     if(armies[0].colour == 2){whiteScore += armies[0].tokens.length}
                 }
