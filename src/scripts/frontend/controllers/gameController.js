@@ -512,6 +512,63 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         }
                     }
                 }
+                
+                // some armies previously exist
+                if (typeof armies !== 'undefined') {
+                    var armiesWithSameLib = []
+                    
+                    // new token has no liberties check
+                    var noLib = true
+                    if(boardState.last.x < boardState.board.length){
+                        if(boardState.board[boardState.last.x + 1][boardState.last.y] == 0 ){
+                            noLib = false
+                        }
+                    }
+                    if(boardState.last.y < boardState.board.length){
+                        if(boardState.board[boardState.last.x][boardState.last.y + 1] == 0 ){
+                            noLib = false
+                        }
+                    }
+                    if(boardState.last.x > 0){
+                        if(boardState.board[boardState.last.x - 1 ][boardState.last.y] == 0 ){
+                            noLib = false
+                        }
+                    }
+                    if(boardState.last.y > 0){
+                        if(boardState.board[boardState.last.x][boardState.last.y - 1] == 0 ){
+                            noLib = false
+                        }
+                    }
+                    if(noLib){
+                        for(var army = 0; army < armies.length; army++){
+                            //check if placement is invalid larger suicide
+                            
+                            
+                            if(boardState.last.c == armies[army].colour &&
+                                armies[army].liberties[0][0] == boardState.last.x &&
+                                boardState.last.y == armies[army].liberties[0][1]){
+                                    
+                                    armiesWithSameLib.push(armies[army])
+                                }
+                        }
+                        
+                        var removeFromBoard = true
+                        armiesWithSameLib.forEach(function(element) {
+                            if(element.liberties.length > 1){
+                                removeFromBoard = false
+                            }
+                        }, this);
+                        
+                        if(removeFromBoard){
+                            armiesWithSameLib.forEach(function(element) {
+                            element.tokens.forEach(function(token) {
+                                boardState.board[token.position[0]][token.position[1]] = 0
+                            }, this);
+                        }, this);
+                        }
+                        
+                    }
+                }
 
                 return this.model.setProp('board',boardState)
             
@@ -556,37 +613,6 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     reject(err)
                 }
                 
-                // some armies previously exist
-                if (typeof armies !== 'undefined') {
-        
-                    for(var army = 0; army < armies.length; army++){
-                        //check if placement is invalid larger suicide
-                        if(armies[army].liberties.length == 1 &&
-                            boardState.last.c == armies[army].colour &&
-                            armies[army].liberties[0][0] == boardState.last.x &&
-                            boardState.last.y == armies[army].liberties[0][1]){
-                                
-                            var suicide = true
-                            if (boardState.last.x !== 0){
-                                if (boardState.board[boardState.last.x - 1][boardState.last.y] == 0){ suicide = false }
-                            }
-                            if (boardState.last.x !== boardState.size - 1){
-                                if (boardState.board[boardState.last.x + 1][boardState.last.y] == 0){ suicide = false }
-                            }
-                            if (boardState.last.y !== boardState.size - 1){
-                                if(boardState.board[boardState.last.x][boardState.last.y + 1] == 0){ suicide = false }
-                            }
-                            if(boardState.last.y !== 0){ 
-                                if( boardState.board[boardState.last.x][boardState.last.y - 1] == 0){ suicide = false }
-                            }
-                            if (suicide){
-                                reject(err)
-                            }
-                        }
-                    
-
-                    }
-                }
 
                 this.model.getData().then(function(data){
                     resolve(data)
@@ -596,12 +622,14 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         }
 
         checkKo(moveLog,boardState){
-            
-            for(var i = 0; i < moveLog; i++){
-                if(moveLog[i] === boardState.last){
-                    var err = new Error("ko")
-                    err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
-                    err.board = boardState.board
+            if(!boardState.pass){
+                for(var i = 0; i < moveLog.length; i++){
+                    if(moveLog[i].c == boardState.last.c && moveLog[i].x == boardState.last.x && moveLog[i].y == boardState.last.y){
+                        var err = new Error("ko")
+                        err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
+                        err.board = boardState.board
+                        reject("previous move state recreated")
+                    }
                 }
             }
             return this.model.getData()
@@ -661,6 +689,9 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         onlyArmy = false;
                     }
                 }
+                if(armies[army].colour == 1){ blackScore += armies[army].size}
+                if(armies[army].colour == 2){ whiteScore += armies[army].size}
+                
                 for(var token = 0; token < elem.tokens.length; token ++) {
                     arr.push(token.position)
                 }
@@ -673,31 +704,83 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 
             }
             if(armies.length !== 1 && !onlyArmy){
+                var whiteTerritory = []
+                var blackTerritory = []
                 for(var pos = 0; pos < zeroes.length; pos++){
                     var freeZeroes = []
                     var groupZeroes = []
                     this.recursiveTerritoryCheck(board.board, zeroes[pos], freeZeroes, groupZeroes)
-                    
+                    if(freeZeroes.length == 0){
+                        groupZeroes.forEach(function(element) {
+                            var contained = false
+                            if(element.c == 1){
+                                blackTerritory.forEach(function(Terr) {
+                                    if(element.pos[0] == Terr.pos[0] && element.pos[1] == Terr.pos[1]){
+                                        contained = true
+                                    }
+                                }, this);
+                                if(!contained){
+                                    blackTerritory.push(element)
+                                }
+                            }
+                            if(element.c == 2){
+                                whiteTerritory.forEach(function(Terr) {
+                                    if(element.pos[0] == Terr.pos[0] && element.pos[1] == Terr.pos[1]){
+                                        contained = true
+                                    }
+                                }, this);
+                                if(!contained){
+                                    whiteTerritory.push(element)
+                                }
+                            }
+                        }, this);
+                         
+                    }
             
                 }
+                blackScore += blackTerritory.length
+                whiteScore += whiteTerritory.length
             }
-            else if(armies.length == 1){
-                
-                if(armies[0].colour == 1){blackScore = armies[0].tokens.length}
-                
-                if(armies[0].colour == 2){whiteScore = armies[0].tokens.length}
-                 
-            }
-            else{
-                for(var army = 0; army < armies.length; army++){
-                    
-                    // not considering hole in army at the moment
+            else if(armies.length !== 1){
+                var whiteTerritory = []
+                var blackTerritory = []
+                for(var pos = 0; pos < zeroes.length; pos++){
                     var freeZeroes = []
                     var groupZeroes = []
                     this.recursiveTerritoryCheck(board.board, zeroes[pos], freeZeroes, groupZeroes)
-                    if(armies[0].colour == 1){blackScore += armies[0].tokens.length}
-                    if(armies[0].colour == 2){whiteScore += armies[0].tokens.length}
+                    if(freeZeroes.length == 0){
+                        groupZeroes.forEach(function(element) {
+                            var contained = false
+                            if(element.c == 1){
+                                blackTerritory.forEach(function(Terr) {
+                                    if(element.pos[0] == Terr.pos[0] && element.pos[1] == Terr.pos[1]){
+                                        contained = true
+                                    }
+                                }, this);
+                                if(!contained){
+                                    blackTerritory.push(element)
+                                }
+                            }
+                            if(element.c == 2){
+                                whiteTerritory.forEach(function(Terr) {
+                                    if(element.pos[0] == Terr.pos[0] && element.pos[1] == Terr.pos[1]){
+                                        contained = true
+                                    }
+                                }, this);
+                                if(!contained){
+                                    whiteTerritory.push(element)
+                                }
+                            }
+                        }, this);
+                         
+                    }
+                    blackScore += blackTerritory.length
+                    whiteScore += whiteTerritory.length
+            
                 }
+                
+               if(armies[0].colour == 1){blackScore += armies[0].tokens.length}
+               if(armies[0].colour == 2){whiteScore += armies[0].tokens.length}
             }
             
             return Promise.all([this.model.setProp('whiteScore', whiteScore), this.model.setProp('blackScore', blackScore)])
