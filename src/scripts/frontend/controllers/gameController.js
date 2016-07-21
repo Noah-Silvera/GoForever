@@ -166,8 +166,8 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 Promise.resolve().then((function(){
                     return this.model.getData()
                 }).bind(this)).then((function(data){
-                    return Promise.resolve(data)
-                    // return this.checkCaptureSpecialCase(boardState,data.tempArmy)
+                    // return Promise.resolve(data)
+                    return this.checkCaptureSpecialCase(boardState,data.tempArmy)
 
                 }).bind(this)).then((function(data){
                 // check if the move is valid and not a suicide
@@ -427,7 +427,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     }
                 }
 
-                return this.model.setProp('board',board)
+                return this.model.setProp('board',boardState)
             
             } else {
 
