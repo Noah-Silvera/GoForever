@@ -1,54 +1,108 @@
-define(['controllers/controller', 'views/UserView', 'models/UserModel', 'lib/request'], function (Controller, UserView, UserModel, request) {
+define(['lib/request', 'requestHandler'], function (request, requestHandler) {
     var match;
-    var user = "user"; //specific user id that will be used to access user data
 
-    function getMatchHistory() {
-        var x = new XMLHttpRequest();
-        x.open("GET", "/matchHistory", true);
-        x.send(JSON.stringify({ userName: user }));
-        return x;
-    }
+    //For get requests... Replace with your own
+    var matchId =
+        [
+            "578fb20736d581d40c079353",
+            "578fb9a3ccd97158278f74a4",
+            "578fbac5ccd97158278f74a5",
+        ];
 
-    function displayMatchHistory(data) {
-        var replayButton = $('<input/>').attr({
-            type: 'button',
-            id: 'replayMatch',
-            value: 'Replay',
-            className: "selectedReplay"
+    
+    //Posting and Get Data... Remove Respective function
+
+    //postMatchHistory();
+
+    //getMatchHistory();
+
+    displayMatchHistory();
+    displayStats();
+
+    ///////////////////////////////////////////////////////////
+    //                        Requests
+    ///////////////////////////////////////////////////////////
+
+    function postMatchHistory() {
+        console.log("postMatchHistory");
+        
+        //Dummy
+        requestHandler.create('Match', {
+            time: Date(),
+            gameLength: "13:37",
+            userId: "Me",
+            opponent: "Foe",
+            userHandicap: "Me",
+            boardSize: 9,
+            moveLog: [1, 3, 3, 7],
+            whiteScore: 37,
+            blackScore: 13,
+            result: "win",
+        })
+        .then(function (res) {
+            console.log(res)
+            //requestHandler.create()
+
         });
+        console.log(res);
+    }
 
-        if (data == null) {
-            return;
-        }
+    function getMatchHistory(id) {
+        console.log("getMatchHistory");
 
-        for (var k = 0; k < data.length; k++) {
-            var mh = document.getElementById("match-history-body");
-            var row = mh.insertRow();
-            var col0 = row.insertCell(0);
-            var col1 = row.insertCell(1);
-            var col2 = row.insertCell(2);
-            var col3 = row.insertCell(3);
-            var col4 = row.insertCell(4);
-            replayButton.clone().appendTo(col4);
+        requestHandler.get('Match', id)
+        .then(function (res) {
+            console.log(res)
+        })
+    }
 
-            col0.innerHTML = data[k].startDate;
-            col1.innerHTML = data[k].gameLength;
-            col2.innerHTML = date[k].score;
-            col3.innerHTML = data[k].result;
+
+    ///////////////////////////////////////////////////////////
+    //                        Code
+    ///////////////////////////////////////////////////////////
+
+
+    function displayMatchHistory() {
+        for (var i = matchId.length - 1; i >= 0; i--) {
+            requestHandler.get('Match', matchId[i])
+                .then(function (res) {
+                    var data = JSON.parse(res);
+                    
+                    //Does not work
+                    var replayButton = $('<input/>').attr({
+                        //type: 'button',
+                        id: 'replayMatch',
+                        name: 'Replay',
+                        number: data.time,
+                        //class: "btn btn-default",
+                        //width: "150",
+                        //height: "150",
+                        onclick: "replayClicked()"
+                    })
+                    .on("click", function () {
+                        console.log("Oh Hi There");
+                    })
+
+                    var mh = document.getElementById("match-history-body");
+                    var row = mh.insertRow();
+                    var col0 = row.insertCell(0);
+                    var col1 = row.insertCell(1);
+                    var col2 = row.insertCell(2);
+                    var col3 = row.insertCell(3);
+                    var col4 = row.insertCell(4);
+                    replayButton.clone().appendTo(col4);
+
+                    col0.innerHTML = data.time;
+                    col1.innerHTML = data.gameLength;
+                    col2.innerHTML = data.whiteScore;
+                    col3.innerHTML = data.result;
+                });
         }
     }
 
-    //Load match history upon loading the page.
-    function loadMatchHistory() {
-        var x = getMatchHistory();
-        x.onreadystatechange = function () {
-            if (x.readyState == 4 && x.status == 200) {
-                var data = JSON.parse(x.responseText);
-                displayMatchHistory(data);
-            }
-        }
+    function replayClicked() {
+        console.log("I WAS CLICKED");
     }
-
 
     //////////////////////////////////////////////////////////
 
@@ -59,187 +113,67 @@ define(['controllers/controller', 'views/UserView', 'models/UserModel', 'lib/req
     var stats;
     
     //Display new stats upon loading the page
-    function displayStats(data) {
+    function displayStats() {
+        var matchArray = [];
+        var lock = 0;
         var wins = 0;
-        var winStreak = 0;
-        var rank = "I";
 
-        //Total wins
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].result = "win") {
-                wins++;
-            }
-        }
-
-        //Win streak
-        for (var i = data.length - 1; i > 0; i--) {
-            if (data[i].result = "win") {
-                winStreak++;
-            } else {
-                break;
-            }
-        }
-
-        if(winStreak <= 1){
-            rank = "Failure";
-        } else if (winStreak >= 2 && winStreak <= 3){
-            rank = "Rookie";
-        } else if (winStreak >= 4 && winStreak <= 5){
-            rank = "Apprentice";
-        } else if (winStreak >= 6 && winStreak <= 7){
-            rank = "Professional";
-        } else if (winStreak >= 8 && winStreak <= 10){
-            rank = "Master";
-        } else if (winStreak >= 11){
-            rank = "Legendary Master";
-        }
-
-        stats = {
-            userName: data[i].userName,
-            totalGames: data.length,
-            totalWins: wins,
-            totalLoss: data.length - wins,
-            winPercentage: wins / data.length,
-            winStreak: winStreak,
-            rank: rank,
-        }
-
-        document.getElementById("title-username").value = stats[0].userName;
-        $("#stats-games-played").text(stats[0].totalGames);
-        $("#stats-games-won").text(stats[0].totalWins);
-        $("#stats-win-percentage").text(stats[0].winPercentage);
-        $("#stats-win-streak").text(stats[0].winStreak);
-        $("#stats-rank").text(stats[0].rank);
-    }
-
-    function loadStats(){
-        var x = getMatchHistory();
-        x.onreadystatechange = function () {
-            if (x.readyState == 4 && x.status == 200) {
-                var data = JSON.parse(x.responseText);
-                displayStats(data);
-            }
-        }
-    }
-
-    function updateRank(){
-
-    }
-
-    function getMatchHistory(user) {
-        var x = new XMLHttpRequest();
-        x.open("GET", "/matchHistory", true);
-        x.send(JSON.stringify({ userName: user }));
-        return x;
-    }
-
-
-    /*
-    var user = document.getElementById("username_s").value;
-    var post = new XMLHttpRequest();
-    post.open("POST", "/statisticsRemove", true);
-    post.setRequestHeader("Content-type", "application/json");
-    post.send(JSON.stringify({
-        userName: user,
-    }));
-
-    var x = new XMLHttpRequest();
-    x.open("GET", "/getStats", true);
-    x.send(JSON.stringify({userName: user}));
-    x.onreadystatechange = function () {
-        if (x.readyState == 4 && x.status == 200) {
-            var stats = JSON.parse(x.responseText);
-
-            document.getElementById("title-username").value = stats[0].userName;
-            document.getElementById("stats-games-played").value = stats[0].totalGames;
-            document.getElementById("stats-games-won").value = stats[0].totalWins;
-            document.getElementByID("stats-win-percentage").value = stats[0].winPercentage;
-            document.getElementById("stats-win-streak") = stats[0].winStreak;
-            document.getElementById("stats-rank") = stats[0].rank;
-        }
-    }*/
-
-
-    function updateStats(data) {
-        var wins = 0;
+        var winStreakLock = 0;
         var winStreak = 0;
 
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].result = "win") {
-                wins++;
-            }
-        }
+        var rank = "Failure";
 
-        for (var i = data.length - 1; i > 0; i--) {
-            if (data[i].result = "win") {
-                winStreak++;
-            } else {
-                break;
-            }
-        }
+        var i = -1;
 
-        stats = {
-            userName: data[i].userName,
-            totalGames: data.length,
-            totalWins: wins,
-            totalLoss: data.length - wins,
-            winPercentage: wins / data.length,
-            winStreak: winStreak,
-            rank: "F",
-        }
+        for (i = matchId.length - 1; i >= 0; i--) {
+            requestHandler.get('Match', matchId[i])
+                .then(function (res) {
+                    var data = JSON.parse(res);
 
-        var post = new XMLHttpRequest();
-        post.open("POST", "/statistics", true);
-        post.setRequestHeader("Content-type", "application/json");
-        post.send(JSON.stringify({
-            userName: stats.userName,
-            totalGames: stats.totalGames,
-            totalWins: stats.totalWins,
-            totalLoss: stats.totalLoss,
-            winPercentage: stats.winPercentage,
-            winStreak: stats.winStreak,
-            rank: stats.rank,
-        }));
+                    //wins
+                    if (data.result == "win") {
+                        wins++;
+                    }
 
+                    //winStreak
+                    if (data.result == "win" && winStreakLock == 0) {
+                        winStreak++;
+                    } else {
+                        winStreakLock = 1;
+                    }
+
+                    //Rank
+                    if (winStreak <= 1) {
+                        rank = "Failure";
+                    } else if (winStreak >= 2 && winStreak <= 3) {
+                        rank = "Rookie";
+                    } else if (winStreak >= 4 && winStreak <= 5) {
+                        rank = "Apprentice";
+                    } else if (winStreak >= 6 && winStreak <= 7) {
+                        rank = "Professional";
+                    } else if (winStreak >= 8 && winStreak <= 10) {
+                        rank = "Master";
+                    } else if (winStreak >= 11) {
+                        rank = "Legendary Master";
+                    }
+
+                    stats = {
+                        //userName: matchArray[0].userId,
+                        totalGames: matchId.length,
+                        totalWins: wins,
+                        totalLoss: matchId.length - wins,
+                        winPercentage: wins / matchId.length * 100,
+                        winStreak: winStreak,
+                        rank: rank,
+                    }
+
+                    //$("#title-username").text = stats.userName;
+                    $("#stats-games-played").text(stats.totalGames);
+                    $("#stats-games-won").text(stats.totalWins);
+                    $("#stats-win-percentage").text(stats.winPercentage + "%");
+                    $("#stats-win-streak").text(stats.winStreak);
+                    $("#stats-rank").text(stats.rank);
+                })
+        } 
     }
-
-
-
-window.onload = function () {
-
-    document.getElementById("addMatch_button").onclick = function () {
-        addMatchHistory();
-        x = getMatchHistory()
-        x.onreadystatechange = function () {
-            if (x.readyState == 4 && x.status == 200) {
-                var data = JSON.parse(x.responseText);
-                updateMatchHistoryTable(data);
-            }
-        }
-    }
-
-    document.getElementById("updateMatchHistory").onclick = function () {
-        var x = getMatchHistory();
-        x.onreadystatechange = function () {
-            if (x.readyState == 4 && x.status == 200) {
-                var data = JSON.parse(x.responseText);
-                updateMatchHistoryTable(data);
-            }
-        }
-    }
-
-
-    document.getElementById("updateStats").onclick = function () {
-        var x = getMatchHistory();
-        x.onreadystatechange = function () {
-            if (x.readyState == 4 && x.status == 200) {
-                var data = JSON.parse(x.responseText);
-                updateStats(data);
-            }
-        }
-    }
-}
 });
-});
-
-

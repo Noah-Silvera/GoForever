@@ -43,11 +43,11 @@ define(['requestHandler'],function(RequestHandler){
                 console.error('----- NOT IMPLEMENTENED ---- data retrieval')
                 console.info('echoing data')
                 resolve(this.data)
-
-                // RequestHandler.sendData(this.model, this.id).then((function(returnedData){
-                //     this.data = returnedData
-                //     resolve(returnedData)
-                // }).bind(this))
+/*
+                RequestHandler.getData(this.model, this.id).then((function(returnedData){
+                     this.data = returnedData
+                     resolve(returnedData)
+                }).bind(this))*/
             }).bind(this))
 
         }
