@@ -162,6 +162,20 @@ define(['lib/request'],function(request){
             }).bind(this))
             // must keep the this context to access local variables
         }
+        
+        getActiveUser(){
+            return new Promise((function(resolve,reject){
+              // create a request to the appropiate model with an ID param
+                var options = {
+                     url : "/getActive"
+                }
+
+                request.get(options,function(err,res,body){
+                    if(err) reject(err)
+                    resolve(body)
+                })
+            }).bind(this))
+        }
 
         getRandomMove(state){
             return new Promise((function(resolve,reject){

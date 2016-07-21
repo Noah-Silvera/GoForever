@@ -141,6 +141,18 @@ app.get('/', function(req, res){
     res.redirect('/index')
 })
 
+app.get('/getActive', function(req, res){
+    var response;
+    if(req.user){
+        response = req.user
+        response.password = null
+        response = JSON.stringify(response)
+    } else {
+        response = "No active user, must be logged in, or work as guest."
+    }
+    res.send(response)
+})
+
 // set up express static directories
 app.use(express.static(path.join(root,'/scripts/frontend').toString()));
 app.use(express.static(path.join(root,'/static').toString()));
