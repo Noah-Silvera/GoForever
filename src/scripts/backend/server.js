@@ -135,7 +135,7 @@ require('./utils/log_setup')
 require('./dbAdapter')
 
 
-var root = 'src/'
+var root = __dirname + 'src/'
 
 app.get('/', function(req, res){
     res.redirect('/index')
