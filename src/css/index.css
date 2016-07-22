@@ -1,0 +1,88 @@
+a.navbar-brand {
+  font-size: 24px; }
+
+div.better-border {
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px; }
+
+.disable-click-events {
+  pointer-events: none; }
+
+.beach {
+  background-image: url("images/beach.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.dragon {
+  background-image: url("images/dragon.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.forest {
+  background-image: url("images/forest.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.grass {
+  background-image: url("images/grass.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.metal {
+  background-image: url("images/metal.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.river {
+  background-image: url("images/river.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.ocean {
+  background-image: url("images/ocean.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.mountain {
+  background-image: url("images/mountain.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.wood {
+  background-image: url("images/wood.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.circle {
+  width: 50px;
+  height: 50px;
+  border: solid 1px #555;
+  opacity: 0.9;
+  border-radius: 100px; }
+
+.shadow {
+  box-shadow: 5px -5px rgba(0, 0, 0, 0.6);
+  border-radius: 8px; }
+
+p {
+  font: 100% Helvetica, sans-serif;
+  color: #609f9f; }
+
+div.col-sm-6 {
+  padding-top: 0px;
+  padding-right: 2em;
+  padding-bottom: 0px;
+  padding-left: 2em; }
+
+div.jumbotron {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+nav.navbar {
+  margin-left: 20px; }
+
+#play-as-guest {
+  padding-left: 15px;
+  padding-right: 15px; }

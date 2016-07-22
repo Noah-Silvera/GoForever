@@ -2,7 +2,7 @@
 
     class UserController extends Controller{
         
-        signup(){
+        signup(){  
             var data = {};
             data.username = $("#register-username").val();
             data.email = $("#register-email").val();

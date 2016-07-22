@@ -1,0 +1,117 @@
+a.navbar-brand {
+  font-size: 24px; }
+
+div.better-border {
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px; }
+
+.disable-click-events {
+  pointer-events: none; }
+
+.beach {
+  background-image: url("images/beach.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.dragon {
+  background-image: url("images/dragon.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.forest {
+  background-image: url("images/forest.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.grass {
+  background-image: url("images/grass.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.metal {
+  background-image: url("images/metal.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.river {
+  background-image: url("images/river.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.ocean {
+  background-image: url("images/ocean.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.mountain {
+  background-image: url("images/mountain.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.wood {
+  background-image: url("images/wood.png");
+  background-repeat: no-repeat;
+  background-size: 100%; }
+
+.circle {
+  width: 50px;
+  height: 50px;
+  border: solid 1px #555;
+  opacity: 0.9;
+  border-radius: 100px; }
+
+.shadow {
+  box-shadow: 5px -5px rgba(0, 0, 0, 0.6);
+  border-radius: 8px; }
+
+#div-with-bg {
+  background-image: url("images/goGame.png");
+  min-height: 500px;
+  min-width: 500px;
+  margin-top: 0px;
+  padding-top: 120px;
+  padding-left: 175px;
+  padding-right: 175px;
+  padding-bottom: 120px;
+  background-repeat: no-repeat;
+  background-position: center; }
+
+div.form-group {
+  margin-right: 80px;
+  margin-left: 80px;
+  margin-top: 120px;
+  margin-bottom: 120px;
+  background-color: lightgrey;
+  padding: 25px;
+  border-radius: 25px; }
+
+label {
+  font: Helvetica, sans-serif;
+  padding: 6px; }
+
+#start-btn {
+  margin-top: 16px; }
+
+#opponent-selector, #colour-selector {
+  width: 100%;
+  text-align: center;
+  display: inline-block; }
+
+#opponent-selector button, #colour-selector button {
+  width: 50%; }
+
+#colour-selector-wrapper {
+  margin-top: 5px;
+  margin-bottom: 5px; }
+
+#colour-selector-wrapper * {
+  margin-top: 0px; }
+
+#colour-selector button:hover {
+  font-weight: bold; }
+
+#colour-selector-indicators button {
+  margin: 0;
+  padding: 0; }
