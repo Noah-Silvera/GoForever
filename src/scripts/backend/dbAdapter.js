@@ -113,7 +113,7 @@ class DBAdapter {
     get(collectionName, searchCriteria){
         return new Promise((function(resolve, reject){
 
-            if( !this.db ) reject('not ready to connect to collections')
+            // if( !this.db ) reject('not ready to connect to collections')
 
             if(searchCriteria._id){
                 searchCriteria._id = mongoose.mongo.ObjectId(searchCriteria._id);
@@ -142,7 +142,7 @@ class DBAdapter {
      */
     create(collectionName, object){
         return new Promise((function(resolve, reject){
-            if (!this.db) reject('not ready to connect to collections')
+            // if (!this.db) reject('not ready to connect to collections')
                 console.log(object);
 
             collectionName = collectionName.trim()
@@ -172,7 +172,7 @@ class DBAdapter {
      */
     update(collectionName, searchCriteria, diffObject){
         return new Promise((function(resolve,reject){
-            if( !this.db ) reject('not ready to connect to collections')
+            // if( !this.db ) reject('not ready to connect to collections')
 
             collectionName = collectionName.trim()
 
@@ -194,7 +194,7 @@ class DBAdapter {
 
     push(_id, match){
         return new Promise((function(resolve,reject){
-            if( !this.db ) reject('not ready to connect to collections')
+            // if( !this.db ) reject('not ready to connect to collections')
 
             _id = mongoose.mongo.ObjectId(_id);
             
