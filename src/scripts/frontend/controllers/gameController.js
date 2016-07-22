@@ -1,4 +1,4 @@
-define(['controllers/controller','views/gameView','models/gameModel','requestHandler'], function(Controller,GameView,GameModel, requestHandler){
+define(['controllers/controller','views/gameView','models/gameModel','requestHandler'], function(Controller,GameView,GameModel, RequestHandler){
     
     
 
@@ -141,7 +141,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         last: data.moveLog.slice(-1).pop()
                     }
 
-                    return requestHandler.getRandomMove(state)
+                    return RequestHandler.getRandomMove(state)
 
                 }).then(function(move){
                    resolve(move)
@@ -187,6 +187,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                             data.moveLog.slice(-2)[0].pass === true  &&
                             data.moveLog.slice(-1)[0].pass === true  ){
 
+
                             var winResult = data.whiteScore - data.blackScore
 
                             if( data.userColour === 'black' ){
@@ -202,23 +203,37 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
                             this.view.showEndGameModal(winResult)
 
-                            // set the initial move counter to 0
-                            this.model.setProp('curMoveNum',0).then( (data) => {
+                            var updateHistProm;
+
+                            // only update the history if it is not a guest playing
+                            if( data.userId === 'guest'){
+                                updateHistProm = Promise.resolve(data)
+                            } else {
+                                updateHistProm = RequestHandler.updateHistory(data.userId, data._id)
+                            }
+
+                            // update the game history 
+                            updateHistProm.then( (data) => {
+                                // set the initial move counter to 0
+                                return this.model.setProp('curMoveNum',0)
+
+                            }).then( (data) => {
                                 // reset the board
                                 return this.createBoard(data.board.size)
 
                             }).then( (data) => {
-
                                 this.selectViewState('replay')
-                                resolve('game ended')
+                                resolve('game-ended')
                             })
-                        } else {
+
+
+                            
+                        }else {
                             // continue without ending the game
                             resolve()
                         }
 
-                    }).then( (data) => {
-                        resolve(data)
+
                     })
                 })
 
