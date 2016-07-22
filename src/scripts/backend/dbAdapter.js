@@ -191,6 +191,24 @@ class DBAdapter {
             })
         }).bind(this))
     }
+
+    push(_id, match){
+        return new Promise((function(resolve,reject){
+            if( !this.db ) reject('not ready to connect to collections')
+
+            _id = mongoose.mongo.ObjectId(_id);
+            
+            var Model = mongoose.model("User")
+            Model.update({"_id": _id}, {$push: {matches: match}}, {new: true}, function(err, object) {
+                if (err){
+                    error('object was not update')
+                    reject(err)
+                } else{
+                    resolve(object)
+                }
+            })
+        }).bind(this))
+    }
 }
 
 //return a singleton of the class on require

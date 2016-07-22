@@ -49,6 +49,10 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
         }
         
         render(){
+            
+            $("#quit-game-view").on('click', function(){
+                window.location.href = 'http://localhost:3000/userLanding.html'
+            })
 
 
 
