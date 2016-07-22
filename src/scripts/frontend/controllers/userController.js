@@ -1,4 +1,4 @@
- define(['controllers/controller','views/UserView','models/UserModel','lib/request','RequestHandler','lib/Statistics'], function(Controller,UserView,UserModel,request,RequestHandler,Stats){
+ define(['controllers/controller','views/userView','models/userModel','lib/request','requestHandler','lib/statistics'], function(Controller,UserView,UserModel,request,RequestHandler,Stats){
 
     class UserController extends Controller{
         
