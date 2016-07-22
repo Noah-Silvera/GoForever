@@ -391,9 +391,104 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         checkCaptureSpecialCase(boardState, armies){
             // not suicide special case no army surrounded by enemy but also capturing enemy
             if (typeof armies !== 'undefined') {
+                
+                //check trapped against side or corner
+                if(boardState.last.x == 1){
+                    if(boardState.board[0][boardState.last.y] !== 0 &&
+                       boardState.board[0][boardState.last.y] !== boardState.last.c){
+                           var removePiece = true
+                           if(!(boardState.last.y == 0)){
+                               if(!(boardState.board[0][boardState.last.y - 1] == boardState.last.c)){
+                                   removePiece = false
+                               }
+                           }
+                           
+                           if(!(boardState.last.y == boardState.board.length - 1)){
+                               if(!(boardState.board[0][boardState.last.y + 1] == boardState.last.c)){
+                                   removePiece = false
+                               }
+                           }
+                           
+                           if(removePiece){
+                               boardState.board[0][boardState.last.y] = 0
+                               toastr.success('You captured an enemy piece!')
+                           }
+                       }
+                }
+                
+                if(boardState.last.x ==  boardState.board.length - 2){
+                    if(boardState.board[ boardState.board.length - 1][boardState.last.y] !== 0 &&
+                       boardState.board[ boardState.board.length - 1][boardState.last.y] !== boardState.last.c){
+                           var removePiece = true
+                           if(!(boardState.last.y == 0)){
+                               if(!(boardState.board[ boardState.board.length - 1][boardState.last.y - 1] == boardState.last.c)){
+                                   removePiece = false
+                               }
+                           }
+                           
+                           if(!(boardState.last.y == boardState.board.length - 1)){
+                               if(!(boardState.board[ boardState.board.length - 1][boardState.last.y + 1] == boardState.last.c)){
+                                   removePiece = false
+                               }
+                           }
+                           
+                           if(removePiece){
+                               boardState.board[ boardState.board.length - 1][boardState.last.y] = 0
+                               toastr.success('You captured an enemy piece!')
+                           }
+                       }
+                }
+                
+                if(boardState.last.y ==  boardState.board.length - 2){
+                    if(boardState.board[ boardState.last.x][boardState.board.length - 1] !== 0 &&
+                       boardState.board[ boardState.last.x][boardState.board.length - 1] !== boardState.last.c){
+                           var removePiece = true
+                           if(!(boardState.last.x == 0)){
+                               if(!(boardState.board[boardState.last.x - 1][boardState.board.length - 1] == boardState.last.c)){
+                                   removePiece = false
+                               }
+                           }
+                           
+                           if(!(boardState.last.x == boardState.board.length - 1)){
+                               if(!(boardState.board[boardState.last.x + 1][boardState.board.length - 1] == boardState.last.c)){
+                                   removePiece = false
+                               }
+                           }
+                           
+                           if(removePiece){
+                               boardState.board[ boardState.last.x][boardState.board.length - 1] = 0
+                               toastr.success('You captured an enemy piece!')
+                           }
+                       }
+                }
+                if(boardState.last.y == 1){
+                    if(boardState.board[boardState.last.x][0] !== 0 &&
+                       boardState.board[boardState.last.x][0] !== boardState.last.c){
+                           var removePiece = true
+                           if(!(boardState.last.x == 0)){
+                               if(!(boardState.board[boardState.last.x - 1][0] == boardState.last.c)){
+                                   removePiece = false
+                               }
+                           }
+                           
+                           if(!(boardState.last.x == boardState.board.length - 1)){
+                               if(!(boardState.board[boardState.last.x + 1][0] == boardState.last.c)){
+                                   removePiece = false
+                               }
+                           }
+                           
+                           if(removePiece){
+                               boardState.board[boardState.last.x][0] = 0
+                               toastr.success('You captured an enemy piece!')
+                           }
+                       }
+                }
+                
+                
                 for(var army = 0; army < armies.length; army++){
                     for(var token = 0; token < armies[army].tokens.length; token++){
                         var tempT = armies[army].tokens[token]
+                        
                         if(tempT.position[0] > 0){
                             if(tempT.position[0] - 1 == boardState.last.x + 1 &&
                                 tempT.position[1] == boardState.last.y){
@@ -414,23 +509,23 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                         var x = tempT.position[0] - 1
                                         var y = tempT.position[1]
                                         var counter = 0
-                                        if( x + 1 < boardState.size){
+                                        if( x < boardState.size - 1){
                                             if(boardState.board[x + 1][y] == boardState.last.c){counter++}
                                         }
                                         else{
                                             counter++
                                         }
-                                        if( x - 1 > 0){
+                                        if( x > 0){
                                             if(boardState.board[x - 1][y] == boardState.last.c){counter++}
                                         }else{
                                             counter++
                                         }
-                                        if( y - 1 > 0){
+                                        if( y > 0){
                                             if(boardState.board[x][y - 1] == boardState.last.c){counter++}
                                         }else{
                                             counter++
                                         }
-                                        if( y + 1 < boardState.size){
+                                        if( y < boardState.size - 1){
                                             if(boardState.board[x][y + 1] == boardState.last.c){counter++}
                                         }else{
                                             counter++
@@ -464,23 +559,23 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                         var x = tempT.position[0]
                                         var y = tempT.position[1] - 1
                                         var counter = 0
-                                        if( x + 1 < boardState.size){
+                                        if( x < boardState.size - 1){
                                             if(boardState.board[x + 1][y] == boardState.last.c){counter++}
                                         }
                                         else{
                                             counter++
                                         }
-                                        if( x - 1 > 0){
+                                        if( x > 0){
                                             if(boardState.board[x - 1][y] == boardState.last.c){counter++}
                                         }else{
                                             counter++
                                         }
-                                        if( y - 1 > 0){
+                                        if( y > 0){
                                             if(boardState.board[x][y - 1] == boardState.last.c){counter++}
                                         }else{
                                             counter++
                                         }
-                                        if( y + 1 < boardState.size){
+                                        if( y < boardState.size - 1){
                                             if(boardState.board[x][y + 1] == boardState.last.c){counter++}
                                         }else{
                                             counter++
@@ -513,23 +608,23 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                         var x = tempT.position[0] + 1
                                         var y = tempT.position[1]
                                         var counter = 0
-                                        if( x + 1 < boardState.size){
+                                        if( x < boardState.size - 1){
                                             if(boardState.board[x + 1][y] == boardState.last.c){counter++}
                                         }
                                         else{
                                             counter++
                                         }
-                                        if( x - 1 > 0){
+                                        if( x > 0){
                                             if(boardState.board[x - 1][y] == boardState.last.c){counter++}
                                         }else{
                                             counter++
                                         }
-                                        if( y - 1 > 0){
+                                        if( y > 0){
                                             if(boardState.board[x][y - 1] == boardState.last.c){counter++}
                                         }else{
                                             counter++
                                         }
-                                        if( y + 1 < boardState.size){
+                                        if( y < boardState.size - 1){
                                             if(boardState.board[x][y + 1] == boardState.last.c){counter++}
                                         }else{
                                             counter++
@@ -562,23 +657,23 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                         var x = tempT.position[0]
                                         var y = tempT.position[1] + 1
                                         var counter = 0
-                                        if( x + 1 < boardState.size){
+                                        if( x < boardState.size - 1){
                                             if(boardState.board[x + 1][y] == boardState.last.c){counter++}
                                         }
                                         else{
                                             counter++
                                         }
-                                        if( x - 1 > 0){
+                                        if( x > 0){
                                             if(boardState.board[x - 1][y] == boardState.last.c){counter++}
                                         }else{
                                             counter++
                                         }
-                                        if( y - 1 > 0){
+                                        if( y > 0){
                                             if(boardState.board[x][y - 1] == boardState.last.c){counter++}
                                         }else{
                                             counter++
                                         }
-                                        if( y + 1 < boardState.size){
+                                        if( y < boardState.size - 1){
                                             if(boardState.board[x][y + 1] == boardState.last.c){counter++}
                                         }else{
                                             counter++
@@ -703,6 +798,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         }
 
         checkKo(moveLog,boardState){
+            return new Promise( (resolve,reject) => {
             if(!boardState.pass){
                 for(var i = 0; i < moveLog.length; i++){
                     if(moveLog[i].c == boardState.last.c && moveLog[i].x == boardState.last.x && moveLog[i].y == boardState.last.y){
@@ -713,7 +809,10 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     }
                 }
             }
-            return this.model.getData()
+                this.model.getData().then(function(data){
+                    resolve(data)
+                })
+            })
         }
         
         updateArmy(state){
