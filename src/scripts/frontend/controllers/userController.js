@@ -75,12 +75,7 @@
             throw "method not implemented"
         }
 
-        playGame(options){
-
-            if(options.guest){
-                // do guest specific logic here
-                console.info('current user is a guest')
-            }
+        playGame(){
             // do auth thingys and database thingys here
             window.location.href = 'http://localhost:3000/gameOptions'
         }

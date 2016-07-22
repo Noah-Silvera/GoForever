@@ -51,24 +51,38 @@ define(['./view','jquery','models/gameModel','requestHandler'],function(View,$,G
                             userColour = "white"
                         }
 
-                        console.error(' ---- NOT IMPLEMENETED ---- fetching user id from cookies')
+                        RequestHandler.getActiveUser().then((user) =>{
 
-                        var data = {
-                            "time" : new Date(),
-                            "userId": 'guest',
-                            "opponent":opponent,
-                            "userHandicap": $("#game-handicap").val(),
-                            "boardSize" : $("#board-size").val().split('x')[0],
-                            // no moves yet
-                            "moveLog": [],
-                            "whiteScore": 0,
-                            "blackScore": 0,
-                            // these values aren't in the DB
-                            "style": $("#board-style").val(),
-                            "userColour":userColour
-                        }
+                            // either play as a guest or a registered user
+                            var userId;
 
-                        RequestHandler.create('Match', data).then(function(id){
+                            if (user){ 
+                                user = JSON.parse(user)
+                                userId = user._id
+                            }
+                            else {
+                                userId = 'guest'
+                            }
+
+                            var data = {
+                                "time" : new Date(),
+                                "userId": userId,
+                                "opponent":opponent,
+                                "userHandicap": $("#game-handicap").val(),
+                                "boardSize" : $("#board-size").val().split('x')[0],
+                                // no moves yet
+                                "moveLog": [],
+                                "whiteScore": 0,
+                                "blackScore": 0,
+                                // these values aren't in the DB
+                                "style": $("#board-style").val(),
+                                "userColour":userColour
+                            }
+                            
+                            return RequestHandler.create('Match', data)
+                        }).then(function(id){
+
+
 
                             var url = window.location.href.replace("gameOptions", "game?")
                             window.location.href = url.concat(`id=${id}`)

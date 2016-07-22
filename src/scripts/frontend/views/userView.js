@@ -74,7 +74,7 @@ define(['./view','jquery','RequestHandler'],function(View,$,RequestHandler){
         setUpCommonButtons(){
             $('.nav.play-game').on('click',(function(){
                 console.info('loading game')
-                this.control.playGame({ guest: true })
+                this.control.playGame()
             }).bind(this))
         }
         /**
