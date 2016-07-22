@@ -10,28 +10,36 @@ define(['RequestHandler'], function(RequestHandler) {
         profileStats() {
             RequestHandler.getActiveUser()
             .then((function(user) {
+                if(!user) throw "No user auth"
                 this.matchId = JSON.parse(user).matches
             }).bind(this))
             .then((function() {
                 this.displayMatchHistory()
                 this.displayStats()
-            }).bind(this))               
+            }).bind(this))     
+            .catch(function(err){
+                console.log(err)
+            })                
         }
 
         landingStats() {
             RequestHandler.getActiveUser()
             .then((function(user) {
+                if(!user) throw "No user auth"
                 this.matchId = JSON.parse(user).matches
             }).bind(this))
             .then((function() {
                 this.displayStats()
-            }).bind(this))                 
+            }).bind(this))           
+            .catch(function(err){
+                console.log(err)
+            })      
         }
 
         displayMatchHistory() {
             for (var i = this.matchId.length - 1; i >= 0; i--) {
                 RequestHandler.get('Match', this.matchId[i])
-                    .then(function (data) {
+                    .then((function (data) {
 
                         var userColour, playerScore, opponentScore, result                            
 
@@ -60,12 +68,12 @@ define(['RequestHandler'], function(RequestHandler) {
                         var col5 = row.insertCell(5);
 
 
-                        col0.innerHTML = data.time;
+                        col0.innerHTML = this.makeDateTime(new Date(data.time));
                         col1.innerHTML = userColour
                         col2.innerHTML = playerScore;
                         col3.innerHTML = opponentScore;
                         col4.innerHTML = result;
-                    });
+                    }).bind(this));
             }
         }
 
@@ -136,7 +144,7 @@ define(['RequestHandler'], function(RequestHandler) {
                         //$("#title-username").text = stats.userName;
                         $("#stats-games-played").text(this.stats.totalGames);
                         $("#stats-games-won").text(this.stats.totalWins);
-                        $("#stats-win-percentage").text(this.stats.winPercentage + "%");
+                        $("#stats-win-percentage").text(Math.round(this.stats.winPercentage) + "%");
                         $("#stats-win-streak").text(this.stats.winStreak);
                         $("#stats-rank").text(this.stats.rank);
                     }).bind(this))
@@ -149,6 +157,26 @@ define(['RequestHandler'], function(RequestHandler) {
                 $("#stats-win-streak").text(0);
                 $("#stats-rank").text("Failure");
             } 
+        }
+
+        makeDateTime(d) {
+            return this.makeDateString(d) + " " + this.makeTimeString(d);
+        }
+
+        makeDateString(d) {
+            var s = "";
+            s += d.getFullYear() + "-";
+            s += (((d.getMonth() + 1) > 9) ? (d.getMonth() + 1) : ("0" + (d.getMonth() + 1))) + "-";
+            s += (((d.getDate()) > 9) ? ((d.getDate())) : ("0" + (d.getDate())));
+            return s;
+        }
+
+        makeTimeString(d) {
+            var s = "";
+            s += ((d.getHours() > 9) ? (d.getHours()) : ("0" + d.getHours())) + ":";
+            s += ((d.getMinutes() > 9) ? (d.getMinutes()) : ("0" + d.getMinutes())) + ":";
+            s += ((d.getSeconds() > 9) ? (d.getSeconds()) : ("0" + d.getSeconds()));
+            return s;
         }
 
     }
