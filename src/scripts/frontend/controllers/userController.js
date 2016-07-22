@@ -10,19 +10,12 @@
             data.password = $("#register-password").val();
             data.password_confirm = $("#register-password-confirm").val();
 
-            var valid = true;
-            if (data.password !== data.password_confirm) {
-                
-            }
-            
-            if (data.email !== data.email_confirm) valid = false;
-            
-            if (data.username.length == 0) valid = false;
-            
-            if (data.password.length == 0) valid = false;
-                                   
-                    
-            if(valid){
+
+            if (data.username.length == 0) alert("Must provide a username.");
+            else if (data.email.length == 0) alert("Must provide an email.");
+            else if (data.password.length == 0) alert("Must provide a password.");
+            else if (data.password !== data.password_confirm) alert("Passwords didn't match");
+            else {                                 
                 RequestHandler.signup(data)
                     .then(function(res){
                         window.location.href = 'http://localhost:3000/userLanding.html'
@@ -31,24 +24,17 @@
                         console.debug(err)
                     })   
                 
-            } else {
-                
-                // select view state changes nothing at the moment
-            }
-        }
+            } 
+        }   
         
         login(){
             var data = {};
             data.username = $("#login-username").val();
-
             data.password = $("#login-password").val();
             
-            var valid = true;
-            if (data.username.length == 0) valid = false;
-            
-            if (data.password.length == 0) valid = false;
-                
-            if(valid){//logic should be reversed later
+            if (data.username.length == 0) alert("Must provide a username.");
+            else if (data.password.length == 0) alert("Must provide a password.");
+            else {//logic should be reversed later
                 RequestHandler.login(data)
                     .then((function(res){
                         console.debug(res)
@@ -57,8 +43,6 @@
                     .catch((function(err){
                         console.debug(err)
                     }).bind(this))
-            } else {
-
             }
         }
         
