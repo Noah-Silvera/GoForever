@@ -371,7 +371,7 @@ function buildTreeHtml(){
   return html
 }
 
-app.listen(3000, function(){
+app.listen(30103, function(){
    info('---------------------------')  
    info('listening on roberts.seng.uvic.ca:30103')  
    info('---------------------------')  
