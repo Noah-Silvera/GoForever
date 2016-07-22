@@ -130,7 +130,8 @@ define(['lib/request'],function(request){
 
                 // create a request to the appropiate model with an ID param
                 var options = {
-                     "url" : `/login?username=${data.username}&password=${data.password}`,
+                     "url" : `
+                     /login?username=${data.username}&password=${data.password}`,
                      "method" : "POST",
                 }
 
