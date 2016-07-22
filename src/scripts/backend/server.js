@@ -356,12 +356,12 @@ function buildTreeHtml(){
             </style>
             <div id='wrapper'>
             <div>
-                <a href="http://localhost:3000/">Login Page</a>
+                <a href="http://roberts.seng.uvic.ca/">Login Page</a>
             </div>`
   
   staticFileArr.forEach(function(fileName){
     html +=   `<div>
-                  <a href="http://localhost:3000/${fileName}">${fileName}</a>
+                  <a href="http://roberts.seng.uvic.ca/${fileName}">${fileName}</a>
               </div>`
   })
 
@@ -371,8 +371,8 @@ function buildTreeHtml(){
   return html
 }
 
-app.listen(3000, function(){
+app.listen(30103, function(){
    info('---------------------------')  
-   info('listening on localhost:3000')  
+   info('listening on roberts.seng.uvic.ca')  
    info('---------------------------')  
 })  

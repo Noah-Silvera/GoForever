@@ -6,7 +6,7 @@ define(['lib/request'],function(request){
 
 
         constructor(){
-            this.serverUrl = 'localhost:3000'
+            this.serverUrl = 'roberts.seng.uvic.ca'
             //base part of the user to make ALL requests too
             this.base = 'api'
         }
