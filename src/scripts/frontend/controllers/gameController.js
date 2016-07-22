@@ -218,6 +218,10 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     Promise.resolve().then((function(){
                         return this.model.getData()
                     }).bind(this)).then((function(data){
+                        // check the moveLog to see if the move has previously been played
+                        return this.checkKo(data.moveLog, boardState)
+                    
+                    }).bind(this)).then((function(data){
                         // return Promise.resolve(data)
                         return this.checkCaptureSpecialCase(boardState,data.tempArmy)
 
@@ -235,13 +239,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     // check if the move is valid and not a suicide
                         return this.checkSuicide(boardState,data.tempArmy)
                         
-
-                    }).bind(this)).then((function(data){
-                        // check the moveLog to see if the move has previously been played
-                        return this.checkKo(data.moveLog, boardState)
-                    
                         // update the data since the move was valid and successful
-
                     }).bind(this)).then((function(data){
                     /////////////////////////////////////
                     /////////  MOVE IS VALID  ///////////
@@ -825,9 +823,10 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
         checkKo(moveLog,boardState){
             return new Promise( (resolve,reject) => {
+                
                 if(!boardState.pass){
-                    if (moveLog.length >0){
-                        var i = moveLog.length - 1
+                    if (moveLog.length >1){
+                        var i = moveLog.length - 2
                         if(moveLog[i].c == boardState.last.c && moveLog[i].x == boardState.last.x && moveLog[i].y == boardState.last.y){
                             var err = new Error("ko")
                             err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
@@ -1129,11 +1128,15 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
         replayNextMove(){
             // number of moves that are passes
-            var passCount = 2
+            var passCount = 0
 
             console.info('navigating to next move')
             return new Promise( (resolve,reject) => {
                 this.model.getData().then( (data) => {
+                    data.moveLog.forEach(function(element) {
+                        if(element.pass){ passCount++ }
+                    }, this);
+                    
                     if( data.curMoveNum === data.moveLog.length - passCount ){
                         reject(new Error('last-move'))
                     } else {
