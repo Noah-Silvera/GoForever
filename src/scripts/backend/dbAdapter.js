@@ -83,7 +83,7 @@ class DBAdapter {
             boardSize: Number,
             moveLog: [],
             whiteScore: Number,
-            blackScore: Number,
+            blackScore: Number
             }))
         )
 

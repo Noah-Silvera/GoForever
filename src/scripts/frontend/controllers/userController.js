@@ -49,9 +49,9 @@
                         console.debug(res)
                         window.location.href = 'http://localhost:3000/userLanding.html'
                     }).bind(this))
-                    .catch(function(err){
+                    .catch((function(err){
                         console.debug(err)
-                    }).bind(this)
+                    }).bind(this))
             if(valid){//logic should be reversed later
                 
             } else {
