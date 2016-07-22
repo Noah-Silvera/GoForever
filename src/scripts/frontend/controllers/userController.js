@@ -1,4 +1,4 @@
- define(['controllers/controller','views/UserView','models/UserModel','lib/request','RequestHandler'], function(Controller,UserView,UserModel,request,RequestHandler){
+ define(['controllers/controller','views/UserView','models/UserModel','lib/request','RequestHandler','lib/Statistics'], function(Controller,UserView,UserModel,request,RequestHandler,Stats){
 
     class UserController extends Controller{
         
@@ -68,6 +68,14 @@
             .catch(function(err){
                 console.log(err)
             })
+        }
+
+        landingStats(){
+            Stats.landingStats()
+        }
+
+        profileStats(){
+            Stats.profileStats()
         }
         
         forgotCredentials(){

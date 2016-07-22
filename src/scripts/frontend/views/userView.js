@@ -44,6 +44,7 @@ define(['./view','jquery','RequestHandler'],function(View,$,RequestHandler){
 
                         this.drawNavBar()
                         $('#landing-username').html(user.username)
+                        this.control.landingStats()
 
                         break;
 
@@ -55,6 +56,7 @@ define(['./view','jquery','RequestHandler'],function(View,$,RequestHandler){
 
                     case 'profilePage':
                         this.drawNavBar()
+                        this.control.profileStats()
 
                         break;
 
