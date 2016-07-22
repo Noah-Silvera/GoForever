@@ -84,7 +84,7 @@ define(['./view','jquery','models/gameModel','requestHandler'],function(View,$,G
 
 
 
-                            var url = window.location.href.replace("gameOptions", "game?")
+                            var url = window.location.href = 'http://localhost:30103/game?'
                             window.location.href = url.concat(`id=${id}`)
 
                         }).catch(function(err){

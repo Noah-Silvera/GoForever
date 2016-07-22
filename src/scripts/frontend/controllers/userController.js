@@ -74,7 +74,7 @@
 
         playGame(){
             // do auth thingys and database thingys here
-            window.location.href = 'http://localhost:30103/gameOptions'
+            .href = 'http://localhost:30103/gameOptions'
         }
 
         loadLandingPage(){
