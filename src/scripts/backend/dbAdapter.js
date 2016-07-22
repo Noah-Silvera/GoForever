@@ -174,7 +174,10 @@ class DBAdapter {
 
             collectionName = collectionName.trim()
 
-
+            if(searchCriteria._id){
+                searchCriteria._id = mongoose.mongo.ObjectId(searchCriteria._id);
+            }
+            
             var Model = mongoose.model(collectionName)
             Model.findByIdAndUpdate(searchCriteria, { $set: diffObject}, {new: true}, function(err, object) {
                 if (err){
