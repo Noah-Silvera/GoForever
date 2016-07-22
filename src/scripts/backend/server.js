@@ -356,12 +356,12 @@ function buildTreeHtml(){
             </style>
             <div id='wrapper'>
             <div>
-                <a href="roberts.seng.uvic.cauvic.ca:30103/">Login Page</a>
+                <a href="roberts.seng.uvic.ca:30103/">Login Page</a>
             </div>`
   
   staticFileArr.forEach(function(fileName){
     html +=   `<div>
-                  <a href="roberts.seng.uvic.cauvic.ca:30103/${fileName}">${fileName}</a>
+                  <a href="roberts.seng.uvic.ca:30103/${fileName}">${fileName}</a>
               </div>`
   })
 
