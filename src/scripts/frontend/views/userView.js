@@ -1,7 +1,7 @@
 //The view ALSO DEPENDS ON gameController.js
 // this cannot be modeled because of circular dependencies and requirejs
 // see gameController.js
-define(['./view','jquery'],function(View,$){
+define(['./view','jquery','RequestHandler'],function(View,$,RequestHandler){
 
     class UserView extends View {
 
@@ -11,6 +11,11 @@ define(['./view','jquery'],function(View,$){
                 // are looked for and event handlers attached
                 this.setUpCommonButtons()
 
+
+
+                RequestHandler.getActiveUser()
+                    .then((function(user){
+                        user = JSON.parse(user)
 
                 switch(this.viewState){
                     // get all
@@ -38,7 +43,7 @@ define(['./view','jquery'],function(View,$){
                     case 'landingPage':
 
                         this.drawNavBar()
-                        
+                        $('#landing-username').html(user.username)
 
                         break;
 
@@ -58,7 +63,7 @@ define(['./view','jquery'],function(View,$){
 
                         break;
                 }
-        
+                            }).bind(this))
 
 
         }
