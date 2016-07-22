@@ -30,7 +30,7 @@ define(['RequestHandler'], function(RequestHandler) {
 
         displayMatchHistory() {
             for (var i = this.matchId.length - 1; i >= 0; i--) {
-                RequestHandler.get('Match', matchId[i])
+                RequestHandler.get('Match', this.matchId[i])
                     .then(function (data) {
                         
 
@@ -64,8 +64,8 @@ define(['RequestHandler'], function(RequestHandler) {
             var i = -1;
 
             for (i = this.matchId.length - 1; i >= 0; i--) {
-                RequestHandler.get('Match', matchId[i])
-                    .then(function (data) {
+                RequestHandler.get('Match', this.matchId[i])
+                    .then((function (data) {
 
 
                         //wins
@@ -97,10 +97,10 @@ define(['RequestHandler'], function(RequestHandler) {
 
                         this.stats = {
                             //userName: matchArray[0].userId,
-                            totalGames: matchId.length,
+                            totalGames: this.matchId.length,
                             totalWins: wins,
-                            totalLoss: matchId.length - wins,
-                            winPercentage: wins / matchId.length * 100,
+                            totalLoss: this.matchId.length - wins,
+                            winPercentage: wins / this.matchId.length * 100,
                             winStreak: winStreak,
                             rank: rank,
                         }
@@ -111,7 +111,15 @@ define(['RequestHandler'], function(RequestHandler) {
                         $("#stats-win-percentage").text(this.stats.winPercentage + "%");
                         $("#stats-win-streak").text(this.stats.winStreak);
                         $("#stats-rank").text(this.stats.rank);
-                    })
+                    }).bind(this))
+            }
+
+            if(this.matchId.length === 0){
+                $("#stats-games-played").text(0);
+                $("#stats-games-won").text(0);
+                $("#stats-win-percentage").text("0%");
+                $("#stats-win-streak").text(0);
+                $("#stats-rank").text("Failure");
             } 
         }
 
