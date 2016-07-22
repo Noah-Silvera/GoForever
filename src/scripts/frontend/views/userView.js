@@ -15,7 +15,7 @@ define(['./view','jquery','RequestHandler'],function(View,$,RequestHandler){
 
                 RequestHandler.getActiveUser()
                     .then((function(user){
-                        user = JSON.parse(user)
+                        if (user) user = JSON.parse(user)
 
                 switch(this.viewState){
                     // get all

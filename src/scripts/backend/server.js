@@ -148,7 +148,7 @@ app.get('/getActive', function(req, res){
         response.password = null
         response = JSON.stringify(response)
     } else {
-        response = "No active user, must be logged in, or work as guest."
+        response = null
     }
     res.send(response)
 })
