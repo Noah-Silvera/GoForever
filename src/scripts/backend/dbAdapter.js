@@ -67,7 +67,7 @@ class DBAdapter {
         function requireAllSchemaFields(schema) {
             for (var i in schema.paths) {
                 var attribute = schema.paths[i]
-                if (attribute.isRequired == undefined) {
+                if (attribute.isRequired == undefined && attribute.instance != 'Array') {
                     attribute.required(true);
                 }
             }

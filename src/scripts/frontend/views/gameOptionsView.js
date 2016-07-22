@@ -1,4 +1,4 @@
-define(['./view','jquery','models/gameModel'],function(View,$,gameModel){
+define(['./view','jquery','models/gameModel','requestHandler'],function(View,$,GameModel,RequestHandler){
     class GameOptionsView extends View {
         
         constructor(){
@@ -37,7 +37,7 @@ define(['./view','jquery','models/gameModel'],function(View,$,gameModel){
                         var colour = $("#player-black").attr('data-selected')
                         var opponent;
                         
-                        if(hotSeat){
+                        if(hotSeat === 1 ){
                             opponent = "hot-seat"
                         }
                         else{
@@ -51,12 +51,14 @@ define(['./view','jquery','models/gameModel'],function(View,$,gameModel){
                             userColour = "white"
                         }
 
+                        console.error(' ---- NOT IMPLEMENETED ---- fetching user id from cookies')
+
                         var data = {
                             "time" : new Date(),
-                            "userId": null,
+                            "userId": 'guest',
                             "opponent":opponent,
                             "userHandicap": $("#game-handicap").val(),
-                            "boardSize" : $("#board-size").val().slice(0,1),
+                            "boardSize" : $("#board-size").val().split('x')[0],
                             // no moves yet
                             "moveLog": [],
                             "whiteScore": 0,
@@ -66,10 +68,10 @@ define(['./view','jquery','models/gameModel'],function(View,$,gameModel){
                             "userColour":userColour
                         }
 
-                        gameModel.setData(data).then(function(data){
+                        RequestHandler.create('Match', data).then(function(id){
 
                             var url = window.location.href.replace("gameOptions", "game?")
-                            window.location.href = url.concat(JSON.stringify(data._id))
+                            window.location.href = url.concat(`id=${id}`)
 
                         }).catch(function(err){
                             alert('could not create game')
