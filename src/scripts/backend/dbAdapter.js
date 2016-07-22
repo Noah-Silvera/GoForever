@@ -19,7 +19,7 @@ class DBAdapter {
 
         // name in mongoDB
         this.dbName = 'GoForever'
-        this.host = 'roberts.seng.uvic.ca'
+        this.host = 'localhost'
         this.port = '27017'
         this.url = `${this.host}:${this.port}/${this.dbName}`
 

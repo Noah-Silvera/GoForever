@@ -9,7 +9,7 @@ function getRandomMove(size, board, lastMove, cb){
     }
     
     var options = {
-        hostname: 'roberts.seng.uvic.ca',
+        hostname: 'localhost',
         path: '/ai/maxLibs',
         port: '30000',
         method: 'POST',
@@ -56,7 +56,7 @@ function getArmies(size, board, lastMove, cb){
         "last": lastMove  }
     
     var options = {
-        hostname: 'roberts.seng.uvic.ca',
+        hostname: 'localhost',
         path: '/util/findArmies',
         port: '30000',
         method: 'POST',
