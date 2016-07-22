@@ -7,11 +7,14 @@ define(['./view','jquery'],function(View,$){
 
         render(){
 
-            this.control.getData().then((function(data){
-
                 // buttons like 'play game' that are present on multiple pages
                 // are looked for and event handlers attached
                 this.setUpCommonButtons()
+
+
+                this.control.getData().then((function(data){
+
+
 
                 switch(this.viewState){
                     // get all
@@ -37,7 +40,7 @@ define(['./view','jquery'],function(View,$){
                         break;
 
                     case 'landingPage':
-                    
+
                         this.drawNavBar()
                         
 
@@ -59,11 +62,9 @@ define(['./view','jquery'],function(View,$){
 
                         break;
                 }
+        
+                }).bind(this))
 
-            }).bind(this)).catch(function(err){
-                alert('could not retrieve data to render')
-                console.error(err)
-            })
         }
         /**
          * Sets up event handlers for common purposes with the same purposes
@@ -149,7 +150,7 @@ define(['./view','jquery'],function(View,$){
     
     // this is part of a tricky workaround with circular dependencies
     // see the controllers return for details
-    var userView = new UserView(null, null,null)
+    var userView = new UserView(null,null,null)
     
     return userView
 })

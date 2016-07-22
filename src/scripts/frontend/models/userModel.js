@@ -1,4 +1,4 @@
-define(['models/model'],function(Model){
+define(['models/model','RequestHandler'],function(Model,RequestHandler){
 
     class UsersModel extends Model {
         constructor(){
@@ -7,7 +7,22 @@ define(['models/model'],function(Model){
             // dummy ID for now - will have to figure out how this is generated
             this.data._id = 121
         }
+
+        getData(){
+            return new Promise(function(resolve, reject){
+                RequestHandler.getActiveUser()
+                    .then(function(user){
+                        resolve(user)
+                    })
+                    .catch(function(err){
+                        reject(err)
+                    })
+            })
+            
+        }
     }
+
+
 
     var userModel = new UsersModel()
     

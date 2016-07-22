@@ -113,6 +113,10 @@ class DBAdapter {
 
             if( !this.db ) reject('not ready to connect to collections')
 
+            if(searchCriteria._id){
+                searchCriteria._id = mongoose.mongo.ObjectId(searchCriteria._id);
+            }
+
             collectionName = collectionName.trim()
 
             // retrieve the appropiate model
