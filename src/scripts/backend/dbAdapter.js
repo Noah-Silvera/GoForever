@@ -181,7 +181,7 @@ class DBAdapter {
             }
             
             var Model = mongoose.model(collectionName)
-            Model.findByIdAndUpdate(searchCriteria, { $set: diffObject}, {new: true}, function(err, object) {
+            Model.update(searchCriteria, { $set: diffObject}, {new: true}, function(err, object) {
                 if (err){
                     error('object was not update')
                     reject(err)

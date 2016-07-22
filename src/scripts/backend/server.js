@@ -357,7 +357,7 @@ function buildTreeHtml(){
             <div id='wrapper'>
             <div>
                 <a href="roberts.seng.uvic.ca:30103/">Login Page</a>
-            </div>`
+        </div>`
   
   staticFileArr.forEach(function(fileName){
     html +=   `<div>
