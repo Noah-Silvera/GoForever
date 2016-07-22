@@ -177,6 +177,21 @@ define(['lib/request'],function(request){
                 })
             }).bind(this))
         }
+        
+        updateHistory(userid, matchid){
+            return new Promise((function(resolve,reject){
+              // create a request to the appropiate model with an ID param
+                var options = {
+                     url : `/updateHistory/${userid}/${matchid}`,
+                     method : "PATCH"
+                }
+
+                request(options,function(err,res,body){
+                    if(err) reject(err)
+                    resolve()
+                })
+            }).bind(this))
+        }
 
         getRandomMove(state){
             return new Promise((function(resolve,reject){

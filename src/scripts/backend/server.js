@@ -315,6 +315,26 @@ app.get('/tree', function( req, res){
   res.send()
 });
 
+// routing for the tree  page 
+app.patch('/updateHistory/:userid/:matchid', function(req, res){
+    userid = req.params.userid 
+    matchid = req.params.matchid
+    dbAdapter.update('User', {_id : userid}, {$push : {matches : matchid}})
+      .then(function(result){
+        if(result === null){
+            res.status(404)
+            res.send(req.model + " not found.")
+        } else {
+            res.status(200)
+            res.send(result)
+        }
+      },function(err){
+        error(err)
+        res.status(400)
+        res.send(err)
+      })
+});
+
 
 
 /////////////////////////
