@@ -39,18 +39,8 @@ define(['requestHandler'],function(RequestHandler){
         }
 
         getData(){
-            return new Promise((function(resolve,reject){
-                // console.error('----- NOT IMPLEMENTENED ---- data retrieval')
-                console.info('echoing data')
-                resolve(this.data)
-/*
-                RequestHandler.getData(this.model, this.id).then((function(returnedData){
-                     this.data = returnedData
-                     resolve(returnedData)
-                }).bind(this))*/
-            }).bind(this))
-
-        }
+            console.error('----- NOT IMPLEMENTENED ---- data retrieval')
+         }
 
         getProp(prop){
             prop = prop.trim()

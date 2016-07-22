@@ -165,7 +165,7 @@ app.use(helmet.noCache())
 var staticFileArr = [
       'game',
       'gameOptions',
-      'hi'
+      'hello'
     ]
  
 var secureFileArr = [ 

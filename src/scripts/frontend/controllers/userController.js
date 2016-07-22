@@ -34,8 +34,6 @@
             }
         }
         
-        
-
         login(){
             var data = {};
             data.username = $("#login-username").val();
