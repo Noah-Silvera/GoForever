@@ -188,7 +188,7 @@ define(['lib/request'],function(request){
 
                 request(options,function(err,res,body){
                     if(err) reject(err)
-                    resolve()
+                    resolve(JSON.parse(body))
                 })
             }).bind(this))
         }
