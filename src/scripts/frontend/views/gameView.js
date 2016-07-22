@@ -73,11 +73,26 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                 }).bind(this))
             }).bind(this)()
 
+            
+            var curPlayerColour;
+
             this.control.getData().then((function(data){
                 
                 // clear the bottom panel of all state specific buttons
                 
+                if( data.moveLog.length === 0 ){
+                    // black takes the first move
+                    if( data.userColour === 'white'){
+                        curPlayerColour = 0
+                    } else curPlayerColour = 1
+                    
+                } else {
+                    // choose the opposite colour of the last move
+                    curPlayerColour = ( data.moveLog.slice(-1)[0].c % 2 ) + 1
+                }
+
                 $("#board-wrapper").addClass(data.style)
+                //$("#user-or-guest")
 
                 // beginning of the game
                 if( data.moveLog.length == 0){
@@ -105,15 +120,7 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                 throw err
             }).then((function(data){
 
-                var curPlayerColour;
 
-                if( data.moveLog.length === 0 ){
-                    // black takes the first move
-                    curPlayerColour = 1
-                } else {
-                    // choose the opposite colour of the last move
-                    curPlayerColour = ( data.moveLog.slice(-1)[0].c % 2 ) + 1
-                }
 
                 switch(this.viewState){
 
@@ -131,7 +138,7 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                             $(this.selectors.bottomPanel).empty().append(
                                 $('<div id="action-buttons" >').append(
                                     $('<button>')
-                                        .addClass('btn btn-default')
+                                        .addClass('btn btn-default btn-lg btn-block')
                                         .attr('id','pass-button')
                                         .text('Pass')
                                         .on('click',(function makeMove(){
@@ -373,6 +380,8 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                     .text(`Current Player: ${backgroundColourString}`)
                     .css('background-color',backgroundColourString)
                     .css('color',textColourString )
+                    .css('width', "50%")
+                    .css('height', "70px")
             )
 
         }

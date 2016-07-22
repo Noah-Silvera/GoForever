@@ -15,8 +15,7 @@ define(['requestHandler'],function(RequestHandler){
 
 
             return new Promise((function(resolve,reject){
-                console.error('----- NOT IMPLEMENTENED ---- data adding')
-                console.info('setting given data to model data')
+
 
                 
                 this.mergeDataIntoModel(data)

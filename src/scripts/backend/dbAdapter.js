@@ -84,6 +84,8 @@ class DBAdapter {
             moveLog: [],
             whiteScore: Number,
             blackScore: Number,
+            style: String,
+            userColour: String,
             }))
         )
 
