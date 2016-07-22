@@ -32,7 +32,23 @@ define(['RequestHandler'], function(RequestHandler) {
             for (var i = this.matchId.length - 1; i >= 0; i--) {
                 RequestHandler.get('Match', this.matchId[i])
                     .then(function (data) {
-                        
+
+                        var userColour, playerScore, opponentScore, result                            
+
+                        userColour = data.userColour
+                        if(userColour === "white"){
+                            playerScore = data.whiteScore
+                            opponentScore = data.blackScore
+                        } else {
+                            playerScore = data.blackScore
+                            opponentScore = data.whiteScore
+                        }
+
+                        if(playerScore > opponentScore) {
+                            result = "Win"
+                        } else {
+                            result = "Loss"
+                        }
 
                         var mh = document.getElementById("match-history-body");
                         var row = mh.insertRow();
@@ -41,11 +57,14 @@ define(['RequestHandler'], function(RequestHandler) {
                         var col2 = row.insertCell(2);
                         var col3 = row.insertCell(3);
                         var col4 = row.insertCell(4);
+                        var col5 = row.insertCell(5);
+
 
                         col0.innerHTML = data.time;
-                        col1.innerHTML = data.gameLength;
-                        col2.innerHTML = data.whiteScore;
-                        col3.innerHTML = data.result;
+                        col1.innerHTML = userColour
+                        col2.innerHTML = playerScore;
+                        col3.innerHTML = opponentScore;
+                        col4.innerHTML = result;
                     });
             }
         }
@@ -67,13 +86,23 @@ define(['RequestHandler'], function(RequestHandler) {
                     .then((function (data) {
 
 
-                        //wins
-                        if (data.result == "win") {
-                            wins++;
+                        var userColour, playerScore, opponentScore, result                            
+
+                        userColour = data.userColour
+                        if(userColour === "white"){
+                            playerScore = data.whiteScore
+                            opponentScore = data.blackScore
+                        } else {
+                            playerScore = data.blackScore
+                            opponentScore = data.whiteScore
+                        }
+
+                        if(playerScore > opponentScore) {
+                            wins++
                         }
 
                         //winStreak
-                        if (data.result == "win" && winStreakLock == 0) {
+                        if (playerScore > opponentScore && winStreakLock == 0) {
                             winStreak++;
                         } else {
                             winStreakLock = 1;
