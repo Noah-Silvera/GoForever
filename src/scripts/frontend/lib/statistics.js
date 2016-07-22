@@ -41,7 +41,6 @@ define(['RequestHandler'], function(RequestHandler) {
                         var col2 = row.insertCell(2);
                         var col3 = row.insertCell(3);
                         var col4 = row.insertCell(4);
-                        replayButton.clone().appendTo(col4);
 
                         col0.innerHTML = data.time;
                         col1.innerHTML = data.gameLength;
