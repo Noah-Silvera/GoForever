@@ -1,4 +1,4 @@
-define(['models/model','RequestHandler'],function(Model,RequestHandler){
+define(['models/model','requestHandler'],function(Model,RequestHandler){
 
     class UsersModel extends Model {
         constructor(){

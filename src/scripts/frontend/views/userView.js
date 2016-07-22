@@ -1,7 +1,7 @@
 //The view ALSO DEPENDS ON gameController.js
 // this cannot be modeled because of circular dependencies and requirejs
 // see gameController.js
-define(['./view','jquery','RequestHandler'],function(View,$,RequestHandler){
+define(['./view','jquery','requestHandler'],function(View,$,RequestHandler){
 
     class UserView extends View {
 

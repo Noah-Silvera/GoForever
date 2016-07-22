@@ -1,4 +1,4 @@
-define(['RequestHandler','jquery'], function(RequestHandler,$) {
+define(['requestHandler','jquery'], function(RequestHandler,$) {
 
     class Statistics {
 
