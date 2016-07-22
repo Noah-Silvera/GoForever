@@ -20,15 +20,16 @@
             if (data.username.length == 0) valid = false;
             
             if (data.password.length == 0) valid = false;
+                                   
+                    
+            if(valid){
                 RequestHandler.signup(data)
                     .then(function(res){
                         window.location.href = 'http://localhost:3000/userLanding.html'
                     })
                     .catch(function(err){
                         console.debug(err)
-                    })                      
-                    
-            if(valid){
+                    })   
                 
             } else {
                 
@@ -46,6 +47,8 @@
             if (data.username.length == 0) valid = false;
             
             if (data.password.length == 0) valid = false;
+                
+            if(valid){//logic should be reversed later
                 RequestHandler.login(data)
                     .then((function(res){
                         console.debug(res)
@@ -54,8 +57,6 @@
                     .catch((function(err){
                         console.debug(err)
                     }).bind(this))
-            if(valid){//logic should be reversed later
-                
             } else {
 
             }
