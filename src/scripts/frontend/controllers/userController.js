@@ -20,7 +20,7 @@
             if (data.password.length == 0) valid = false;
                 RequestHandler.signup(data)
                     .then(function(res){
-                        window.location.href = 'http://localhost:3000/userLanding'
+                        window.location.href = 'http://localhost:3000/userLanding.html'
                     })
                     .catch(function(err){
                         console.debug(err)
