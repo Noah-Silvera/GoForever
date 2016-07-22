@@ -222,21 +222,25 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         return this.checkCaptureSpecialCase(boardState,data.tempArmy)
 
                     }).bind(this)).then((function(data){
+                        console.info(data)
+                        // check if this move captured a piece...
+                        return this.checkCaptured(data.tempArmy, data.board, boardState.last )
+
+                    }).bind(this)).then((function(data){
+                        console.info(data)
+                        // check if this move captured a piece...
+                        return this.groupSuicideCheck(boardState,data.tempArmy)
+
+                    }).bind(this)).then((function(data){
                     // check if the move is valid and not a suicide
                         return this.checkSuicide(boardState,data.tempArmy)
+                        
 
                     }).bind(this)).then((function(data){
                         // check the moveLog to see if the move has previously been played
                         return this.checkKo(data.moveLog, boardState)
                     
-
-                    // update the data since the move was valid and successful
-                    }).bind(this)).then((function(data){
-                        console.info(data)
-                        // check if this move captured a piece...
-                        return this.checkCaptured(data.tempArmy, data.board, data.moveLog.slice(-1)[0] )
-
-                    
+                        // update the data since the move was valid and successful
 
                     }).bind(this)).then((function(data){
                     /////////////////////////////////////
@@ -362,18 +366,19 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 // at least one army exists
                 if( armies != undefined){
 
-                    for(var army = 0; army < armies.length; army++){
+                    for(var army = 0; army < armies.length - 1; army++){
             
                         //check if opposing piece surrounded your army
-                        if(armies[army].liberties.length == 1 &&
-                            lastMove.c !== armies[army].colour &&
-                            lastMove.x == armies[army].liberties[0][0] &&
-                            lastMove.y == armies[army].liberties[0][1]){
-                                
-                            armies[army].tokens.forEach(function(element) {
-                                board.board[element.position[0]][element.position[1]] = 0
-                                toastr.success('You captured an enemy piece!')
-                            }, this);
+                        if(armies[army].liberties.length == 1 ){
+                            if(lastMove.c !== armies[army].colour &&
+                                lastMove.x == armies[army].liberties[0][0] &&
+                                lastMove.y == armies[army].liberties[0][1]){
+                                    
+                                armies[army].tokens.forEach(function(element) {
+                                    board.board[element.position[0]][element.position[1]] = 0
+                                    toastr.success('You captured an enemy piece!')
+                                }, this);
+                            }
                         }
 
                     }
@@ -386,14 +391,9 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 }
 
         }
-
         
-        checkCaptureSpecialCase(boardState, armies){
-            // not suicide special case no army surrounded by enemy but also capturing enemy
-            if (typeof armies !== 'undefined') {
-                
-                //check trapped against side or corner
-                if(boardState.last.x == 1){
+        checkCaptureAgainstSide(boardState, armies){
+            if(boardState.last.x == 1){
                     if(boardState.board[0][boardState.last.y] !== 0 &&
                        boardState.board[0][boardState.last.y] !== boardState.last.c){
                            var removePiece = true
@@ -484,213 +484,218 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                        }
                 }
                 
-                
-                for(var army = 0; army < armies.length; army++){
-                    for(var token = 0; token < armies[army].tokens.length; token++){
-                        var tempT = armies[army].tokens[token]
-                        
-                        if(tempT.position[0] > 0){
-                            if(tempT.position[0] - 1 == boardState.last.x + 1 &&
-                                tempT.position[1] == boardState.last.y){
+        }
+        
+        checkCaptureWithMultipleArmies(boardState, armies){
+            for(var army = 0; army < armies.length; army++){
+                for(var token = 0; token < armies[army].tokens.length; token++){
+                    var tempT = armies[army].tokens[token]
+                    
+                    if(tempT.position[0] > 0){
+                        if(tempT.position[0] - 1 == boardState.last.x + 1 &&
+                            tempT.position[1] == boardState.last.y){
+                                
+                                var notLib = true
+                                
+                                
+                                for(var lib = 0; lib < tempT.liberties.length; lib++){
                                     
-                                    var notLib = true
-                                    
-                                    
-                                    for(var lib = 0; lib < tempT.liberties.length; lib++){
-                                        
-                                        if (tempT.liberties[lib][0] == tempT.position[0] - 1 &&
-                                            tempT.liberties[lib][1] == tempT.position[1]){
-                                                
-                                                notLib = false
-                                        } 
+                                    if (tempT.liberties[lib][0] == tempT.position[0] - 1 &&
+                                        tempT.liberties[lib][1] == tempT.position[1]){
+                                            
+                                            notLib = false
+                                    } 
+                                }
+                                
+                                if(notLib){
+                                    var x = tempT.position[0] - 1
+                                    var y = tempT.position[1]
+                                    var counter = 0
+                                    if( x < boardState.size - 1){
+                                        if(boardState.board[x + 1][y] == boardState.last.c){counter++}
+                                    }
+                                    else{
+                                        counter++
+                                    }
+                                    if( x > 0){
+                                        if(boardState.board[x - 1][y] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    if( y > 0){
+                                        if(boardState.board[x][y - 1] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    if( y < boardState.size - 1){
+                                        if(boardState.board[x][y + 1] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
                                     }
                                     
-                                    if(notLib){
-                                        var x = tempT.position[0] - 1
-                                        var y = tempT.position[1]
-                                        var counter = 0
-                                        if( x < boardState.size - 1){
-                                            if(boardState.board[x + 1][y] == boardState.last.c){counter++}
-                                        }
-                                        else{
-                                            counter++
-                                        }
-                                        if( x > 0){
-                                            if(boardState.board[x - 1][y] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        if( y > 0){
-                                            if(boardState.board[x][y - 1] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        if( y < boardState.size - 1){
-                                            if(boardState.board[x][y + 1] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        
-                                        if (counter == 3 && boardState.board[x][y] !== boardState.last.c){
-                                            boardState.board[x][y] = 0
-                                            toastr.success('You captured an enemy piece!')
-                                        }
+                                    if (counter == 3 && boardState.board[x][y] !== boardState.last.c){
+                                        boardState.board[x][y] = 0
+                                        toastr.success('You captured an enemy piece!')
                                     }
-                            }
+                                }
                         }
-                        
-                        if(tempT.position[1] > 0){
-                            if(tempT.position[1] - 1 == boardState.last.y + 1 && 
-                                tempT.position[0] == boardState.last.x){
-                                    
-                                    var notLib = true
-                                    
-                                    for(var lib = 0; lib < tempT.liberties.length; lib++){
-                                        
-                                        if (tempT.liberties[lib][1] == tempT.position[1] - 1 &&
-                                            tempT.liberties[lib][0] == tempT.position[0]){
-                                                
-                                                notLib = false
-                                        } 
-                                    }
-                                    
-                                    if(notLib){
-                                        
-                                        var x = tempT.position[0]
-                                        var y = tempT.position[1] - 1
-                                        var counter = 0
-                                        if( x < boardState.size - 1){
-                                            if(boardState.board[x + 1][y] == boardState.last.c){counter++}
-                                        }
-                                        else{
-                                            counter++
-                                        }
-                                        if( x > 0){
-                                            if(boardState.board[x - 1][y] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        if( y > 0){
-                                            if(boardState.board[x][y - 1] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        if( y < boardState.size - 1){
-                                            if(boardState.board[x][y + 1] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        
-                                        if (counter == 3 && boardState.board[x][y] !== boardState.last.c){
-                                            boardState.board[x][y] = 0
-                                            toastr.success('You captured an enemy piece!')
-                                        }
-                                    }
-                            }
-                        }
-                        
-                        if(tempT.position[0] < boardState.board.length - 1){
-                            if(tempT.position[0] + 1 == boardState.last.x - 1 &&
-                                tempT.position[1] == boardState.last.y){
-                                    
+                    }
+                    
+                    if(tempT.position[1] > 0){
+                        if(tempT.position[1] - 1 == boardState.last.y + 1 && 
+                            tempT.position[0] == boardState.last.x){
+                                
                                 var notLib = true
                                 
                                 for(var lib = 0; lib < tempT.liberties.length; lib++){
-                                        
-                                        if (tempT.liberties[lib][0] == tempT.position[0] + 1 &&
-                                            tempT.liberties[lib][1] == tempT.position[1]){
-                                                
-                                                notLib = false
-                                        } 
-                                    }
                                     
-                                    if(notLib){
-                                        var x = tempT.position[0] + 1
-                                        var y = tempT.position[1]
-                                        var counter = 0
-                                        if( x < boardState.size - 1){
-                                            if(boardState.board[x + 1][y] == boardState.last.c){counter++}
-                                        }
-                                        else{
-                                            counter++
-                                        }
-                                        if( x > 0){
-                                            if(boardState.board[x - 1][y] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        if( y > 0){
-                                            if(boardState.board[x][y - 1] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        if( y < boardState.size - 1){
-                                            if(boardState.board[x][y + 1] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        
-                                        if (counter == 3 && boardState.board[x][y] !== boardState.last.c){
-                                            boardState.board[x][y] = 0
-                                            toastr.success('You captured an enemy piece!')
-                                        }
-                                    }
-                            }
-                        }
-                        
-                        if(tempT.position[1] < boardState.board.length - 1){
-                            if(tempT.position[1] + 1 == boardState.last.y - 1 && 
-                                tempT.position[0] == boardState.last.x){
-                                    
-                                var notLib = true
+                                    if (tempT.liberties[lib][1] == tempT.position[1] - 1 &&
+                                        tempT.liberties[lib][0] == tempT.position[0]){
+                                            
+                                            notLib = false
+                                    } 
+                                }
                                 
-                                for(var lib = 0; lib < tempT.liberties.length; lib++){
-                                        
-                                        if (tempT.liberties[lib][0] == tempT.position[0] &&
-                                            tempT.liberties[lib][1] == tempT.position[1] + 1){
-                                                
-                                                notLib = false
-                                        } 
+                                if(notLib){
+                                    
+                                    var x = tempT.position[0]
+                                    var y = tempT.position[1] - 1
+                                    var counter = 0
+                                    if( x < boardState.size - 1){
+                                        if(boardState.board[x + 1][y] == boardState.last.c){counter++}
+                                    }
+                                    else{
+                                        counter++
+                                    }
+                                    if( x > 0){
+                                        if(boardState.board[x - 1][y] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    if( y > 0){
+                                        if(boardState.board[x][y - 1] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    if( y < boardState.size - 1){
+                                        if(boardState.board[x][y + 1] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
                                     }
                                     
-                                    if(notLib){
-                                        var x = tempT.position[0]
-                                        var y = tempT.position[1] + 1
-                                        var counter = 0
-                                        if( x < boardState.size - 1){
-                                            if(boardState.board[x + 1][y] == boardState.last.c){counter++}
-                                        }
-                                        else{
-                                            counter++
-                                        }
-                                        if( x > 0){
-                                            if(boardState.board[x - 1][y] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        if( y > 0){
-                                            if(boardState.board[x][y - 1] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        if( y < boardState.size - 1){
-                                            if(boardState.board[x][y + 1] == boardState.last.c){counter++}
-                                        }else{
-                                            counter++
-                                        }
-                                        
-                                        if (counter == 3 && boardState.board[x][y] !== boardState.last.c){
-                                            boardState.board[x][y] = 0
-                                            toastr.success('You captured an enemy piece!')
-                                        }
+                                    if (counter == 3 && boardState.board[x][y] !== boardState.last.c){
+                                        boardState.board[x][y] = 0
+                                        toastr.success('You captured an enemy piece!')
                                     }
-                            }
+                                }
+                        }
+                    }
+                    
+                    if(tempT.position[0] < boardState.board.length - 1){
+                        if(tempT.position[0] + 1 == boardState.last.x - 1 &&
+                            tempT.position[1] == boardState.last.y){
+                                
+                            var notLib = true
+                            
+                            for(var lib = 0; lib < tempT.liberties.length; lib++){
+                                    
+                                    if (tempT.liberties[lib][0] == tempT.position[0] + 1 &&
+                                        tempT.liberties[lib][1] == tempT.position[1]){
+                                            
+                                            notLib = false
+                                    } 
+                                }
+                                
+                                if(notLib){
+                                    var x = tempT.position[0] + 1
+                                    var y = tempT.position[1]
+                                    var counter = 0
+                                    if( x < boardState.size - 1){
+                                        if(boardState.board[x + 1][y] == boardState.last.c){counter++}
+                                    }
+                                    else{
+                                        counter++
+                                    }
+                                    if( x > 0){
+                                        if(boardState.board[x - 1][y] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    if( y > 0){
+                                        if(boardState.board[x][y - 1] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    if( y < boardState.size - 1){
+                                        if(boardState.board[x][y + 1] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    
+                                    if (counter == 3 && boardState.board[x][y] !== boardState.last.c){
+                                        boardState.board[x][y] = 0
+                                        toastr.success('You captured an enemy piece!')
+                                    }
+                                }
+                        }
+                    }
+                    
+                    if(tempT.position[1] < boardState.board.length - 1){
+                        if(tempT.position[1] + 1 == boardState.last.y - 1 && 
+                            tempT.position[0] == boardState.last.x){
+                                
+                            var notLib = true
+                            
+                            for(var lib = 0; lib < tempT.liberties.length; lib++){
+                                    
+                                    if (tempT.liberties[lib][0] == tempT.position[0] &&
+                                        tempT.liberties[lib][1] == tempT.position[1] + 1){
+                                            
+                                            notLib = false
+                                    } 
+                                }
+                                
+                                if(notLib){
+                                    var x = tempT.position[0]
+                                    var y = tempT.position[1] + 1
+                                    var counter = 0
+                                    if( x < boardState.size - 1){
+                                        if(boardState.board[x + 1][y] == boardState.last.c){counter++}
+                                    }
+                                    else{
+                                        counter++
+                                    }
+                                    if( x > 0){
+                                        if(boardState.board[x - 1][y] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    if( y > 0){
+                                        if(boardState.board[x][y - 1] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    if( y < boardState.size - 1){
+                                        if(boardState.board[x][y + 1] == boardState.last.c){counter++}
+                                    }else{
+                                        counter++
+                                    }
+                                    
+                                    if (counter == 3 && boardState.board[x][y] !== boardState.last.c){
+                                        boardState.board[x][y] = 0
+                                        toastr.success('You captured an enemy piece!')
+                                    }
+                                }
                         }
                     }
                 }
-                
-                // some armies previously exist
+            }
+        }
+        
+        groupSuicideCheck(boardState, armies){
+            return new Promise( (resolve,reject) => {
                 if (typeof armies !== 'undefined') {
+                    
                     var armiesWithSameLib = []
                     
                     // new token has no liberties check
@@ -738,13 +743,33 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         if(removeFromBoard){
                             armiesWithSameLib.forEach(function(element) {
                             element.tokens.forEach(function(token) {
-                                boardState.board[token.position[0]][token.position[1]] = 0
+                                toastr.error("Suicide prevented, please try again")
+                                reject(new Error("group tried to suicide"))
                             }, this);
                         }, this);
                         }
                         
                     }
                 }
+            
+                this.model.getData().then(function(data){
+                    resolve(data)
+                })
+            })
+        }
+
+        
+        checkCaptureSpecialCase(boardState, armies){
+            // not suicide special case no army surrounded by enemy but also capturing enemy
+            if (typeof armies !== 'undefined') {
+                
+                //check trapped against side or corner
+                this.checkCaptureAgainstSide(boardState, armies)
+                
+                
+                // multiple army Capture
+                this.checkCaptureWithMultipleArmies(boardState, armies)
+               
 
                 return this.model.setProp('board',boardState)
             
@@ -753,6 +778,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 return this.model.getData()
             }
         }
+        
 
         checkSuicide(boardState,armies){
             return new Promise((function(resolve,reject){
@@ -799,16 +825,17 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
         checkKo(moveLog,boardState){
             return new Promise( (resolve,reject) => {
-            if(!boardState.pass){
-                for(var i = 0; i < moveLog.length; i++){
-                    if(moveLog[i].c == boardState.last.c && moveLog[i].x == boardState.last.x && moveLog[i].y == boardState.last.y){
-                        var err = new Error("ko")
-                        err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
-                        err.board = boardState.board
-                        reject(err)
+                if(!boardState.pass){
+                    if (moveLog.length >0){
+                        var i = moveLog.length - 1
+                        if(moveLog[i].c == boardState.last.c && moveLog[i].x == boardState.last.x && moveLog[i].y == boardState.last.y){
+                            var err = new Error("ko")
+                            err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
+                            err.board = boardState.board
+                            reject(err)
+                        }
                     }
                 }
-            }
                 this.model.getData().then(function(data){
                     resolve(data)
                 })
