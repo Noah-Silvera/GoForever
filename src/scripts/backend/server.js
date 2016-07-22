@@ -207,7 +207,7 @@ var secureFileArr = [
       app.get(`/${fileName}`,function(req,res){
         if(req.isAuthenticated()){
             if(fileName === "index"){
-                res.redirect('/userLanding')
+                res.redirect('/userLanding.html')
                 res.send()
             } else {
                 res.writeHead(200, {'Content-Type': 'text/html'});

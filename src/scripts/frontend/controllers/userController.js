@@ -45,14 +45,13 @@
             
             if (data.password.length == 0) valid = false;
                 RequestHandler.login(data)
-                    .then(function(res){
+                    .then((function(res){
                         console.debug(res)
-                        window.location.href = 'http://localhost:3000/userLanding'
-                                              
-                    })
+                        window.location.href = 'http://localhost:3000/userLanding.html'
+                    }).bind(this))
                     .catch(function(err){
                         console.debug(err)
-                    })
+                    }).bind(this)
             if(valid){//logic should be reversed later
                 
             } else {
@@ -87,17 +86,17 @@
         }
 
         loadLandingPage(){
-            window.location.href = 'http://localhost:3000/userLanding'
+            window.location.href = 'http://localhost:3000/userLanding.html'
         }
 
         loadProfilePage(){
-            window.location.href = 'http://localhost:3000/userProfile'
+            window.location.href = 'http://localhost:3000/userProfile.html'
         }
 
         loadSettingsPage(){
             // do user specific things here
 
-            window.location.href = 'http://localhost:3000/userSettings'
+            window.location.href = 'http://localhost:3000/userSettings.html'
         }
 
         

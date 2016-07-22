@@ -12,10 +12,6 @@ define(['./view','jquery'],function(View,$){
                 this.setUpCommonButtons()
 
 
-                this.control.getData().then((function(data){
-
-
-
                 switch(this.viewState){
                     // get all
                     case 'indexPage':
@@ -63,7 +59,7 @@ define(['./view','jquery'],function(View,$){
                         break;
                 }
         
-                }).bind(this))
+
 
         }
         /**
