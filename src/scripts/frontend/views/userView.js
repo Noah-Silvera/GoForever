@@ -29,12 +29,24 @@ define(['./view','jquery','RequestHandler'],function(View,$,RequestHandler){
                             this.control.signup()
                         }).bind(this))
                         
-                        $("#forgot-credentials").on('click',(function(){
-                            this.control.forgotCredentials()
+                        /*$("#forgot-credentials").on('click',(function(){
+                            $('#recovery-modal').modal('show')
+                        }).bind(this))
+                        
+                        $('.modal')
+                        .on('show.bs.modal',(function(e){
+                            $(e.currentTarget).css('z-index',1000)
+                        }).bind(this))
+                        .on('hide.bs.modal', (function(e){
+                            $(e.currentTarget).css('z-index',-1000)
                         }).bind(this))
 
-                        // event handlers intialized here
-                        // state specific DOM manips dealt with here
+
+                    ;(function endGameModalSetup(){
+                        $('.nav#submit-recovery').on('click',(function(){
+                            this.control.forgotCredentials()
+                        }).bind(this))
+                    }).bind(this)()*/
 
 
 
