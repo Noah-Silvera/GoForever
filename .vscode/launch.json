@@ -26,7 +26,7 @@
             "type": "node",
             "request": "attach",
             "port": 5858,
-            "address": "localhost",
+            "address": "roberts.seng.uvic.ca",
             "restart": false,
             "sourceMaps": false,
             "outDir": null,

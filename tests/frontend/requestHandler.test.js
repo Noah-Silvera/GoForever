@@ -30,7 +30,7 @@ describe('Test the clients ability to send server requests related to changing d
                     //check that the request was called with the correct url
                     var url = res['args'][0][0]['url']
                     should.exist(url)
-                    url.should.eql('localhost:30103/api/user?0')
+                    url.should.eql('roberts.seng.uvic.ca:30103/api/user?0')
 
                     done()
                 })
@@ -70,7 +70,7 @@ describe('Test the clients ability to send server requests related to changing d
                     //check that the request was called with the correct url
                     var url = res['args'][0][0]['url']
                     should.exist(url)
-                    url.should.eql('localhost:30103/api/user?1')
+                    url.should.eql('roberts.seng.uvic.ca:30103/api/user?1')
 
                     done()
 
