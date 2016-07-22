@@ -19,17 +19,19 @@ define(['requestHandler'],function(RequestHandler){
                 console.info('setting given data to model data')
 
                 
-                this.data = data
+                this.mergeDataIntoModel(data)
 
                 // send it to the DB and validate it first
                 // delete all the blacklisted properties
-                var dataToSend = Object.create(data)
+                var dataToSend = JSON.parse(JSON.stringify(this.data))
 
-                this.blackList.forEach((function(prop){
+                for(var i =0; i < this.blackList.length; i++){
+                    var prop = this.blackList[i]
+
                     if( dataToSend[prop] !== undefined){
                         delete dataToSend[prop]
                     }
-                }).bind(dataToSend))
+                }
 
                 RequestHandler.edit(this.modelName,this.data._id, dataToSend).then((function(){
                     // the game data is valid
@@ -46,8 +48,16 @@ define(['requestHandler'],function(RequestHandler){
                 console.info('echoing data')
 
                 RequestHandler.get(this.modelName, this.data._id).then((function(returnedData){
-                     this.data = returnedData
-                     resolve(returnedData)
+                    // merge the returned data with the model
+
+                    this.mergeDataIntoModel(returnedData)
+
+                    if(this.data.moveLog == []){
+                        debugger;
+                    }
+
+
+                     resolve(this.data)
                 }).bind(this))
 
             }).bind(this))
@@ -77,13 +87,24 @@ define(['requestHandler'],function(RequestHandler){
 
             for(var i =0; i < this.blackList.length; i++){
                 // don't need to bother updating if this is true, just straight up return the data
-                if( prop = this.blackList[i] ){
+                if( prop === this.blackList[i] ){
                     console.info('returning data...')
                     return Promise.resolve(this.data)
                 }
             }
             return this.setData(this.data)
         }
+
+        mergeDataIntoModel(returnedData){
+            for(var prop in returnedData ){
+                if(returnedData.hasOwnProperty(prop)){
+                    if( returnedData[prop] !== undefined ){
+                        this.data[prop] = returnedData[prop]
+                    }
+                }
+            }
+        }
+
 
 
         ////////////////////////////////////////////////

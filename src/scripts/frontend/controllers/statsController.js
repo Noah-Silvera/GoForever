@@ -65,8 +65,7 @@ define(['lib/request', 'requestHandler'], function (request, requestHandler) {
     function displayMatchHistory() {
         for (var i = matchId.length - 1; i >= 0; i--) {
             requestHandler.get('Match', matchId[i])
-                .then(function (res) {
-                    var data = JSON.parse(res);
+                .then(function (data) {
                     
                     //Does not work
                     var replayButton = $('<input/>').attr({
@@ -127,8 +126,8 @@ define(['lib/request', 'requestHandler'], function (request, requestHandler) {
 
         for (i = matchId.length - 1; i >= 0; i--) {
             requestHandler.get('Match', matchId[i])
-                .then(function (res) {
-                    var data = JSON.parse(res);
+                .then(function (data) {
+
 
                     //wins
                     if (data.result == "win") {

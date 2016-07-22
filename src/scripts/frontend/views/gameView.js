@@ -23,6 +23,10 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
         }
         
         render(){
+
+            var gameId = window.location.href.split('?')[1].split('=')[1]
+            this.control.linkModel(gameId)
+
             
             // set up common modals
             $('.modal')
@@ -159,6 +163,10 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                                     .on('click',(function nextMove(e){
                                         this.control.replayNextMove().then( (result) => {
                                             console.info('move advanced')
+                                        }).catch( (err) => {
+                                            if( err.message === "last-move" ){
+                                                toastr.error('no more moves in the game')
+                                            }
                                         })
                                         e.stopPropagation()
                                     }).bind(this))

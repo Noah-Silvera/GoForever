@@ -977,8 +977,10 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                     if( data.curMoveNum === 0 ){
                         reject(new Error('first-move'))
                     } else {
+
+
                         // retract the current move and subtract the number
-                        var moveToPlay = data.moveLog[data.curMoveNum]
+                        var moveToPlay = data.moveLog[data.curMoveNum-1]
 
                         data.board.board[ moveToPlay.x ][ moveToPlay.y ] = 0
 
@@ -1033,14 +1035,17 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                 })
             })
 
-        }
+        }  
+
         
             
         mainMenu(){
             window.location.href = 'http://localhost:3000/userLanding'
         }
 
-    }
+    
+
+}
 
 
     // this is how the circular dependency between controllers and views are dealt with

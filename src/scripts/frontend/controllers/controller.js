@@ -39,5 +39,10 @@ define(function(){
             // returns a promise from the model with the corresponding data
             return this.model.getData();
         }
+
+        // link the model
+        linkModel(id){
+            this.model.data._id = id
+        }
     }
 })
