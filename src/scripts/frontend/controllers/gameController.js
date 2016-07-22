@@ -1197,7 +1197,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         
             
         mainMenu(){
-            window.location.href = 'seng.roberts.uvic.ca:30103/userLanding.html'
+            window.location.href = 'http://seng.roberts.uvic.ca:30103/userLanding.html'
         }
 
     
