@@ -29,6 +29,7 @@ define(['lib/request'],function(request){
                 }
 
                 request.get(options,function(err,res,body){
+                    body = JSON.parse(body)
                     console.debug(res)
                     if(err) reject(err)
 
