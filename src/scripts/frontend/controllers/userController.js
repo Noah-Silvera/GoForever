@@ -11,7 +11,9 @@
             data.password_confirm = $("#register-password-confirm").val();
 
             var valid = true;
-            if (data.password !== data.password_confirm) valid = false;
+            if (data.password !== data.password_confirm) {
+                
+            }
             
             if (data.email !== data.email_confirm) valid = false;
             

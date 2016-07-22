@@ -319,7 +319,8 @@ app.get('/tree', function( req, res){
 app.patch('/updateHistory/:userid/:matchid', function(req, res){
     userid = req.params.userid 
     matchid = req.params.matchid
-    dbAdapter.update('User', {_id : userid}, {$push : {matches : matchid}})
+    console.log(userid + " " + matchid)
+    dbAdapter.push(userid, matchid)
       .then(function(result){
         if(result === null){
             res.status(404)
@@ -334,55 +335,6 @@ app.patch('/updateHistory/:userid/:matchid', function(req, res){
         res.send(err)
       })
 });
-
-
-
-/////////////////////////
-
-// Statistics and Rankings
-
-/////////////////////////
-
-app.get("/getStats", function (req, res) {
-    console.log("GET Request to: /statistics");
-    db.statistics((req.body.userName), function (err, data) {
-        if (err) {
-            res.status(500).send();
-        } else {
-            console.log(data);
-            res.status(200).json(data);
-        }
-    });
-});
-
-app.post("/statistics", function (req, res) {
-    console.log("POST Request to: /statistics");
-
-    db.addStats(req.body, function (err) {
-        if (err) {
-            res.status(500).send();
-        } else {
-            res.status(200).send();
-        }
-    });
-});
-
-
-app.post("/statisticsRemove", function (req, res) {
-    console.log("POST Request to: /statisticsRemove");
-
-    db.removeStats((req.body.userName), function (err) {
-        if (err) {
-            res.status(500).send();
-        } else {
-            res.status(200).send();
-        }
-    });
-});
-
-
-
-
 
 
 
