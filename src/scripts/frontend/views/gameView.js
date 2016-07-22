@@ -50,8 +50,7 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
         
         render(){
 
-            var gameId = window.location.href.split('?')[1].split('=')[1]
-            this.control.linkModel(gameId)
+
 
             
             // set up common modals
@@ -153,6 +152,7 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                                 )
                             )
                         }).bind(this)()
+
 
                       
 
@@ -300,9 +300,7 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                                         this.control.makeMove(boardState).then((function(result){
                                             console.info('move successfully made')
                                             
-                                            this.spinner.spin(document.getElementById(this.selectors.spinner))
-                                            // stop the click propogation during a move
-                                            this.stopClickPropagation(this.selectors.board)
+                                            this.startSpinner()
 
                                             
                                             return this.control.checkIfAi()
@@ -332,13 +330,11 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                                             console.error(err)
                                             return Promise.reject(err)
                                         }).bind(this)).then((function(result){
-                                            this.spinner.stop()
-                                            this.startClickPropagation(this.selectors.board)
+                                            this.stopSpinner()
 
                                             console.info('ai move made if applicable')
                                         }).bind(this),(function(err){
-                                            this.spinner.stop()
-                                            this.startClickPropagation(this.selectors.board)
+                                            this.stopSpinner()
                                             console.error('ai move failed')
                                             console.error(err)
                                         }).bind(this))
@@ -409,6 +405,17 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
         startClickPropagation(elemSelector){
             console.info(`resumed clicks on ${elemSelector}`)
             $('body').off('click',elemSelector)
+        }
+
+        startSpinner(){
+            this.spinner.spin(document.getElementById(this.selectors.spinner))
+            // stop the click propogation during a move
+            this.stopClickPropagation(this.selectors.board)
+        }
+
+        stopSpinner(){
+            this.spinner.stop()
+            this.startClickPropagation(this.selectors.board)
         }
 
         
