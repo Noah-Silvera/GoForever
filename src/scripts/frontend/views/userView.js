@@ -77,7 +77,10 @@ define(['./view','jquery','RequestHandler'],function(View,$,RequestHandler){
             $('.nav.play-game').on('click',(function(){
                 console.info('loading game')
                 this.control.playGame()
-            }).bind(this))
+            }).bind(this))  
+
+            $('.replay-button')
+            
         }
         /**
          * Will attach the nav bar to the elemnent with the 'nav-bar-wrapper' id in the dom

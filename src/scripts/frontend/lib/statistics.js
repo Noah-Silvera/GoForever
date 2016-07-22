@@ -1,4 +1,4 @@
-define(['RequestHandler'], function(RequestHandler) {
+define(['RequestHandler','jquery'], function(RequestHandler,$) {
 
     class Statistics {
 
@@ -65,6 +65,15 @@ define(['RequestHandler'], function(RequestHandler) {
                         col2.innerHTML = playerScore;
                         col3.innerHTML = opponentScore;
                         col4.innerHTML = result;
+                        $(col5).append(
+                            $('<button type="button" class="btn btn-primary nav replay-button" id="register">Replay</button>')
+                                .attr('data-match-id',data._id)
+                                .on('click',function(e){
+                                    var url = window.location.href = 'http://localhost:3000/game'
+                                    window.location.href = url.concat(`?id=${$(e.currentTarget).attr('data-match-id')}`)
+                                }.bind(this))
+                        )
+
                     });
             }
         }

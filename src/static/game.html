@@ -86,10 +86,16 @@
 
             // initial game logic - is this a replay, or active game
             GameController.getData().then( (data) => {
-                // the game is over
+                // always need to make the board
+                return GameController.createBoard(data.boardSize)
+            }).then( (data) =>{
+
                 var lastMove = data.moveLog.slice(-1)[0]
                 if( lastMove !== undefined && lastMove.pass === true ){
-                    GameController.selectViewState('replay')
+                    // replay the game
+                    GameController.model.setProp('curMoveNum',0).then( (data) => {
+                        GameController.selectViewState('replay')
+                    })
                 } else {
                     // set up the already played moves before loading the active game
                     if( data.moveLog.length !== 0){
@@ -99,15 +105,13 @@
                         // make a copy of the movelog
                         var moves = JSON.parse(JSON.stringify(data.moveLog))
                         
-                        // clear all the old moves to avoid errors
                         GameController.model.setProp('moveLog',[]).then( (data) =>{
                             // clear the board to avoid errors
-                            return GameController.createBoard(data.boardSize)
-                        }).then( (data) =>{
 
                             // reset the handicaps
                             return GameController.setHandicapsAndScores(data.board, data.userHandicap, data.moveLog)
                         }).then( (dataArr) => {
+                        // clear all the old moves to avoid errors
                             
                         // start a recusive chain of make move calls
                             makePrevMoves(moves)
