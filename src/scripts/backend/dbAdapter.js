@@ -81,7 +81,7 @@ class DBAdapter {
             opponent: String,
             userHandicap: String,
             boardSize: Number,
-            moveLog: [],
+            moveLog: Array,
             whiteScore: Number,
             blackScore: Number,
             }))

@@ -10,7 +10,7 @@ define(['./model'], function(Model){
             this.data = {
                 id: 123,
                 time: new Date(),
-                userId: 121,
+                userId: 'guest',
                 opponent: 'ai',
                 userHandicap: "black has first move",
                 boardSize: 9,

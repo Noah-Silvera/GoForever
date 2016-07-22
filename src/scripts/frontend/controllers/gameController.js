@@ -4,7 +4,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
 
     class GameController extends Controller{
         
-        
+              
         setHandicapsAndScores(board, handicap, moveLog){
             if( moveLog.length === 0){
                 var whiteOffset =  0
@@ -709,7 +709,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         var err = new Error("ko")
                         err.moveLoc = `x: ${boardState.last.x}, y: ${boardState.last.y}`
                         err.board = boardState.board
-                        reject(err)
+                        return Promise.reject(err)
                     }
                 }
             }

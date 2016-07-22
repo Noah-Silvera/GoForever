@@ -3,7 +3,7 @@ define(['requestHandler'],function(RequestHandler){
     return class Model{
         constructor(){
             this.data = {};
-            this.modelName = null;
+            this.modelNameName = null;
             this.blackList = []
         }
 
@@ -17,23 +17,25 @@ define(['requestHandler'],function(RequestHandler){
             return new Promise((function(resolve,reject){
                 console.error('----- NOT IMPLEMENTENED ---- data adding')
                 console.info('setting given data to model data')
+
+                
                 this.data = data
-                resolve(this.data) // this line is temporary
 
                 // send it to the DB and validate it first
                 // delete all the blacklisted properties
-                // var dataToSend = Object.create(data)
+                var dataToSend = Object.create(data)
 
-                // this.blackList.forEach((function(prop){
-                //     if( dataToSend[prop] !== undefined){
-                //         delete dataToSend[prop]
-                //     }
-                // }).bind(dataToSend))
+                this.blackList.forEach((function(prop){
+                    if( dataToSend[prop] !== undefined){
+                        delete dataToSend[prop]
+                    }
+                }).bind(dataToSend))
 
-                // RequestHandler.sendData(this.model,this.id, dataToSend).then((function(){
-                //     // the game data is valid
-                //     resolve(this.data)
-                // }).bind(this))
+                RequestHandler.edit(this.modelName,this.data._id, dataToSend).then((function(){
+                    // the game data is valid
+                    resolve(this.data)
+                }).bind(this))
+
             }).bind(this))
             // rejection occurs if inner promise fails 
         }
@@ -42,12 +44,12 @@ define(['requestHandler'],function(RequestHandler){
             return new Promise((function(resolve,reject){
                 // console.error('----- NOT IMPLEMENTENED ---- data retrieval')
                 console.info('echoing data')
-                resolve(this.data)
-/*
-                RequestHandler.getData(this.model, this.id).then((function(returnedData){
+
+                RequestHandler.get(this.modelName, this.data._id).then((function(returnedData){
                      this.data = returnedData
                      resolve(returnedData)
-                }).bind(this))*/
+                }).bind(this))
+
             }).bind(this))
 
         }

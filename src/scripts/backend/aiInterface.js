@@ -66,8 +66,8 @@ function getArmies(size, board, lastMove, cb){
         } 
     };
 
-    info('armies post data')
-    info(postData)
+    // info('armies post data')
+    // info(postData)
     
     var result = "";
     
