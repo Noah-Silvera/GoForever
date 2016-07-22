@@ -73,10 +73,24 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                 }).bind(this))
             }).bind(this)()
 
+            
+            var curPlayerColour;
+
             this.control.getData().then((function(data){
                 
                 // clear the bottom panel of all state specific buttons
                 
+                if( data.moveLog.length === 0 ){
+                    // black takes the first move
+                    if( data.userColour === 'white'){
+                        curPlayerColour = 0
+                    } else curPlayerColour = 1
+                    
+                } else {
+                    // choose the opposite colour of the last move
+                    curPlayerColour = ( data.moveLog.slice(-1)[0].c % 2 ) + 1
+                }
+
                 $("#board-wrapper").addClass(data.style)
                 //$("#user-or-guest")
 
@@ -106,15 +120,7 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                 throw err
             }).then((function(data){
 
-                var curPlayerColour;
 
-                if( data.moveLog.length === 0 ){
-                    // black takes the first move
-                    curPlayerColour = 1
-                } else {
-                    // choose the opposite colour of the last move
-                    curPlayerColour = ( data.moveLog.slice(-1)[0].c % 2 ) + 1
-                }
 
                 switch(this.viewState){
 

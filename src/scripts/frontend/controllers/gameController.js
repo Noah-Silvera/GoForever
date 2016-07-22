@@ -186,9 +186,21 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                         if(  data.moveLog.slice(-1)[0] !== undefined && 
                             data.moveLog.slice(-2)[0].pass === true  &&
                             data.moveLog.slice(-1)[0].pass === true  ){
+
+                            var winResult = data.whiteScore - data.blackScore
+
+                            if( data.userColour === 'black' ){
+                                winResult *= -1
+                            }
+
+                            if( winResult > 0 ){
+                                winResult = true
+                            } else {
+                                winResult = false
+                            }
                             
-                            console.error('---- NOT IMPLEMENTED ---- calculating winner')
-                            this.view.showEndGameModal(true)
+
+                            this.view.showEndGameModal(winResult)
 
                             // set the initial move counter to 0
                             this.model.setProp('curMoveNum',0).then( (data) => {

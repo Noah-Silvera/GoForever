@@ -33,8 +33,8 @@ define(['./view','jquery','models/gameModel','requestHandler'],function(View,$,G
                     $('#start-btn').on('click',(function(){
                         console.info('starting game....')
                         
-                        var hotSeat = $("#play-hot-seat").attr('data-selected')
-                        var colour = $("#player-black").attr('data-selected')
+                        var hotSeat =   parseInt( $("#play-hot-seat").attr('data-selected') )
+                        var colour =    parseInt( $("#player-black").attr('data-selected') )
                         var opponent;
                         
                         if(hotSeat === 1 ){
@@ -44,7 +44,7 @@ define(['./view','jquery','models/gameModel','requestHandler'],function(View,$,G
                             opponent = "ai"
                         }
                         var userColour;
-                        if(colour){
+                        if(colour === 1){
                             userColour = "black"
                         }
                         else{
