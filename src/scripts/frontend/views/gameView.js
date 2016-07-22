@@ -92,6 +92,7 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                 }
 
                 $("#board-wrapper").addClass(data.style)
+                //$("#user-or-guest")
 
                 // beginning of the game
                 if( data.moveLog.length == 0){
@@ -137,7 +138,7 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                             $(this.selectors.bottomPanel).empty().append(
                                 $('<div id="action-buttons" >').append(
                                     $('<button>')
-                                        .addClass('btn btn-default')
+                                        .addClass('btn btn-default btn-lg btn-block')
                                         .attr('id','pass-button')
                                         .text('Pass')
                                         .on('click',(function makeMove(){
@@ -379,6 +380,8 @@ define(['./view','utils/svgFactory'],function(View,svgFactory){
                     .text(`Current Player: ${backgroundColourString}`)
                     .css('background-color',backgroundColourString)
                     .css('color',textColourString )
+                    .css('width', "50%")
+                    .css('height', "70px")
             )
 
         }
