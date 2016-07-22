@@ -1197,7 +1197,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
         
             
         mainMenu(){
-            window.location.href = 'http://localhost:3000/userLanding.html'
+            window.location.href = 'http://localhost:30103/userLanding.html'
         }
 
     

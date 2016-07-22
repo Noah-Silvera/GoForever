@@ -11,7 +11,7 @@ function getRandomMove(size, board, lastMove, cb){
     var options = {
         hostname: 'localhost',
         path: '/ai/maxLibs',
-        port: '3001',
+        port: '30000',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function getArmies(size, board, lastMove, cb){
     var options = {
         hostname: 'localhost',
         path: '/util/findArmies',
-        port: '3001',
+        port: '30000',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -18,7 +18,7 @@
             else {                                 
                 RequestHandler.signup(data)
                     .then(function(res){
-                        window.location.href = 'http://localhost:3000/userLanding.html'
+                        window.location.href = 'http://localhost:30103/userLanding.html'
                     })
                     .catch(function(err){
                         console.debug(err)
@@ -38,7 +38,7 @@
                 RequestHandler.login(data)
                     .then((function(res){
                         console.debug(res)
-                        window.location.href = 'http://localhost:3000/userLanding.html'
+                        window.location.href = 'http://localhost:30103/userLanding.html'
                     }).bind(this))
                     .catch((function(err){
                         console.debug(err)
@@ -50,7 +50,7 @@
             RequestHandler.logout()
             .then(function(res){
                 console.log(res)
-                window.location.href = 'http://localhost:3000/'
+                window.location.href = 'http://localhost:30103/'
             })
             .catch(function(err){
                 console.log(err)
@@ -72,21 +72,21 @@
 
         playGame(){
             // do auth thingys and database thingys here
-            window.location.href = 'http://localhost:3000/gameOptions'
+            window.location.href = 'http://localhost:30103/gameOptions'
         }
 
         loadLandingPage(){
-            window.location.href = 'http://localhost:3000/userLanding.html'
+            window.location.href = 'http://localhost:30103/userLanding.html'
         }
 
         loadProfilePage(){
-            window.location.href = 'http://localhost:3000/userProfile.html'
+            window.location.href = 'http://localhost:30103/userProfile.html'
         }
 
         loadSettingsPage(){
             // do user specific things here
 
-            window.location.href = 'http://localhost:3000/userSettings.html'
+            window.location.href = 'http://localhost:30103/userSettings.html'
         }
 
         
