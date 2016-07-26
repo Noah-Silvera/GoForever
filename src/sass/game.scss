@@ -1,6 +1,6 @@
 @import 'global';
 
-$board-size: 30%; 
+$board-size: 50%; 
 
 #board-wrapper{
     padding: 2.5%;
@@ -8,7 +8,7 @@ $board-size: 30%;
 
 #board{
    margin:auto;
-  // width: $board-size;
+  width: $board-size;
 }
 
 #svg{
