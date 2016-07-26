@@ -401,7 +401,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                     
                                 armies[army].tokens.forEach(function(element) {
                                     board.board[element.position[0]][element.position[1]] = 0
-                                    toastr.success('You captured an enemy piece!')
+                                    //toastr.success('You captured an enemy piece!')
                                 }, this);
                             }
                         }
