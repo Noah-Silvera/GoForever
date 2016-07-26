@@ -181,6 +181,7 @@ class DBAdapter {
             }
             
             var Model = mongoose.model(collectionName)
+            delete diffObject._id;
             Model.update(searchCriteria, { $set: diffObject}, {new: true}, function(err, object) {
                 if (err){
                     error('object was not update')
