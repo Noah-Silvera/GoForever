@@ -1,5 +1,5 @@
 define(['requestHandler','jquery'], function(RequestHandler,$) {
-
+    //git push
     class Statistics {
 
         constructor(){
