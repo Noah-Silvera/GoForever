@@ -26,7 +26,7 @@ Navigate to the project directory
 
 The code will be pre-processed and run by gulp. 
 
-Navigate to roberts.seng.uvic.ca:30103 
+Navigate to roberts.seng.uvic.ca:30128 
 
 **Click the [livereload browser plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) icon to enable live reload of client code**
 

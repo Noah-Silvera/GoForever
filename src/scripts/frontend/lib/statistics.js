@@ -78,7 +78,7 @@ define(['requestHandler','jquery'], function(RequestHandler,$) {
                             $('<button type="button" class="btn btn-primary nav replay-button" id="register">Replay</button>')
                                 .attr('data-match-id',data._id)
                                 .on('click',function(e){
-                                    var url = window.location.href = 'http://roberts.seng.uvic.ca:30103/game'
+                                    var url = window.location.href = 'http://roberts.seng.uvic.ca:30128/game'
                                     window.location.href = url.concat(`?id=${$(e.currentTarget).attr('data-match-id')}`)
                                 }.bind(this))
                         )

@@ -84,7 +84,7 @@ define(['./view','jquery','models/gameModel','requestHandler'],function(View,$,G
 
 
 
-                            var url = window.location.href = 'http://roberts.seng.uvic.ca:30103/game?'
+                            var url = window.location.href = 'http://roberts.seng.uvic.ca:30128/game?'
                             window.location.href = url.concat(`id=${id}`)
 
                         }).catch(function(err){
