@@ -16,20 +16,14 @@ $board-size: 30%;
 }
 
 #bottom-panel-wrapper{
-   margin:auto;
+    margin: 0 auto; 
    margin-top:10px;
    margin-bottom:10px;
+    text-align:center;
    width: $board-size;
 }
 
 $action-button-spacing: 10px;
-
-#bottom-panel-wrapper{
-    width: 95%;
-    margin: 0 auto; 
-    text-align:center;
-
-}
 
 #bottom-panel-wrapper * {
     margin-top:5px;
