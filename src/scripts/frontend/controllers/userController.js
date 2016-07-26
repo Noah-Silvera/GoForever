@@ -82,7 +82,7 @@
         }
 
         loadProfilePage(){
-            window.location.href = 'http://roberts.seng.uvic.ca:30103/userProfile.html'
+            window.location.href = 'http://roberts.seng.uvic.ca:30103/userProfile'
         }
 
         loadSettingsPage(){
