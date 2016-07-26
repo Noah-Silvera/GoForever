@@ -71,7 +71,7 @@ div.better-border {
 
 #board {
   margin: auto;
-  width: 50%; }
+  width: 75%; }
 
 #svg {
   opacity: 0.90; }
@@ -81,7 +81,7 @@ div.better-border {
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: center;
-  width: 50%; }
+  width: 75%; }
 
 #bottom-panel-wrapper * {
   margin-top: 5px;
