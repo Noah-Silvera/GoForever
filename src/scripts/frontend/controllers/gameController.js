@@ -401,7 +401,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                                     
                                 armies[army].tokens.forEach(function(element) {
                                     board.board[element.position[0]][element.position[1]] = 0
-                                    //toastr.success('You captured an enemy piece!')
+                                    toastr.success('You captured an enemy piece!')
                                 }, this);
                             }
                         }
@@ -436,7 +436,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                            
                            if(removePiece){
                                boardState.board[0][boardState.last.y] = 0
-                               toastr.success('You captured an enemy piece!')
+                               //toastr.success('You captured an enemy piece!')
                            }
                        }
                 }
@@ -459,7 +459,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                            
                            if(removePiece){
                                boardState.board[ boardState.board.length - 1][boardState.last.y] = 0
-                               toastr.success('You captured an enemy piece!')
+                               //toastr.success('You captured an enemy piece!')
                            }
                        }
                 }
@@ -482,7 +482,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                            
                            if(removePiece){
                                boardState.board[ boardState.last.x][boardState.board.length - 1] = 0
-                               toastr.success('You captured an enemy piece!')
+                               //toastr.success('You captured an enemy piece!')
                            }
                        }
                 }
@@ -504,7 +504,7 @@ define(['controllers/controller','views/gameView','models/gameModel','requestHan
                            
                            if(removePiece){
                                boardState.board[boardState.last.x][0] = 0
-                               toastr.success('You captured an enemy piece!')
+                               //toastr.success('You captured an enemy piece!')
                            }
                        }
                 }
