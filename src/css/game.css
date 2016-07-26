@@ -70,21 +70,18 @@ div.better-border {
   padding: 2.5%; }
 
 #board {
-  margin: auto; }
+  margin: auto;
+  width: 50%; }
 
 #svg {
   opacity: 0.90; }
 
 #bottom-panel-wrapper {
-  margin: auto;
+  margin: 0 auto;
   margin-top: 10px;
   margin-bottom: 10px;
+  text-align: center;
   width: 50%; }
-
-#bottom-panel-wrapper {
-  width: 95%;
-  margin: 0 auto;
-  text-align: center; }
 
 #bottom-panel-wrapper * {
   margin-top: 5px;
